@@ -1,0 +1,74 @@
+'''
+Created on Aug 23, 2011
+@author: danko
+'''
+import sys
+
+from django import forms
+from django.contrib import messages
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+
+from reckonersite.client.utilities import client_error_mapper
+from reckonersite.client.reckoningclient import client_post_reckoning
+from reckonersite.domain.reckoning import Reckoning
+from reckonersite.domain.answer import Answer
+
+def post_reckoning(request):
+    
+    # Check to see if we're coming here from a POST.  If so, process it.  If not, give 'em a fresh form.
+    if request.method == 'POST' :
+        try:
+            form = PostReckoningForm(request.POST)
+            
+            # Check form validation -- kick the form back out with error messages if failed.
+            if not form.is_valid():
+                for attr, value in form.errors:
+                    messages.error(request, value, extra_tags='validation')
+            else:
+                # Build a Reckoning off of the form content
+                answer1 = Answer(index = 0, text=form.cleaned_data['answer1'], subtitle=form.cleaned_data['answer1sub'])
+                answer2 = Answer(index = 0, text=form.cleaned_data['answer2'], subtitle=form.cleaned_data['answer2sub'])
+                reckoning = Reckoning(question = form.cleaned_data['question'], description = form.cleaned_data['description'],
+                                      answers = (answer1, answer2,))
+                
+                # Submit to the API
+                response = client_post_reckoning(reckoning, "none")
+                
+                # Check to see if the API submission was a success.  If not, clean the error and display.  Otherwise, great!
+                if not response.success:
+                    
+                    messages.error(request, 
+                                   client_error_mapper(response.message), 
+                                   extra_tags='validation')
+                else:                    
+                    return HttpResponseRedirect('/thanks-for-playing')
+            # Something bad happened, big time.  Time for the fail whale page.
+        except:
+            print "Exception when posting a reckoning:", sys.exc_info()[0]
+            return HttpResponseRedirect('/gosh-darn-it-to-heck')
+    else :
+        form = PostReckoningForm()
+    
+    c = RequestContext(request,{'form' : form,})
+    return render_to_response('post-reckoning.html', c)
+
+
+def post_reckoning_thanks(request):
+    
+    return render_to_response('post-reckoning-thanks.html')
+
+def reckoning_fail(request):
+    
+    return render_to_response('fail.html')
+
+class PostReckoningForm(forms.Form):
+    question = forms.CharField(label="Your reckoning question!")
+    description = forms.CharField(label="Explain what this is all about!")
+    answer1 = forms.CharField(label="Answer 1")
+    answer1sub = forms.CharField(label="Subtitle")
+    answer2 = forms.CharField(label="Answer 2")
+    answer2sub = forms.CharField(label="Subtitle")    
+        

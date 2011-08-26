@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Post a Reckoning!{% endblock %}
+
+{% block main %}
+    <h1>Try filling out this form to post a reckoning!</h1>
+    {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <form action="" method="post">{% csrf_token %}
+        {{ form.as_p }}
+    <input type="submit" value="Submit" />  
+{% endblock %}

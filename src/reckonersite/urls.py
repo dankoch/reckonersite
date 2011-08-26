@@ -5,6 +5,9 @@ from django.conf.urls.defaults import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('',
+    (r'^post-reckoning', 'reckonersite.views.reckoning.post_reckoning'),
+    (r'^thanks-for-playing', 'reckonersite.views.reckoning.post_reckoning_thanks'),
+    (r'^gosh-darn-it-to-heck', 'reckonersite.views.reckoning.reckoning_fail'),
     # Examples:
     # url(r'^$', 'reckonersite.views.home', name='home'),
     # url(r'^reckonersite/', include('reckonersite.foo.urls')),

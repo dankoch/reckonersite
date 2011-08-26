@@ -1,0 +1,14 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <div>{% block header %}The Reckoner{% endblock %}</div>
+    <div>
+        <div>{% block main %}{% endblock %}</div>
+        <div>{% block sidebar %}{% endblock %}</div>
+    </div>
+    <div>{% block footer %}End of The Reckoner{% endblock %}</div>
+</body>
+</html>

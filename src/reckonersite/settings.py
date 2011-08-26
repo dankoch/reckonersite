@@ -1,13 +1,18 @@
-# Django settings for reckonersite project.
-
-# Import MongoEngine to connect to MongoDB
+#==========================CUSTOM SETTINGS======================================
 from mongoengine import connect
 
-# Connect to MongoDB.  The database is only used for session peristence.
+# Triggers Django Debugging Console
+DEBUG = True
+
+# Host Name Contacted By The Reckoner Site Client
+RECKON_CONTENT_SERVICES_HOST = 'http://localhost:8080/reckoner-content-services'
+
+# Connect to MongoDB.  The database is only used for session persistence.
 connect ('session')
 SESSION_ENGINE = 'mongoengine.django.sessions'
 
-DEBUG = True
+#==========================END CUSTOM SETTINGS==================================
+
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -81,6 +86,9 @@ STATICFILES_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+#TEMPLATE_CONTEXT_PROCESSORS = ('django.contrib.messages.context_processors.messages',
+#                               )
+
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
@@ -110,6 +118,8 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'reckonersite.urls'
 
 TEMPLATE_DIRS = (
+    '/Users/danko/Documents/development/reckonersite/src/reckonersite/templates',
+    
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
