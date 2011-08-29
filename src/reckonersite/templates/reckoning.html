@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}View a Reckoning!{% endblock %}
+
+{% block main %}
+    {% if reckoning %}
+        <h1>Reckoning {{ reckoning.id }}</h1>
+        <ul>
+            <li>Submitter ID: {{ reckoning.submitter_id}}</li>
+            <li>Submission Date: {{ reckoning.submission_date}}</li>
+            <li>Posting Date: {{ reckoning.posting_date}}</li>
+            <li>Closing Date: {{ reckoning.closing_date}}</li>
+        </ul>
+        <h2>{{reckoning.question}}</h2>
+        <p>{{reckoning.description}}</p>
+        {% for answer in reckoning.answers %}
+            <h3>Answer {{forloop.counter}}:</h3>
+            <ul>
+                <li>{{ answer.text }}</li>
+                <li>{{ answer.subtitle }}</li>
+                <li>Votes: {{answer.vote_total}}</li>
+            </ul>
+        {% endfor %}
+        <h2>Comments:</h2>
+        {% for comment in reckoning.comments %}
+            <ul>
+                <li>User: {{ comment.poster_id }}</li>
+                <li>Date: {{ comment.posting_date }}</li>
+                <li>{{ comment.comment }}</li>
+            </ul>
+        {% endfor %}        
+            
+    {% endif %}
+{% endblock %}

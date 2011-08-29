@@ -3,7 +3,7 @@ Created on Aug 23, 2011
 @author: danko
 '''
 import sys
-import datetime
+from datetime import datetime
 from xml.etree import cElementTree as cET
 
 class Base(object):
@@ -43,15 +43,28 @@ def buildXml(object, root):
         elif (isinstance(object, Base)):
             node = object.getXML()
             return node
-        elif (isinstance(object, datetime.datetime)):
+        elif (isinstance(object, datetime)):
             root_node.text=object.strftime("%Y-%m-%dT%H:%M:%S")
+        elif (isinstance(object, bool)):
+            if (not object):
+                root_node.text='false'
+            else:
+                root_node.text='true'
         else:
-            root_node.text=object      
+            root_node.text=str(object)
     except TypeError as detail:
         print "Could not build XML for specified object. Type error: ", detail
         root_node = cET.Element("null")
-    except:
+    except Exception:
         print "General error building XML for specified object: ", sys.exc_info()[0]
         root_node = cET.Element("null")        
         
     return root_node
+
+def convertToDateTime(xml_text):
+    try:
+        return datetime.strptime(xml_text[0:18], "%Y-%m-%dT%H:%M:%S")
+    except:
+        print "Couldn't convert XML Date to DateTime: ", sys.exc_info()[0]
+        
+    return None;
