@@ -32,3 +32,9 @@
             
     {% endif %}
 {% endblock %}
+
+{% block sidebar %}
+    <a href="https://www.facebook.com/dialog/oauth?client_id={{facebook_app_id}}&redirect_uri={{facebook_redirect_url}}&scope=offline_access">
+    <img src="{{ STATIC_URL }}images/FacebookLoginButton.png">     
+    </a>
+{% endblock %}

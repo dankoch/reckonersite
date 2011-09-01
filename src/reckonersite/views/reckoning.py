@@ -5,16 +5,15 @@ Created on Aug 23, 2011
 import sys
 
 from django import forms
+from django.conf import settings
 from django.contrib import messages
 from django.http import Http404
-from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 from reckonersite.client.utilities import client_error_mapper
-from reckonersite.client.reckoningclient import client_get_reckoning
-from reckonersite.client.reckoningclient import client_post_reckoning
+from reckonersite.client.reckoningclient import client_get_reckoning, client_post_reckoning
 from reckonersite.domain.reckoning import Reckoning
 from reckonersite.domain.answer import Answer
 
@@ -71,31 +70,20 @@ def post_reckoning_thanks(request):
     return render_to_response('post-reckoning-thanks.html')
 
 
-def reckoning_fail(request):
-    
-    return render_to_response('fail.html')
-
-
 def get_reckoning(request, id = None):
     
-    try:
-        service_response = client_get_reckoning(id, "none")
-        
-        # Check to see if the API submission was a success.  If not, straight to the fail-page!
-        # If the Reckoning list is empty, there's no Reckoning by that ID.  Straight to the 404 page!
-        if (not service_response.status.success):
-            raise BaseException() 
-        elif (not service_response.reckonings):
-            raise Http404
-        else:
-            c = RequestContext(request, {'reckoning' : service_response.reckonings[0]})
-            return render_to_response('reckoning.html', c)
-
-    except Exception:
-        print "Exception when posting a reckoning:", sys.exc_info()[0]
-        return HttpResponseRedirect('/gosh-darn-it-to-heck')
+    request.session['place'] = request.get_full_path()
+    service_response = client_get_reckoning(id, "none")
     
-
-
- 
+    # Check to see if the API submission was a success.  If not, straight to the fail-page!
+    # If the Reckoning list is empty, there's no Reckoning by that ID.  Straight to the 404 page!
+    if (not service_response.status.success):
+        raise BaseException() 
+    elif (not service_response.reckonings):
+        raise Http404
+    else:
+        c = RequestContext(request, {'facebook_app_id' : settings.FACEBOOK_APP_ID,
+                                     'facebook_redirect_url' : settings.FACEBOOK_REDIRECT_URL,
+                                     'reckoning' : service_response.reckonings[0]})
+        return render_to_response('reckoning.html', c)
         

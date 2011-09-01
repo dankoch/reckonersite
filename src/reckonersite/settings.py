@@ -7,6 +7,14 @@ DEBUG = True
 # Host Name Contacted By The Reckoner Site Client
 RECKON_CONTENT_SERVICES_HOST = 'http://localhost:8080/reckoner-content-services'
 
+# Information Used to Communicate With Facebook
+FACEBOOK_APP_ID = '194559340610034'
+FACEBOOK_APP_SECRET = 'ff01f6b6c13c50b5685f15f9a6b70bb2'
+FACEBOOK_REDIRECT_URL = 'http://localhost:8000/login/facebook'
+
+FACEBOOK_GRAPH_URL = "https://graph.facebook.com"
+FACEBOOK_GRAPH_TOKEN_URL = "https://graph.facebook.com/oauth/access_token"
+
 # Connect to MongoDB.  The database is only used for session persistence.
 connect ('session')
 SESSION_ENGINE = 'mongoengine.django.sessions'
@@ -84,6 +92,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    "/Users/danko/Documents/development/reckonersite/src/reckonersite/static",
 )
 
 #TEMPLATE_CONTEXT_PROCESSORS = ('django.contrib.messages.context_processors.messages',
