@@ -6,14 +6,17 @@ from datetime import datetime
 from xml.etree import cElementTree as cET
 from reckonersite.domain.base import Base, buildXml, convertToDateTime
 
-class FacebookAccessToken(Base):
-    '''Object definition of an Access Token associated with a Facebook User'''
+class OAuthAccessToken(Base):
+    '''Object definition of an Access Token associated with a Facebook User
+       Maintained to be synchronized with the Reckoner API's PostOAuthUser (since it's used to post information
+    for authentication)'''
 
-    def __init__(self, access_token=None, expires=None, 
+    def __init__(self, user_token=None, provider=None, expires=None, 
                  xml_string=None, xml_element=None):
         
-        self.access_token = access_token
+        self.user_token = user_token
         self.expires = expires
+        self.provider = 'FACEBOOK'
         
         if not xml_string is None:
             self.buildFromXMLString(xml_string)
@@ -22,7 +25,7 @@ class FacebookAccessToken(Base):
             self.buildFromXMLElement(xml_element)
     
     def getXML(self):
-        return (buildXml(self.__dict__, 'facebook_access_token'))
+        return (buildXml(self.__dict__, 'oauth_user_post'))
     
     def getXMLString(self):
         return cET.tostring(self.getXML())
@@ -32,7 +35,9 @@ class FacebookAccessToken(Base):
         self.buildFromXMLElement(xml_root)
     
     def buildFromXMLElement(self, xml_root):
-        if (not xml_root.find('access_token') is None):
-            self.access_token = xml_root.find('access_token').text
+        if (not xml_root.find('user_token') is None):
+            self.user_token = xml_root.find('user_token').text
+        if (not xml_root.find('provider') is None):
+            self.provider = xml_root.find('provider').text
         if (not xml_root.find('expires') is None):
             self.expires = xml_root.find('expires').text

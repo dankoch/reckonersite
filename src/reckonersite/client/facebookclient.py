@@ -6,7 +6,7 @@ import urllib2
 from urlparse import urlparse
 
 from django.conf import settings
-from reckonersite.domain.facebookaccesstoken import FacebookAccessToken
+from reckonersite.domain.oauthaccesstoken import OAuthAccessToken
 
 def client_get_facebook_user_token(code):
     url = settings.FACEBOOK_GRAPH_TOKEN_URL + "?client_id=" + settings.FACEBOOK_APP_ID \
@@ -18,13 +18,14 @@ def client_get_facebook_user_token(code):
     content = response.read()
     params = dict([part.split('=') for part in content.split('&')])
     
-    returnToken = FacebookAccessToken()
+    oAuthReceipt = OAuthAccessToken()
     if params.has_key('access_token'):
-        returnToken.access_token = params['access_token']
+        oAuthReceipt.user_token = params['access_token']
     if params.has_key('expires'):
-        returnToken.expires = params['expires']
+        oAuthReceipt.expires = params['expires']
+    oAuthReceipt.provider = 'FACEBOOK'
     
-    return returnToken
+    return oAuthReceipt
     
     
     

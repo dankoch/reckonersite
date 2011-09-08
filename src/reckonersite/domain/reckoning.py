@@ -119,7 +119,7 @@ class Reckoning(Base):
         flagsElement = xml_root.find('flags')        
         if (not flagsElement is None):
             self.flags=[]
-            for flagElement in flagsElement.findall('flags'):
+            for flagElement in flagsElement.findall('flag'):
                 self.flags.append(Flag(xml_element=flagElement))
         
         favoritesElement = xml_root.find('favorites')

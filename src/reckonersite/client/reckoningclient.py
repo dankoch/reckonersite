@@ -31,8 +31,7 @@ def client_get_reckoning(id, user_token):
     response = urllib2.urlopen(url)
     content = response.read()
     reckoningList = ReckoningServiceList(xml_string = content)
-    print "A: " + content
-    print "B: " + reckoningList.getXMLString()
+
     return reckoningList   
     
     

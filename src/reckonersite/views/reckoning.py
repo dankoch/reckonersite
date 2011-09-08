@@ -2,7 +2,9 @@
 Created on Aug 23, 2011
 @author: danko
 '''
+import logging
 import sys
+import traceback
 
 from django import forms
 from django.conf import settings
@@ -17,11 +19,13 @@ from reckonersite.client.reckoningclient import client_get_reckoning, client_pos
 from reckonersite.domain.reckoning import Reckoning
 from reckonersite.domain.answer import Answer
 
+logger = logging.getLogger(settings.STANDARD_LOGGER)
+
 def post_reckoning(request):
     
-    # Check to see if we're coming here from a POST.  If so, process it.  If not, give 'em a fresh form.
-    if request.method == 'POST' :
-        try:
+    try:
+        # Check to see if we're coming here from a POST.  If so, process it.  If not, give 'em a fresh form.
+        if request.method == 'POST' :
             form = PostReckoningForm(request.POST)
             
             # Check form validation -- kick the form back out with error messages if failed.
@@ -45,15 +49,15 @@ def post_reckoning(request):
                                    extra_tags='api-error')
                 else:                    
                     return HttpResponseRedirect('/thanks-for-playing')
-            # Something bad happened, big time.  Time for the fail whale page.
-        except:
-            print "Exception when posting a reckoning:", sys.exc_info()[0]
-            raise BaseException()
-    else :
-        form = PostReckoningForm()
-    
-    c = RequestContext(request,{'form' : form,})
-    return render_to_response('post-reckoning.html', c)
+        else :
+            form = PostReckoningForm()
+        
+        c = RequestContext(request,{'form' : form,})
+        return render_to_response('post-reckoning.html', c)
+    except Exception:      
+        logger.error("Exception when showing and processing the Submit-a-Reckoning form:") 
+        logger.error(traceback.print_exc(8))
+        raise Exception
 
 
 class PostReckoningForm(forms.Form):
@@ -71,19 +75,26 @@ def post_reckoning_thanks(request):
 
 
 def get_reckoning(request, id = None):
-    
-    request.session['place'] = request.get_full_path()
-    service_response = client_get_reckoning(id, "none")
-    
-    # Check to see if the API submission was a success.  If not, straight to the fail-page!
-    # If the Reckoning list is empty, there's no Reckoning by that ID.  Straight to the 404 page!
-    if (not service_response.status.success):
-        raise BaseException() 
-    elif (not service_response.reckonings):
+    try:
+        request.session['place'] = request.get_full_path()
+        service_response = client_get_reckoning(id, "none")
+        
+        # Check to see if the API submission was a success.  If not, straight to the fail-page!
+        # If the Reckoning list is empty, there's no Reckoning by that ID.  Straight to the 404 page!
+        if (not service_response.status.success):
+            raise BaseException() 
+        elif (not service_response.reckonings):
+            raise Http404
+        else:
+            c = RequestContext(request, {'facebook_app_id' : settings.FACEBOOK_APP_ID,
+                                         'facebook_redirect_url' : settings.FACEBOOK_REDIRECT_URL,
+                                         'reckoning' : service_response.reckonings[0]})
+            return render_to_response('reckoning.html', c)
+    except Http404:
+        logger.debug("Received 404 looking for page: " + request.get_full_path())
         raise Http404
-    else:
-        c = RequestContext(request, {'facebook_app_id' : settings.FACEBOOK_APP_ID,
-                                     'facebook_redirect_url' : settings.FACEBOOK_REDIRECT_URL,
-                                     'reckoning' : service_response.reckonings[0]})
-        return render_to_response('reckoning.html', c)
+    except Exception:
+        logger.error("Exception when showing a reckoning:") 
+        logger.error(traceback.print_exc(8))
+        raise Exception        
         

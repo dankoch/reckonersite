@@ -22,49 +22,38 @@ def buildXml(object, root):
     '''Accepts a dictionary, list, or tuple of XML elements along with the name of the root node
        and returns an ElementTree XML Element object'''
     
-    try:
-        root_node = cET.Element(root)
-        # Check to see if the item is a dictionary, list/tuple, Reckoner base type or other type.
-        # For dictionaries, assume it's a subtree built beneath the key value and recur
-        # For lists, assume it's a list of items built beneath the current root and recur
-        # For Reckoner base types, have them build their own subtree.  Exclude the root - it provides its own.
-        # For other types, assume they're str or unicode.  If not, we'll catch the exception
-        
-        if object is None:
-            pass
-        elif (isinstance(object, dict)):
-            for attr, value in object.iteritems():
-                node = buildXml(value, attr)
-                root_node.append(node)
-        elif (isinstance(object, list) or isinstance(object, tuple)):
-            for item in object:
-                node = buildXml(item, root)
-                root_node.append(node)
-        elif (isinstance(object, Base)):
-            node = object.getXML()
-            return node
-        elif (isinstance(object, datetime)):
-            root_node.text=object.strftime("%Y-%m-%dT%H:%M:%S")
-        elif (isinstance(object, bool)):
-            if (not object):
-                root_node.text='false'
-            else:
-                root_node.text='true'
+    root_node = cET.Element(root)
+    # Check to see if the item is a dictionary, list/tuple, Reckoner base type or other type.
+    # For dictionaries, assume it's a subtree built beneath the key value and recur
+    # For lists, assume it's a list of items built beneath the current root and recur
+    # For Reckoner base types, have them build their own subtree.  Exclude the root - it provides its own.
+    # For other types, assume they're str or unicode.  If not, we'll catch the exception
+    
+    if object is None:
+        pass
+    elif (isinstance(object, dict)):
+        for attr, value in object.iteritems():
+            node = buildXml(value, attr)
+            root_node.append(node)
+    elif (isinstance(object, list) or isinstance(object, tuple)):
+        for item in object:
+            node = buildXml(item, root)
+            root_node.append(node)
+    elif (isinstance(object, Base)):
+        node = object.getXML()
+        return node
+    elif (isinstance(object, datetime)):
+        root_node.text=object.strftime("%Y-%m-%dT%H:%M:%S")
+    elif (isinstance(object, bool)):
+        if (not object):
+            root_node.text='false'
         else:
-            root_node.text=str(object)
-    except TypeError as detail:
-        print "Could not build XML for specified object. Type error: ", detail
-        root_node = cET.Element("null")
-    except Exception:
-        print "General error building XML for specified object: ", sys.exc_info()[0]
-        root_node = cET.Element("null")        
+            root_node.text='true'
+    else:
+        root_node.text=str(object)      
         
     return root_node
 
 def convertToDateTime(xml_text):
-    try:
-        return datetime.strptime(xml_text[0:18], "%Y-%m-%dT%H:%M:%S")
-    except:
-        print "Couldn't convert XML Date to DateTime: ", sys.exc_info()[0]
-        
-    return None;
+    time = datetime.strptime(xml_text[0:18], "%Y-%m-%dT%H:%M:%S")
+    return time

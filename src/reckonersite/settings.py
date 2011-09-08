@@ -1,6 +1,9 @@
 #==========================CUSTOM SETTINGS======================================
 from mongoengine import connect
 
+# Application Name -- used for identifying permissions and other labeling
+APPLICATION_NAME='reckonersite'
+
 # Triggers Django Debugging Console
 DEBUG = True
 
@@ -18,6 +21,14 @@ FACEBOOK_GRAPH_TOKEN_URL = "https://graph.facebook.com/oauth/access_token"
 # Connect to MongoDB.  The database is only used for session persistence.
 connect ('session')
 SESSION_ENGINE = 'mongoengine.django.sessions'
+
+# Information used to configure logging settings
+FILE_LOG_LOCATION = '/Users/danko/Documents/development/logs'
+STANDARD_LOGGER = 'reckonersite.standard'
+
+# Key used to store session information
+RECKONER_TOKEN_ID = 'rcktk'
+LAST_SITE_TOKEN_ID = 'lastsite'
 
 #==========================END CUSTOM SETTINGS==================================
 
@@ -95,8 +106,12 @@ STATICFILES_DIRS = (
     "/Users/danko/Documents/development/reckonersite/src/reckonersite/static",
 )
 
-#TEMPLATE_CONTEXT_PROCESSORS = ('django.contrib.messages.context_processors.messages',
-#                               )
+TEMPLATE_CONTEXT_PROCESSORS = ("django.core.context_processors.debug",
+                               "django.core.context_processors.i18n",
+                               "django.core.context_processors.media",
+                               "django.core.context_processors.static",
+                               "django.contrib.messages.context_processors.messages",
+                               'reckonersite.context_processors.reckonerauth.set_user_info', )
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -120,7 +135,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'reckonersite.middleware.reckonerauth.ReckonerAuthMiddleware',
+    'reckonersite.middleware.breadcrumb.BreadcrumbMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
@@ -135,7 +151,6 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
@@ -154,18 +169,44 @@ INSTALLED_APPS = (
 # more details on how to customize your logging configuration.
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'standard': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(message)s'
+        },
+    },
     'handlers': {
+        'null': {
+            'level':'DEBUG',
+            'class':'django.utils.log.NullHandler',
+            'formatter': 'standard'
+        },
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'formatter': 'standard'
+        },
         'mail_admins': {
             'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler'
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'standard'
+        },
+        'file_log': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'standard',
+            'maxBytes': 52428800,
+            'backupCount': 5,
+            'filename': FILE_LOG_LOCATION + 'reckonsite'
         }
     },
     'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
+        'reckonersite.standard': {
+            'handlers': ['console', 'file_log'],
+            'level': 'INFO'
+        }
     }
 }
