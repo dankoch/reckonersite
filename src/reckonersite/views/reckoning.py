@@ -86,9 +86,7 @@ def get_reckoning(request, id = None):
         elif (not service_response.reckonings):
             raise Http404
         else:
-            c = RequestContext(request, {'facebook_app_id' : settings.FACEBOOK_APP_ID,
-                                         'facebook_redirect_url' : settings.FACEBOOK_REDIRECT_URL,
-                                         'reckoning' : service_response.reckonings[0]})
+            c = RequestContext(request, {'reckoning' : service_response.reckonings[0]})
             return render_to_response('reckoning.html', c)
     except Http404:
         logger.debug("Received 404 looking for page: " + request.get_full_path())

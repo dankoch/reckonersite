@@ -9,14 +9,14 @@ from reckonersite.domain.reckoning import Reckoning
 from reckonersite.domain.reckoningservicelist import ReckoningServiceList
 from reckonersite.domain.serviceresponse import ServiceResponse
 
-def client_post_reckoning(reckoning, user_token):
+def client_post_reckoning(reckoning, session_id):
     url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning"
     
     reckoning.interval = "604800000"
     reckoning.anonymous_requested = False
     
     req = urllib2.Request(url = url,
-                          data = reckoning.getPostingXMLString(user_token),
+                          data = reckoning.getPostingXMLString(session_id),
                           headers = {'Content-Type': 'text/xml'})
 
     response = urllib2.urlopen(req)
@@ -25,8 +25,8 @@ def client_post_reckoning(reckoning, user_token):
     
     return servResponse
 
-def client_get_reckoning(id, user_token):
-    url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/" + id + "?user_token=" + user_token
+def client_get_reckoning(id, session_id):
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/" + id + "?session_id=" + session_id
     
     response = urllib2.urlopen(url)
     content = response.read()

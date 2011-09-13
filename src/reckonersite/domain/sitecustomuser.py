@@ -13,7 +13,8 @@ class SiteCustomUser(object):
     def __init__(self, reckoner_id=None, username=None, first_name=None, last_name=None, email=None,
                  auth_provider=None, auth_provider_id=None, first_login=None, last_login=None, 
                  profile_picture_url=None, profile_url=None, groups=None, permissions=None,
-                 active=True, user_token=None, expiration_date=None,
+                 active=False, session_id=None, expiration_date=None, is_new_user=False,
+                 is_anonymous=False, is_invalid_google_user=False,
                  reckoner_user=None, auth_session=None):
         
         self.reckoner_id = reckoner_id
@@ -31,10 +32,12 @@ class SiteCustomUser(object):
         self.permissions = permissions
         self.active = active
         
-        self.user_token = user_token
+        self.session_id = session_id
         self.expiration_date = expiration_date
         
-        self.is_anonymous = False
+        self.is_new_user = is_new_user
+        self.is_anonymous = is_anonymous
+        self.is_invalid_google_user = is_invalid_google_user
         
         if (reckoner_user):
             self.build_from_reckonuser(reckoner_user)
@@ -64,7 +67,7 @@ class SiteCustomUser(object):
         '''
         Extracts the AuthSession data from the Reckoner Services into the User object used within Reckoner Site
         '''        
-        self.user_token = authSession.user_token
+        self.session_id = authSession.session_id
         self.expiration_date = authSession.expiration_date
         
     def has_perm (self, permission):

@@ -22,9 +22,8 @@ class BreadcrumbMiddleware(object):
         EXEMPT_URLS = ('/login', '/static', '/favicon', )
         
         currentBreadcrumb = request.session.get(settings.LAST_SITE_TOKEN_ID, None)
-        
-        if (currentBreadcrumb):
-            if (request.get_full_path().startswith(EXEMPT_URLS)):
-                return None
+
+        if (request.get_full_path().startswith(EXEMPT_URLS)):
+            return None
             
         request.session[settings.LAST_SITE_TOKEN_ID] = request.get_full_path()        

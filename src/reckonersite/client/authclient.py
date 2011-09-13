@@ -31,15 +31,15 @@ def client_authenticate_user(oAuth_receipt):
         
     return servResponse
 
-def client_logout_user(user_token):
+def client_logout_user(session_id):
     '''
-    Receives the user token for the current session (as originally retrieved from
+    Receives the ID for the current session (as originally retrieved from
     the initial login - via OAuth or otherwise).  
     
     Forwards this information to the Reckoner Content Services, which deletes the associated
     session and logs the user out.
     '''
-    url = settings.RECKON_CONTENT_SERVICES_HOST + "/user/logout" + "?user_token=" + user_token
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/user/logout" + "?session_id=" + session_id
     
     response = urllib2.urlopen(url)
     content = response.read()
@@ -47,15 +47,15 @@ def client_logout_user(user_token):
 
     return servResponse 
 
-def client_get_user(user_token):
+def client_get_user(session_id):
     '''
-    Receives the user token for the current session (as originally retrieved from
+    Receives the ID for the current session (as originally retrieved from
     the initial login - via OAuth or otherwise).  
     
     Checks the user token with the Reckoner Content Services and pulls the User
     information associated with the token.  Returns a UserServiceResponse object.
     '''
-    url = settings.RECKON_CONTENT_SERVICES_HOST + "/user/me" + "?user_token=" + user_token
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/user/me" + "?session_id=" + session_id
     
     response = urllib2.urlopen(url)
     content = response.read()

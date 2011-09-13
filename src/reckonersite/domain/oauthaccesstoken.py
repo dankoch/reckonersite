@@ -11,12 +11,13 @@ class OAuthAccessToken(Base):
        Maintained to be synchronized with the Reckoner API's PostOAuthUser (since it's used to post information
     for authentication)'''
 
-    def __init__(self, user_token=None, provider=None, expires=None, 
+    def __init__(self, user_token=None, provider=None, expires=None, refresh_token=None,
                  xml_string=None, xml_element=None):
         
         self.user_token = user_token
         self.expires = expires
-        self.provider = 'FACEBOOK'
+        self.provider = provider
+        self.refresh_token = refresh_token
         
         if not xml_string is None:
             self.buildFromXMLString(xml_string)
@@ -41,3 +42,5 @@ class OAuthAccessToken(Base):
             self.provider = xml_root.find('provider').text
         if (not xml_root.find('expires') is None):
             self.expires = xml_root.find('expires').text
+        if (not xml_root.find('refresh_token') is None):
+            self.refresh_token = xml_root.find('refresh_token').text

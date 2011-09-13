@@ -53,17 +53,17 @@ class Reckoning(Base):
     def getXMLString(self):
         return cET.tostring(self.getXML())
     
-    def getPostingXML(self, user_token):
+    def getPostingXML(self, session_id):
         posting = cET.Element('reckoning_post')
         posting.append(self.getXML())
         
-        token = cET.SubElement(posting, 'user_token')
-        token.text = user_token
+        token = cET.SubElement(posting, 'session_id')
+        token.text = session_id
         
         return posting
     
-    def getPostingXMLString(self, user_token):
-        return cET.tostring(self.getPostingXML(user_token))
+    def getPostingXMLString(self, session_id):
+        return cET.tostring(self.getPostingXML(session_id))
     
     def buildFromXMLString(self, xml):
         xml_root = cET.XML(xml)

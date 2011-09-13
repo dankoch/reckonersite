@@ -11,12 +11,32 @@ DEBUG = True
 RECKON_CONTENT_SERVICES_HOST = 'http://localhost:8080/reckoner-content-services'
 
 # Information Used to Communicate With Facebook
+# Each element is used as part of the OAUTH verification process to build the correct URLs for
+# the server-side authentication process.
+
 FACEBOOK_APP_ID = '194559340610034'
 FACEBOOK_APP_SECRET = 'ff01f6b6c13c50b5685f15f9a6b70bb2'
 FACEBOOK_REDIRECT_URL = 'http://localhost:8000/login/facebook'
 
 FACEBOOK_GRAPH_URL = "https://graph.facebook.com"
+FACEBOOK_OAUTH_URL = "https://www.facebook.com/dialog/oauth"
 FACEBOOK_GRAPH_TOKEN_URL = "https://graph.facebook.com/oauth/access_token"
+
+FACEBOOK_SCOPE = "offline_access"
+
+# Information Used to Communicate With Google
+# Each element is used as part of the OAUTH verification process to build the correct URLs for
+# the server-side authentication process.
+
+GOOGLE_APP_ID="565621549243.apps.googleusercontent.com"
+GOOGLE_APP_SECRET="8QdIGfIitnM_Psv1YAEuFgHn"
+GOOGLE_REDIRECT_URL="http://localhost:8000/login/google"
+
+GOOGLE_API_URL=""
+GOOGLE_API_OAUTH_URL="https://accounts.google.com/o/oauth2/auth"
+GOOGLE_API_TOKEN_URL="https://accounts.google.com/o/oauth2/token"
+
+GOOGLE_SCOPE = "https://www.googleapis.com/auth/buzz.readonly"
 
 # Connect to MongoDB.  The database is only used for session persistence.
 connect ('session')
@@ -27,7 +47,7 @@ FILE_LOG_LOCATION = '/Users/danko/Documents/development/logs'
 STANDARD_LOGGER = 'reckonersite.standard'
 
 # Key used to store session information
-RECKONER_TOKEN_ID = 'rcktk'
+RECKONER_API_SESSION_ID = 'rcktk'
 LAST_SITE_TOKEN_ID = 'lastsite'
 
 #==========================END CUSTOM SETTINGS==================================
@@ -111,7 +131,8 @@ TEMPLATE_CONTEXT_PROCESSORS = ("django.core.context_processors.debug",
                                "django.core.context_processors.media",
                                "django.core.context_processors.static",
                                "django.contrib.messages.context_processors.messages",
-                               'reckonersite.context_processors.reckonerauth.set_user_info', )
+                               'reckonersite.context_processors.reckonerauth.set_user_info', 
+                               'reckonersite.context_processors.socialconnections.set_social_info',)
 
 # List of finder classes that know how to find static files in
 # various locations.

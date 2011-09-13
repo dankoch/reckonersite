@@ -13,7 +13,7 @@ def client_get_facebook_user_token(code):
                                             + "&redirect_uri=" + settings.FACEBOOK_REDIRECT_URL \
                                             + "&client_secret=" + settings.FACEBOOK_APP_SECRET \
                                             + "&code=" + code
-    
+        
     response = urllib2.urlopen(url)    
     content = response.read()
     params = dict([part.split('=') for part in content.split('&')])

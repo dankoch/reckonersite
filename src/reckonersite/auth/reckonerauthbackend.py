@@ -32,6 +32,12 @@ def authenticate(oAuthReceipt = None, username = None, password = None):
     
     if (authResponse):
         if ((not authResponse.status.success) or (not authResponse.reckoner_user)):
+            # For invalid Google Accounts (i.e. non G+ Google Accounts), mark the user
+            # and return to the view.  Otherwise, return None and the view will handle it.
+            if (authResponse.status.message == "R707_AUTH_USER"):
+                siteUser = SiteCustomUser(is_invalid_google_user=True)
+                return siteUser
+            
             logger.warning('Failed to authenticate user against Reckoner Services: ' \
                            + authResponse.status.message)
             return None
@@ -42,35 +48,39 @@ def authenticate(oAuthReceipt = None, username = None, password = None):
     return siteUser
   
 
-def get_user(user_token):
+def get_user(session_id):
     '''
     Retrieves the user information associated with the specified user token.
     '''
     siteUser = None
     
-    if (user_token):
-        userResponse = client_get_user(user_token)
+    if (session_id):
+        userResponse = client_get_user(session_id)
         if (userResponse):
             if ((not userResponse.status.success) or (not userResponse.reckoner_user)):
                 logger.warning('Failed to retrieve user from Reckoner Services: ' \
                                + userResponse.status.message)
                 return None
             else:
-                siteUser = SiteCustomUser(reckoner_user = userResponse.reckoner_user)
-                siteUser.user_token = user_token
+                if (userResponse.auth_session):
+                    siteUser = SiteCustomUser(reckoner_user = userResponse.reckoner_user, 
+                                              auth_session = userResponse.auth_session) 
+                else:
+                    siteUser = SiteCustomUser(reckoner_user = userResponse.reckoner_user)                   
+                    siteUser.session_id = session_id
                
     return siteUser
     
 
-def logout_user(user_token):
+def logout_user(session_id):
     '''
     Deletes the session information from the Reckoner Services when the user ends their
     Reckoner Site session.
     '''
-    servResponse = client_logout_user(user_token)
+    servResponse = client_logout_user(session_id)
     if not servResponse.status.success:
-        logger.error("Received Reckoner Service error when logging out user token " + \
-                      user_token + ":" + servResponse.status.message)
+        logger.error("Received Reckoner Service error when logging out session ID: " + \
+                      session_id + ":" + servResponse.status.message)
     else:
-        logger.debug("Logged out user " + user_token)        
+        logger.debug("Logged out user " + session_id)        
         

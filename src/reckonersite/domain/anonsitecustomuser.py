@@ -10,7 +10,7 @@ class AnonSiteCustomUser(SiteCustomUser):
     indicate the default user permissions (should be aligned w/ Reckoner API)
     '''
     
-    def __init__(self, user_token=None):
+    def __init__(self, session_id=None):
         
         self.reckoner_id = 'anon'
         self.username = 'anon'
@@ -30,7 +30,7 @@ class AnonSiteCustomUser(SiteCustomUser):
         self.permissions = ['vote']
         self.active = True
         
-        self.user_token = user_token
+        self.session_id = session_id
         self.expires = None
         
         self.is_anonymous = True   

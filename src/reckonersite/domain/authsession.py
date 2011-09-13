@@ -10,12 +10,13 @@ class AuthSession(Base):
     '''Object definition of an authentication session (as defined in the Reckoner DB)  
     Maintained to be synchronized with the Reckoner API'''
 
-    def __init__(self, user_token=None, reckoner_user_id=None, auth_provider=None,
-                 created_date=None, expiration_date=None,
+    def __init__(self, session_id=None, user_token=None, reckoner_user_id=None, 
+                 auth_provider=None, created_date=None, expiration_date=None,
                  xml_string=None, xml_element=None):
         
         # Note: Since we're building the XML nodes off of the names of the attributes,
         # these names need to be kept aligned with the API definition.
+        self.session_id = session_id
         self.user_token = user_token
         self.reckoner_user_id = reckoner_user_id
         self.auth_provider = auth_provider
@@ -39,6 +40,8 @@ class AuthSession(Base):
         self.buildFromXMLElement(xml_root)
     
     def buildFromXMLElement(self, xml_root):
+        if (not xml_root.find('session_id') is None):
+            self.session_id = xml_root.find('session_id').text
         if (not xml_root.find('user_token') is None):
             self.user_token = xml_root.find('user_token').text
         if (not xml_root.find('reckoner_user_id') is None):
