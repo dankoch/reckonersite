@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     (r'^login/no-sweat', 'reckonersite.views.login.rejected_login'),
     (r'^login/logout', 'reckonersite.views.login.logout'),       
     (r'^login', 'reckonersite.views.login.login_page'),
+    (r'^admin/user-permissions', 'reckonersite.views.admin.user_permissions_page'),
     (r'^$', 'reckonersite.views.home.home_page'),            
     # Examples:
     # url(r'^$', 'reckonersite.views.home', name='home'),

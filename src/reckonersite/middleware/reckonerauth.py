@@ -54,6 +54,8 @@ class ReckonerAuthMiddleware(object):
                         logout_user(request, session_id)
                     elif (request.user.session_id):
                         request.session[settings.RECKONER_API_SESSION_ID] = request.user.session_id
+                    else:
+                        request.user.session_id = request.session[settings.RECKONER_API_SESSION_ID]
 
             except Exception:
                 logger.warning('Exception when retrieving user: ' + session_id)

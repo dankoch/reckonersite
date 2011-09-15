@@ -6,6 +6,7 @@ import urllib2
 
 from django.conf import settings
 from reckonersite.domain.authsession import AuthSession
+from reckonersite.domain.dataservicelist import DataServiceList
 from reckonersite.domain.oauthaccesstoken import OAuthAccessToken
 from reckonersite.domain.reckoneruser import ReckonerUser
 from reckonersite.domain.userserviceresponse import UserServiceResponse
@@ -47,7 +48,7 @@ def client_logout_user(session_id):
 
     return servResponse 
 
-def client_get_user(session_id):
+def client_get_user_by_session(session_id):
     '''
     Receives the ID for the current session (as originally retrieved from
     the initial login - via OAuth or otherwise).  
@@ -64,4 +65,61 @@ def client_get_user(session_id):
     return servResponse 
     
     
-        
+def client_get_user_by_id(user_id, session_id):
+    '''
+    Receives the User ID (as stored in the Reckoner Database).  
+    
+    Pulls the User information associated with the ID.  Returns a UserServiceResponse object.
+    '''
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/user/id/" + user_id + \
+            "?session_id=" + session_id
+    
+    response = urllib2.urlopen(url)
+    content = response.read()
+    servResponse = UserServiceResponse(xml_string = content)
+
+    return servResponse   
+
+def client_update_user_permissions (permissionPost):
+    '''
+    Updates the user permissions as specified in the PermissionPost object.
+    
+    Returns a UserServiceResponse object.
+    '''
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/user/permissions"
+
+    req = urllib2.Request(url = url,
+                          data = permissionPost.getXMLString(),
+                          headers = {'Content-Type': 'text/xml'})
+    
+    response = urllib2.urlopen(req)
+    content = response.read()
+    servResponse = UserServiceResponse(xml_string = content)
+
+    return servResponse  
+
+
+def client_get_permission_list ():
+    '''
+    Receives the list of permissions the Reckoner currently uses.
+    '''
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/list/user/permissions"
+    
+    response = urllib2.urlopen(url)
+    content = response.read()
+    servResponse = DataServiceList(xml_string = content)
+
+    return servResponse     
+
+
+def client_get_group_list ():
+    '''
+    Receives the list of permissions the Reckoner currently uses.
+    '''
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/list/user/groups"
+    
+    response = urllib2.urlopen(url)
+    content = response.read()
+    servResponse = DataServiceList(xml_string = content)
+
+    return servResponse          

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Reckoning Administration{% endblock %}
+
+{% block main %}
+    <h1>Reckoner Administration!</h1>
+    {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+    <form action="" method="post">{% csrf_token %}
+        {{ userForm.as_p }}
+    <input type="submit" name="getuser" value="Get User" />
+    
+    {% if groupForm %}
+	    <h3>Current User:</h3>
+	    <ul>
+	        <li>Name: {{currentUser.first_name}} {{currentUser.last_name}}
+	        <li>ID: {{currentUser.reckoner_id}}
+	        <li>Provider: {{currentUser.auth_provider}} ID: {{currentUser.auth_provider_id}}
+	    </ul>
+	    
+	    <form action="" method="post">{% csrf_token %}
+	        {{ groupForm.as_p }}
+	    <input type="submit" name="setperms" value="Submit Permissions" />
+	{% endif %}
+        
+{% endblock %}
