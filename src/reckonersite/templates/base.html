@@ -1,14 +1,10 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html lang="en">
-<head>
-    <title>{% block title %}{% endblock %}</title>
-</head>
-<body>
+{% extends "head.html" %}
+
+{% block pagebody %}
     <div>{% block header %}{% endblock %}</div>
     <div>
         <div>{% block main %}{% endblock %}</div>
         <div>{% block sidebar %}{% endblock %}</div>
     </div>
     <div>{% block footer %}{% endblock %}</div>
-</body>
-</html>
+{% endblock %}

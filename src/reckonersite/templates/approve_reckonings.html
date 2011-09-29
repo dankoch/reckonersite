@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Reckoning Administration{% endblock %}
+
+{% block main %}
+    <h1>Reckoner Administration!</h1>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+    <form action="" method="post">{% csrf_token %}
+        {{ reckoningQueueForm.as_p }}
+    <input type="submit" name="getreck" value="Get Reckoning" />
+    
+    {% if approveReckoningForm %}
+	    <h3>Current Reckoning:</h3>
+	    <ul>
+	        <li>ID: {{currentReckoning.id}}
+	        <li>Submission Date: {{currentReckoning.submission_date}}
+	        {% if postingUser %}
+	        <li>Submitter:
+	           <ul>
+	           <li><a href="{{postingUser.profile_url}}">{{postingUser.first_name}} {{postingUser.last_name}}</a></li>
+	           <li>Reckoner ID: {{postingUser.reckoner_id}}</li>
+	           </ul>
+	        </li>
+	        {% endif %}
+	    </ul>
+	    
+	    <form action="" method="post">{% csrf_token %}
+	        {{ approveReckoningForm.as_p }}
+	    <input type="submit" name="save" value="Save Edits" />
+	    <input type="submit" name="approve" value="Save & Approve" />
+	    <input type="submit" name="reject" value="Reject" />
+	{% endif %}
+        
+{% endblock %}

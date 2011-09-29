@@ -40,7 +40,9 @@ def client_logout_user(session_id):
     Forwards this information to the Reckoner Content Services, which deletes the associated
     session and logs the user out.
     '''
-    url = settings.RECKON_CONTENT_SERVICES_HOST + "/user/logout" + "?session_id=" + session_id
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/user/logout"
+    if (session_id):
+        url += "?session_id=" + session_id
     
     response = urllib2.urlopen(url)
     content = response.read()
@@ -56,7 +58,9 @@ def client_get_user_by_session(session_id):
     Checks the user token with the Reckoner Content Services and pulls the User
     information associated with the token.  Returns a UserServiceResponse object.
     '''
-    url = settings.RECKON_CONTENT_SERVICES_HOST + "/user/me" + "?session_id=" + session_id
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/user/me"
+    if (session_id):
+        url += "?session_id=" + session_id
     
     response = urllib2.urlopen(url)
     content = response.read()
@@ -71,8 +75,11 @@ def client_get_user_by_id(user_id, session_id):
     
     Pulls the User information associated with the ID.  Returns a UserServiceResponse object.
     '''
-    url = settings.RECKON_CONTENT_SERVICES_HOST + "/user/id/" + user_id + \
-            "?session_id=" + session_id
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/user/id/" + user_id
+    if (session_id):
+        url += "?session_id=" + session_id
+    
+    print "client_get_user: " + url
     
     response = urllib2.urlopen(url)
     content = response.read()

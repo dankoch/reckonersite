@@ -18,8 +18,20 @@ from django.template import RequestContext
 from reckonersite.auth import reckonerauthbackend
 from reckonersite.client.facebookclient import client_get_facebook_user_token
 from reckonersite.client.googleclient import client_get_google_user_token
+from reckonersite.client.reckoningclient import client_get_reckoning_approval_queue, \
+                                                client_get_reckoning, \
+                                                client_update_reckoning, \
+                                                client_approve_reckoning, \
+                                                client_reject_reckoning
+from reckonersite.domain.answer import Answer
+from reckonersite.domain.reckoning import Reckoning
 
 logger = logging.getLogger(settings.STANDARD_LOGGER)
+
+###############################################################################################
+# The page responsible for updating/removing user permissions.  
+# Reserved for ADMINs w/ the 'CHANGE_PERMISSIONS' permission.
+###############################################################################################
 
 def user_permissions_page(request):
     if request.user.has_perm('UPDATE_PERMS'):
@@ -33,7 +45,7 @@ def user_permissions_page(request):
                     getUserForm = GetUserForm(request.POST, prefix=userFormPrefix)
                     
                     if not getUserForm.is_valid() :
-                        for attr, value in getUserForm.errors:
+                        for attr, value in getUserForm.errors.iteritems():
                             messages.error(request, value, extra_tags='validation')  
                     else:
                         userId = getUserForm.cleaned_data['userid']
@@ -89,7 +101,7 @@ def user_permissions_page(request):
             
             return render_to_response('user_permissions_page.html', c)
         except Exception:      
-            logger.error("Exception when rending login screen:") 
+            logger.error("Exception when rending user permission screen:") 
             logger.error(traceback.print_exc(8))
             raise Exception
     else:
@@ -104,6 +116,157 @@ class SetUserGroup(forms.Form):
         super(SetUserGroup, self).__init__(*args, **kwargs)
         
         if (groups):
+            print "SetUserGroup Init XX00"
             for group, value in groups.iteritems():
                 self.fields[group] = forms.BooleanField(initial = value, required=False)
 
+
+###############################################################################################
+# The page responsible for updating/removing user permissions.  
+# Reserved for ADMINs w/ the 'CHANGE_PERMISSIONS' permission.
+###############################################################################################
+
+
+def reckoning_approval_page(request):
+    if request.user.has_perm('APPROVAL'):    
+        try:
+            reckoningQueueFormPrefix = "reckqueue"
+            approveReckoningFormPrefix = "reckapp"
+            
+            if request.method == 'POST':
+                if 'getreck' in request.POST:
+                    pendingReckonings = client_get_reckoning_approval_queue(request.user.session_id)
+                    reckoningQueueForm = ReckoningQueueForm(request.POST, prefix=reckoningQueueFormPrefix, 
+                                                            reckonings=pendingReckonings.reckonings)
+                    
+                    if (reckoningQueueForm.is_valid()):
+                        reckoningId = reckoningQueueForm.cleaned_data.get('pendingselect')
+                        request.session["admin_approve_reckoning"] = reckoningId
+                    else:
+                        for attr, value in reckoningQueueForm.errors.iteritems():
+                            messages.error(request, value, extra_tags='validation')
+                                                      
+                elif ('save' in request.POST) or ('approve' in request.POST):
+                    approveReckoningForm = ApproveReckoningForm(request.POST, prefix=approveReckoningFormPrefix)
+                    
+                    if (approveReckoningForm.is_valid()):
+                        answers = [Answer(index=0), Answer(index=1)]
+                        for key, attr in approveReckoningForm.cleaned_data.iteritems():
+                            if (key.startswith("answer")):
+                                index = key.split('-')[1]
+                                answers[int(index)].text = attr
+                            elif (key.startswith("subtitle")):
+                                index = key.split('-')[1]
+                                answers[int(index)].subtitle = attr
+
+                        savedReckoning=Reckoning(id=request.session["admin_approve_reckoning"],
+                                                 question=approveReckoningForm.cleaned_data['question'],
+                                                 description=approveReckoningForm.cleaned_data['description'],
+                                                 answers=answers,
+                                                 interval=approveReckoningForm.cleaned_data['interval'],
+                                                 highlighted=approveReckoningForm.cleaned_data['highlighted'],
+                                                 commentary=approveReckoningForm.cleaned_data['commentary'],
+                                                 commentary_user_id=request.user.reckoner_id,
+                                                 tag_csv=approveReckoningForm.cleaned_data['tags'])
+                        
+                        response = client_update_reckoning(savedReckoning, request.user.session_id)
+                        if (not response.success):
+                            logger.error("Error when updating a Reckoning: " + response.message)
+                            messages.error(request, "Failed to save reckoning " + request.session["admin_approve_reckoning"])
+                        else:
+                            messages.info(request, "Saved reckoning " + request.session["admin_approve_reckoning"] + "!")
+                    
+                        if ('approve' in request.POST):
+                            response = client_approve_reckoning(request.session["admin_approve_reckoning"], request.user.session_id)
+                            if (not response.success):
+                                logger.error("Error when approving a Reckoning: " + response.message)
+                                messages.error(request, "Failed to approve reckoning " + request.session["admin_approve_reckoning"])
+                            else:
+                                messages.info(request, "Approved reckoning " + request.session["admin_approve_reckoning"] + "!")
+                                request.session["admin_approve_reckoning"] = None
+                    else:
+                        print "reckoning_approval_page: " + str(approveReckoningForm.errors) 
+                        for attr, value in approveReckoningForm.errors.iteritems():
+                            messages.error(request, value, extra_tags='validation')   
+                    
+                elif 'reject' in request.POST:
+                    response = client_reject_reckoning(request.session["admin_approve_reckoning"], request.user.session_id)
+                    if (not response.success):
+                        logger.error("Error when rejecting a Reckoning: " + response.message)
+                        messages.error(request, "Failed to approve reckoning " + request.session["admin_approve_reckoning"])
+                    else:
+                        messages.info(request, "Rejected reckoning " + request.session["admin_approve_reckoning"] + "!")
+                        request.session["admin_approve_reckoning"] = None                                              
+                        
+            pendingReckonings = client_get_reckoning_approval_queue(request.user.session_id)
+            reckoningQueueForm = ReckoningQueueForm(prefix=reckoningQueueFormPrefix, reckonings=pendingReckonings.reckonings)            
+            
+            currentReckoning = None
+            approveReckoningForm = None
+            postingUser = None
+            reckoningId = request.session.get('admin_approve_reckoning', None)
+            if (reckoningId):
+                reckoningResponse = client_get_reckoning(reckoningId, request.user.session_id)
+                if (reckoningResponse.status.success and len(reckoningResponse.reckonings) > 0):
+                    currentReckoning=reckoningResponse.reckonings[0]
+                    postingUser = reckonerauthbackend.get_user(request.user.session_id, currentReckoning.submitter_id)
+                    approveReckoningForm = ApproveReckoningForm(prefix=approveReckoningFormPrefix,reckoning=currentReckoning)
+                else:
+                    request.session['admin_approve_reckoning'] = None
+            
+            c = RequestContext(request, {'reckoningQueueForm': reckoningQueueForm, 
+                                         'approveReckoningForm' : approveReckoningForm,
+                                         'currentReckoning' : currentReckoning,
+                                         'postingUser' : postingUser})
+            
+            return render_to_response('approve_reckonings.html', c)            
+            
+        except Exception:      
+            logger.error("Exception when rending reckoning approval screen:") 
+            logger.error(traceback.print_exc(8))
+            raise Exception
+    else:
+        return HttpResponseRedirect('/')     
+
+
+class ReckoningQueueForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        reckonings = None
+        if ("reckonings" in kwargs):
+            reckonings = kwargs.pop("reckonings")
+            
+        super(ReckoningQueueForm, self).__init__(*args, **kwargs)
+        
+        reckoningChoices = []
+        if (reckonings):
+            for reckoning in reckonings:
+                reckoningChoices.append((reckoning.id, str(reckoning.submission_date) + " " + str(reckoning.question)))
+        
+        self.fields["pendingselect"] = forms.ChoiceField(label="Pending Reckonings", choices=reckoningChoices)
+
+
+class ApproveReckoningForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        reckoning = Reckoning(answers = [Answer(index=0), Answer(index=1)])
+        
+        if ("reckoning" in kwargs):
+            reckoning = kwargs.pop("reckoning")
+        super(ApproveReckoningForm, self).__init__(*args, **kwargs)
+        
+        self.fields["question"] = forms.CharField(label="Question", initial=reckoning.question, required=True)
+        self.fields["description"] = forms.CharField(label="Description", initial=reckoning.description, required=False)
+        
+        for answer in reckoning.answers:
+            self.fields["answer-" + str(answer.index)] = forms.CharField(label="Answer " + str(answer.index), initial=answer.text, required=True)
+            self.fields["subtitle-" + str(answer.index)] = forms.CharField(label="Subtitle " + str(answer.index), initial=answer.subtitle, required=False)
+
+        self.fields["interval"] = forms.DecimalField(label="Interval (in minutes)", initial=reckoning.interval, required=True)
+        self.fields["tags"] = forms.CharField(label="Tags", initial=reckoning.getTagCSV(), required=False)
+        self.fields["highlighted"] = forms.BooleanField(label="Highlighted", initial=reckoning.highlighted, required=False)
+        self.fields["commentary"] = forms.CharField(label="Admin Commentary", initial=reckoning.commentary, required=False)
+        
+        print "ApproveReckoningForm" + str(reckoning.highlighted)
+
+                
+            
+            

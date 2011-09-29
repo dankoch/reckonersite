@@ -17,7 +17,10 @@ class Reckoning(Base):
                  submitter_id=None, approver_id=None, approved=False, rejected=False,
                  open=False, anonymous_requested=False, anonymous=False, submission_date=None,
                  posting_date=None, closing_date=None, interval=None, comments=None, comment_index=None,
-                 flags=None, favorites=None, tags=None, highlighted=False, xml_string=None, xml_element=None):
+                 commentary=None, commentary_user_id=None,
+                 flags=None, favorites=None, tags=None, highlighted=False, 
+                 tag_csv=None,
+                 xml_string=None, xml_element=None):
         
         self.id = id
         self.question = question
@@ -36,10 +39,15 @@ class Reckoning(Base):
         self.interval = interval
         self.comments = comments
         self.comment_index = comment_index
+        self.commentary = commentary
+        self.commentary_user_id = commentary_user_id
         self.flags = flags
         self.favorites = favorites
         self.tags = tags
         self.highlighted = highlighted
+        
+        if not tag_csv is None:
+            self.setTagsFromCSV(tag_csv)
         
         if not xml_string is None:
             self.buildFromXMLString(xml_string)
@@ -109,6 +117,11 @@ class Reckoning(Base):
             self.interval = xml_root.find('interval').text
         if (not xml_root.find('comment_index') is None):
             self.comment_index = xml_root.find('comment_index').text
+            
+        if (not xml_root.find('commentary') is None):
+            self.commentary = xml_root.find('commentary').text
+        if (not xml_root.find('commentary_user_id') is None):
+            self.commentary_user_id = xml_root.find('commentary_user_id').text
 
         commentsElement = xml_root.find('comments')
         if (not commentsElement is None):
@@ -130,12 +143,46 @@ class Reckoning(Base):
         
         tagsElement = xml_root.find('tags')
         if (not tagsElement is None):    
-            self.tags=[]
+            tags=[]
             for tagElement in tagsElement.findall('tag'):
-                self.tags.append(tagElement.text)
+                tags.append(tagElement.text)
+                self.tags = self.buildTagList(tags)
 
         if (not xml_root.find('highlighted') is None):           
-            self.highlighted = (xml_root.find('highlighted') == 'true')  
-
+            self.highlighted = (xml_root.find('highlighted').text == 'true')
+    
+    def getTagCSV(self):
+        csv=""
+        if (self.tags):
+            for tag in self.tags:
+                csv += tag.tag + ","
         
+        if (len(csv) > 0):
+            return csv[:-1]
         
+        return csv
+    
+    def setTagsFromCSV(self, csv):
+        tags = csv.split(",")
+        if (tags):
+            for tag in tags:
+                tag.strip()
+        
+        self.tags = self.buildTagList(tags)
+        
+    def buildTagList(self, tags):
+        tagList = []
+        for tag in tags:
+            tagList.append(Tag(tag))
+        
+        return tagList
+        
+class Tag(Base):
+    def __init__(self, tag=None):
+        self.tag = tag
+        
+    def getXML(self):
+        return (buildXml(self.tag, 'tag'))
+    
+    def getXMLString(self):
+        return cET.tostring(self.getXML())            

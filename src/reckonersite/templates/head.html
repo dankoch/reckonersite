@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" version="XHTML+RDFa 1.0" dir="ltr" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:og="http://ogp.me/ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:sioct="http://rdfs.org/sioc/types#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" class="js">
+<head profile="http://www.w3.org/1999/xhtml/vocab">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta content="The Reckoner - Life is Full of Decisions, The Reckoner Can Help!" about="/" property="dc:title">
+  <link rel="shortcut icon" href="http://www.workingdan.com/themes/workingdan/favicon.ico" type="image/vnd.microsoft.icon">
+  
+  <meta name="description" content= {% block pagedescription %} "The Reckoner, by ReckonLabs!" {% endblock %}>
+  <meta name="keywords" content={% block pagekeywords %}"The Reckoner, ReckonLabs, Dan Koch, Democracy"{% endblock %}>
+  
+  <meta property="og:title" content="The Reckoner" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://www.thereckoner.net" />
+  <meta property="og:image" content="http://www.thereckoner.net/images/The_Reckoner_Banner.gif" />
+  <meta property="og:site_name" content="The Reckoner" />
+  <meta property="fb:admins" content="100002649761213" />
+  <meta property="fb:page_id" content="185721918154268" />
+  
+  <link rel="canonical" href="/">
+  
+  <title>{% block pagetitle %} The Reckoner! - Life's decisions made easy through Democracy! {% endblock %}</title>
+  
+  <link type="text/css" rel="stylesheet" href="css/reckoner.css">
+  <link type="text/css" rel="stylesheet" href="css/html-reset.css">
+  
+  <!-- Google Analytics -->
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-24613262-1']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+  </script>
+  <!-- End Google Analytics -->
+  
+  {% block extraheader %}{% endblock %}
+</head>
+<body>
+  {% block pagebody %} {% endblock %}
+</body>
