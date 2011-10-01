@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Login!{% endblock %}
-
 {% block main %}
+    <h1>Login!</h1>
+
     <a href="{{ FACEBOOK_OAUTH_URL }}?client_id={{ FACEBOOK_APP_ID }}&redirect_uri={{ FACEBOOK_REDIRECT_URL }}&scope={{ FACEBOOK_SCOPE }}">
-    <img src="{{ STATIC_URL }}images/FacebookLoginButton.png">     
+    <img src="{{ STATIC_URL }}images/facebook-login-button.png">     
     </a>
-    <br>
+    
     <a href="{{ GOOGLE_API_OAUTH_URL }}?client_id={{ GOOGLE_APP_ID }}&redirect_uri={{ GOOGLE_REDIRECT_URL }}&scope={{ GOOGLE_SCOPE }}&response_type=code">
-    <img src="{{ STATIC_URL }}images/GoogleLoginButton.png">     
+    <img src="{{ STATIC_URL }}images/google-login-button.png">    
     </a>
     
     {% if 'VOTE' in perms %}

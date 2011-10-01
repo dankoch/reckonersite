@@ -1,0 +1,405 @@
+
+/***************************************************************************************
+ * CORE STYLES
+ * These reflect the basic styles used for the Reckoner master template and layout.
+ ***************************************************************************************/
+body {
+    background-color: #f6f6f6;
+    margin: 0;
+}
+
+#site-column {
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-left: 1px dotted black;
+    border-right: 1px dotted black;
+    width: 960px;
+}
+
+#top-bar {
+    background-image: url(../images/top-bar-background.png);
+    background-repeat: repeat-x;
+    max-height: 146px;
+}
+
+#top-bar .top-bar-section {
+    display: block;
+}
+
+#top-bar .logo-section {
+    height: 117px;
+}
+
+#top-bar .logo-wrapper {
+    float: left;
+    margin: 7px 0 0 20px;
+}
+
+#top-bar .search-wrapper {
+    float: right;
+    position: relative;
+    top: 3px;
+    right: 7px;
+}
+
+#top-bar .login-wrapper {
+    float: right;
+    position: relative;
+    top: 18px;
+    right: 30px;
+}
+
+#top-bar .login-wrapper .login-button {
+}
+
+#top-bar .navigation-section {
+	clear: both;
+    top: -8px;
+    position: relative;
+}
+
+#top-bar .navigation-section .nav-text-wrapper {
+    text-align: center;
+}
+
+#top-bar .navigation-section .nav-text-wrapper h2 {
+    color: #f6f6f6;
+    font-family: Futura, "Century Gothic", Futura, "Tw Cen MT", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    margin: 0px;
+    text-transform: uppercase;
+}
+
+#top-bar .navigation-section .nav-text-wrapper a {
+    color: #f6f6f6;
+    font-style: normal;
+    text-decoration: none;
+}
+
+#top-bar .navigation-section .nav-text-wrapper a:hover {
+    color: #f6f6f6;
+    font-style: normal;
+    text-decoration: underline;
+}
+
+#content-area {
+    clear: both;
+    height: 100%;
+}
+
+#content-area h1 {
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 36px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;  
+}
+
+#content-area h2 {
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    text-transform: uppercase;  
+}
+
+#content-area h3 {
+    font-family: Futura, "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 24px;
+    font-style: italic;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+#content-area h4 {
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#content-area h5 {
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#content-area h6 {
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+#content-area p {
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+}
+
+#content-area ul li {
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+}
+
+#content-area ul li .label {
+	font-weight: bold;
+}
+
+#main-section {
+	/* Total width here should add up to 640px - horiz padding + border + width */
+    border-right: 1px dotted black;
+    float: left;
+    height: 100%;
+    padding: 7px 7px 7px 7px;
+    width: 625px;
+}
+
+#right-sidebar-section {
+	/* Total width here should add up to 320px - horiz padding + border + width */
+    float: right;
+    padding: 7px 7px 7px 7px;
+    width: 306px;
+}
+
+#bottom-bar {
+    background-image: url(../images/bottom-bar-background.png);
+    background-repeat: repeat-x;
+    clear: both;
+    height: 53px;
+}
+
+#bottom-bar .logo-section {
+    float: left;
+    margin: 2px 0 0 14px;
+}
+
+#bottom-bar .navigation-section {
+    position: relative;
+    top: 20px;
+    right: 8px;
+}
+
+#bottom-bar .navigation-section .nav-text-wrapper {
+    text-align: right;
+}
+
+#bottom-bar .navigation-section .nav-text-wrapper h3 {
+    color: #f6f6f6;
+    font-family: Futura, "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    margin: 0px;
+    text-transform: uppercase;
+}
+
+#bottom-bar .navigation-section .nav-text-wrapper a {
+    color: #f6f6f6;
+    font-style: normal;
+    text-decoration: none;
+}
+
+#bottom-bar .navigation-section .nav-text-wrapper a:hover {
+    color: #f6f6f6;
+    font-style: normal;
+    text-decoration: underline;
+}
+
+/***************************************************************************************
+ * ADMIN STYLES
+ * Styles used specifically in the Reckoner Administration area.
+ ***************************************************************************************/
+ 
+#reckoning-approval-page
+ {
+    margin: 0 7px 0 7px;
+ }
+ 
+#reckoning-approval-page .messages
+ {
+    background-color: #f1fee9;
+    border: 4px solid black;
+    color: #cc0000;
+    margin: 15px 0 15px 0;
+ }
+ 
+#reckoning-approval-page .messages ul
+ {
+    margin: 5px;
+ }
+ 
+#pending-select-form .errorlist
+ {
+    margin: 0;
+ }
+ 
+#pending-select-form .errorlist li
+ {
+    color: red;
+    display: inline;
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 0;   
+    text-transform: uppercase; 
+    width: 300px;
+ }
+ 
+#selected-pending-form .field-wrapper
+ {
+    clear: both;
+    padding: 8px 0;
+ }
+ 
+#selected-pending-form .reckoning-form-option .field-wrapper
+ {
+    padding: 0;
+ }
+ 
+#selected-pending-form h5
+ {
+    -webkit-margin-before: 0px;
+    -webkit-margin-after: 0px;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+ }
+ 
+#selected-pending-form h6
+ {
+    -webkit-margin-before: 0px;
+    -webkit-margin-after: 0px;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+ }
+ 
+#selected-pending-form p
+ {
+    margin: 4px 0 0 0;
+ }
+ 
+#selected-pending-form .field-notation
+ {
+    margin: 0;
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 8px;    
+ }
+ 
+#selected-pending-form .errorlist
+ {
+    margin: 0;
+ }
+ 
+#selected-pending-form .errorlist li
+ {
+    color: red;
+    display: inline;
+    float: right;
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 0;   
+    text-align: right;
+    text-transform: uppercase; 
+    width: 300px;
+ }
+ 
+#selected-pending-form .reckoning-form-options .errorlist li
+ {
+    width: 100px;
+ }
+ 
+#selected-pending-form .reckoning-form-option-2 .errorlist li
+{
+   color: #900000;
+}
+ 
+#selected-pending-form .question-edit-field
+ {
+    height: 2.5em;
+    padding: 5px;
+    width: 600px;
+ }
+ 
+#selected-pending-form .description-edit-field
+ {
+    height: 12.5em;
+    padding: 5px;
+    width: 600px;
+ }
+ 
+#selected-pending-form .answer-edit-field
+ {
+    height: 1em;
+    padding: 5px;
+    width: 185px;
+ }
+ 
+#selected-pending-form .subtitle-edit-field
+ {
+    height: 1em;
+    padding: 5px;
+    width: 185px;
+ }
+ 
+#selected-pending-form .tags-edit-field
+ {
+    height: 1em;
+    padding: 5px;
+    width: 600px;
+ }
+ 
+#selected-pending-form .interval-edit-field
+ {
+    height: 1em;
+    padding: 5px;
+    width: 200px;
+ }
+
+#selected-pending-form .commentary-edit-field
+ {
+    height: 12.5em;
+    padding: 5px;
+    width: 600px;
+ }
+ 
+#selected-pending-form .reckoning-form-options {
+    margin: 15px 0;
+ }
+ 
+#selected-pending-form .reckoning-form-option {
+    border: 1px solid black;
+    height: 104px;
+    padding: 15px;
+ }
+ 
+#selected-pending-form .reckoning-form-option-1 {
+    background-color: #d2e8c5;
+    float: left;
+    width: 200px;
+ }
+ 
+#selected-pending-form .reckoning-form-option-2 {
+    background-color: #e37878;
+    float: right;
+    width: 200px;
+ }
+ 
+#selected-pending-form .versus {
+    font-family: Haettenschweiler, Impact, "Franklin Gothic Bold", Charcoal, "Helvetica Inserat", "Bitstream Vera Sans Bold", "Arial Black", sans serif;
+    font-size: 48px;
+    line-height: 135px;
+    margin: 0 auto;
+    text-align: center;
+    width: 50px;
+} 
+ 
+#selected-pending-form .form-buttons
+ {
+    margin: 30px 0;
+    text-align: center;
+ }
+ 
+#selected-pending-form .button
+ {
+    width: 100px;
+ }
+ 

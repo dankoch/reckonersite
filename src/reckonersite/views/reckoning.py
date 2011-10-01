@@ -21,6 +21,12 @@ from reckonersite.domain.answer import Answer
 
 logger = logging.getLogger(settings.STANDARD_LOGGER)
 
+
+###############################################################################################
+# The page responsible for the actual submission of new Reckonings.
+###############################################################################################
+
+
 def post_reckoning(request):
     
     try:
@@ -67,6 +73,12 @@ class PostReckoningForm(forms.Form):
     answer1sub = forms.CharField(label="Subtitle")
     answer2 = forms.CharField(label="Answer 2")
     answer2sub = forms.CharField(label="Subtitle") 
+
+
+
+###############################################################################################
+# The page responsible for thanking users who have posted a Reckoning.
+###############################################################################################
 
 
 def post_reckoning_thanks(request):

@@ -173,7 +173,8 @@ class Reckoning(Base):
     def buildTagList(self, tags):
         tagList = []
         for tag in tags:
-            tagList.append(Tag(tag))
+            if (tag and not tag == ""):
+                tagList.append(Tag(tag))
         
         return tagList
         

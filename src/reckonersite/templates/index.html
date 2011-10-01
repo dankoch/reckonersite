@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Home!{% endblock %}
+{% block pagetitle %}The Reckoner! - Life's decisions made easy through the power of Democracy!{% endblock %}
 
 {% block main %}
 
@@ -15,14 +15,4 @@
 </ul>
 </p>
 
-{% endblock %}
-
-{% block sidebar %}
-    <a href="{{ FACEBOOK_OAUTH_URL }}?client_id={{ FACEBOOK_APP_ID }}&redirect_uri={{ FACEBOOK_REDIRECT_URL }}&scope={{ FACEBOOK_SCOPE }}">
-    <img src="{{ STATIC_URL }}images/FacebookLoginButton.png">     
-    </a>
-    <br>
-    <a href="{{ GOOGLE_API_OAUTH_URL }}?client_id={{ GOOGLE_APP_ID }}&redirect_uri={{ GOOGLE_REDIRECT_URL }}&scope={{ GOOGLE_SCOPE }}&response_type=code">
-    <img src="{{ STATIC_URL }}images/GoogleLoginButton.png">     
-    </a>
 {% endblock %}

@@ -3,39 +3,114 @@
 {% block title %}Reckoning Administration{% endblock %}
 
 {% block main %}
-    <h1>Reckoner Administration!</h1>
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    
-    <form action="" method="post">{% csrf_token %}
-        {{ reckoningQueueForm.as_p }}
-    <input type="submit" name="getreck" value="Get Reckoning" />
-    
-    {% if approveReckoningForm %}
-	    <h3>Current Reckoning:</h3>
-	    <ul>
-	        <li>ID: {{currentReckoning.id}}
-	        <li>Submission Date: {{currentReckoning.submission_date}}
-	        {% if postingUser %}
-	        <li>Submitter:
-	           <ul>
-	           <li><a href="{{postingUser.profile_url}}">{{postingUser.first_name}} {{postingUser.last_name}}</a></li>
-	           <li>Reckoner ID: {{postingUser.reckoner_id}}</li>
-	           </ul>
-	        </li>
-	        {% endif %}
-	    </ul>
+    <div id="reckoning-approval-page">
+	    <h1>Reckoner Administration!</h1>
+	    {% if messages %}
+	    <div class="messages">
+	        <ul>
+		        {% for message in messages %}
+		        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+		        {% endfor %}
+	       </ul>
+	    </div>
+	    {% endif %}
 	    
-	    <form action="" method="post">{% csrf_token %}
-	        {{ approveReckoningForm.as_p }}
-	    <input type="submit" name="save" value="Save Edits" />
-	    <input type="submit" name="approve" value="Save & Approve" />
-	    <input type="submit" name="reject" value="Reject" />
-	{% endif %}
+	    <label for="id_reckqueue-pendingselect"><h3>Reckoning Approval Queue:</h3></label>
+	    
+	    <div id="pending-select-form" class="form-wrapper">
+		    <form action="" method="post">{% csrf_token %}
+		        <div class="field-wrapper">
+                    {{ errors.pendingselect }}
+			        {{ reckoningQueueForm.pendingselect }}
+		        </div>
+		    <input type="submit" name="getreck" value="Get Reckoning" />
+		    </form>
+	    </div>
+	    
+	    <hr class="page-divider">
+	    
+	    {% if approveReckoningForm %}
+	    <div class="current-pending-reckoning">
+		    <h3>Current Reckoning:</h3>
+		    <ul>
+		        <li><span class="label">ID:</span> {{currentReckoning.id}}</li>
+		        <li><span class="label">Submission Date:</span> {{currentReckoning.submission_date}}</li>
+		        {% if postingUser %}
+		        <li><span class="label">Submitter:</span>
+		           <ul>
+		           <li><a href="{{postingUser.profile_url}}">{{postingUser.first_name}} {{postingUser.last_name}}</a></li>
+		           <li>Reckoner ID: {{postingUser.reckoner_id}}</li>
+		           </ul>
+		        </li>
+		        {% endif %}
+		    </ul>
+			    
+			<div id="selected-pending-form" class="form-wrapper">
+			    <form action="" method="post">{% csrf_token %}
+			        <div class="field-wrapper">
+			             {{errors.question}}
+			             <p><label for="id_reckapp-question"><h5>The Question!</h5></label></p>
+			             <p><textarea maxlength=150 id="id_reckapp-question" name="reckapp-question" class="question-edit-field">{{approveReckoningForm.question.value}}</textarea></p>
+                         <div class="field-notation">(150 Character Max)</div>
+                    </div><div class="field-wrapper"> 
+                         {{errors.description}}    
+                         <p><label for="id_reckapp-description"><h5>The Explanation!</h5></label></p>
+                         <p><textarea maxlength=1000 id="id_reckapp-description" name="reckapp-description" class="description-edit-field">{{approveReckoningForm.description.value}}</textarea></p>
+                         <div class="field-notation">(1000 Character Max)  Allowed Tags: &lt;p&gt; &lt;i&gt; &lt;strong&gt; &lt;b&gt; &lt;u&gt; &lt;a&gt; &lt;pre&gt; &lt;br&gt; &lt;img&gt;</div>			        
+			        </div>
+			        <div class="reckoning-form-options">
+				        <div class="reckoning-form-option-1 reckoning-form-option">
+					        <div class="field-wrapper">
+                                 {{errors.answer_1}}					             
+		                         <p><label for="id_reckapp_answer_1"><h5>Option 1</h5></label></p>
+		                         <p><textarea maxlength=25 id="id_reckapp_answer_1" name="reckapp-answer_1" class="answer-edit-field">{{approveReckoningForm.answer_1.value}}</textarea></p>
+		                    </div>
+	                        <div class="field-wrapper">
+                                 {{errors.subtitle_1}}	                             
+	                             <p><label for="id_reckapp-subtitle_1"><h6>Subtitle 1</h6></label></p>
+	                             <p><textarea maxlength=25 id="id_reckapp-subtitle_1" name="reckapp-subtitle_1" class="subtitle-edit-field">{{approveReckoningForm.subtitle_1.value}}</textarea></p>
+	                        </div>
+				        </div>
+	                    <div class="reckoning-form-option-2 reckoning-form-option">			        
+	                        <div class="field-wrapper">     
+                                 {{errors.answer_2}}    	             
+	                             <p><label for="id_reckapp-answer_2"><h5>Option 2</h5></label></p>
+	                             <p><textarea maxlength=25 id="id_reckapp-answer_2" name="reckapp-answer_2" class="answer-edit-field">{{approveReckoningForm.answer_2.value}}</textarea></p>
+	                        </div>
+	                        <div class="field-wrapper">     
+                                 {{errors.subtitle_2}}    	                        
+	                             <p><label for="id_reckapp-subtitle_2"><h6>Subtitle 2</h6></label></p>
+	                             <p><textarea maxlength=25 id="id_reckapp-subtitle_2" name="reckapp-subtitle_2" class="subtitle-edit-field">{{approveReckoningForm.subtitle_2.value}}</textarea></p>
+	                        </div>
+	                    </div>
+                        <div class="versus">VS.</div>
+                    </div><div class="field-wrapper">
+                         {{errors.tags}}                          
+                         <p><label for="id_reckapp-tags"><h5>Tags!</h5></label></p>
+                         <p><textarea maxlength=100 id="id_reckapp-tags" name="reckapp-tags" class="tags-edit-field">{{approveReckoningForm.tags.value}}</textarea></p>
+                    </div><div class="field-wrapper"> 
+                         {{errors.interval}}                         
+                         <p><label for="id_reckapp-interval"><h5>Interval (in minutes)!</h5></label></p>
+                         <p><textarea maxlength=6 id="id_reckapp-interval" name="reckapp-interval" class="interval-edit-field">{{approveReckoningForm.interval.value}}</textarea></p>
+                    </div><div class="field-wrapper">   
+                         {{errors.highlighted}}                       
+                         <p><label for="id_reckapp-highlighted"><h5>Highlighted!</h5></label></p>
+                         <p>{{ approveReckoningForm.highlighted }}</p>
+                    </div><div class="field-wrapper">
+                         {{errors.commentary}}                          
+                         <p><label for="id_reckapp-commentary"><h5>Commentary!</h5></label></p>
+                         <p><textarea maxlength=1000 id="id_reckapp-commentary" name="reckapp-commentary" class="commentary-edit-field">{{approveReckoningForm.commentary.value}}</textarea></p>
+                    </div>	        
+			        
+			        <div class="form-buttons">
+					    <input type="submit" name="save" value="Save" class="button save-button"/>
+					    <input type="submit" name="approve" value="Save & Approve" class="button approve-button"/>
+					    <input type="submit" name="reject" value="Reject" class="button reject-button"/>
+				    </div>
+			    </form>
+			</div>
+        </div>
+        {% endif %}
+    </div>
         
 {% endblock %}

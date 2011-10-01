@@ -154,6 +154,11 @@ h1 {
 }
 
 h2 {
+  -webkit-margin-before: 0px;
+  -webkit-margin-after: 0px;
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px;
+
   font-size: 1.5em;
   margin: 1em 0; /* Equivalent to 1.5em in the page's base font: 1.5 / 1.5 = 1em */
 }

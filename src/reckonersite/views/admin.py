@@ -11,13 +11,10 @@ from django import forms
 from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from django.forms.formsets import formset_factory
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 from reckonersite.auth import reckonerauthbackend
-from reckonersite.client.facebookclient import client_get_facebook_user_token
-from reckonersite.client.googleclient import client_get_google_user_token
 from reckonersite.client.reckoningclient import client_get_reckoning_approval_queue, \
                                                 client_get_reckoning, \
                                                 client_update_reckoning, \
@@ -25,6 +22,7 @@ from reckonersite.client.reckoningclient import client_get_reckoning_approval_qu
                                                 client_reject_reckoning
 from reckonersite.domain.answer import Answer
 from reckonersite.domain.reckoning import Reckoning
+from reckonersite.util.validation import purgeHtml, sanitizeFreeTextHtml
 
 logger = logging.getLogger(settings.STANDARD_LOGGER)
 
@@ -132,6 +130,7 @@ def reckoning_approval_page(request):
         try:
             reckoningQueueFormPrefix = "reckqueue"
             approveReckoningFormPrefix = "reckapp"
+            errors={}
             
             if request.method == 'POST':
                 if 'getreck' in request.POST:
@@ -144,30 +143,31 @@ def reckoning_approval_page(request):
                         request.session["admin_approve_reckoning"] = reckoningId
                     else:
                         for attr, value in reckoningQueueForm.errors.iteritems():
-                            messages.error(request, value, extra_tags='validation')
+                            errors[attr] = value
                                                       
                 elif ('save' in request.POST) or ('approve' in request.POST):
                     approveReckoningForm = ApproveReckoningForm(request.POST, prefix=approveReckoningFormPrefix)
+                    print "approveReckoningForm: " + str(approveReckoningForm.errors)
                     
                     if (approveReckoningForm.is_valid()):
                         answers = [Answer(index=0), Answer(index=1)]
                         for key, attr in approveReckoningForm.cleaned_data.iteritems():
                             if (key.startswith("answer")):
-                                index = key.split('-')[1]
-                                answers[int(index)].text = attr
+                                index = key.split('_')[1]
+                                answers[int(index)-1].text = purgeHtml(attr)
                             elif (key.startswith("subtitle")):
-                                index = key.split('-')[1]
-                                answers[int(index)].subtitle = attr
+                                index = key.split('_')[1]
+                                answers[int(index)-1].subtitle = purgeHtml(attr)
 
                         savedReckoning=Reckoning(id=request.session["admin_approve_reckoning"],
-                                                 question=approveReckoningForm.cleaned_data['question'],
-                                                 description=approveReckoningForm.cleaned_data['description'],
+                                                 question=purgeHtml(approveReckoningForm.cleaned_data['question']),
+                                                 description=sanitizeFreeTextHtml(approveReckoningForm.cleaned_data['description']),
                                                  answers=answers,
                                                  interval=approveReckoningForm.cleaned_data['interval'],
                                                  highlighted=approveReckoningForm.cleaned_data['highlighted'],
-                                                 commentary=approveReckoningForm.cleaned_data['commentary'],
+                                                 commentary=sanitizeFreeTextHtml(approveReckoningForm.cleaned_data['commentary']),
                                                  commentary_user_id=request.user.reckoner_id,
-                                                 tag_csv=approveReckoningForm.cleaned_data['tags'])
+                                                 tag_csv=purgeHtml(approveReckoningForm.cleaned_data['tags']))
                         
                         response = client_update_reckoning(savedReckoning, request.user.session_id)
                         if (not response.success):
@@ -187,7 +187,7 @@ def reckoning_approval_page(request):
                     else:
                         print "reckoning_approval_page: " + str(approveReckoningForm.errors) 
                         for attr, value in approveReckoningForm.errors.iteritems():
-                            messages.error(request, value, extra_tags='validation')   
+                            errors[attr] = value
                     
                 elif 'reject' in request.POST:
                     response = client_reject_reckoning(request.session["admin_approve_reckoning"], request.user.session_id)
@@ -217,7 +217,8 @@ def reckoning_approval_page(request):
             c = RequestContext(request, {'reckoningQueueForm': reckoningQueueForm, 
                                          'approveReckoningForm' : approveReckoningForm,
                                          'currentReckoning' : currentReckoning,
-                                         'postingUser' : postingUser})
+                                         'postingUser' : postingUser,
+                                         'errors' : errors})
             
             return render_to_response('approve_reckonings.html', c)            
             
@@ -253,19 +254,17 @@ class ApproveReckoningForm(forms.Form):
             reckoning = kwargs.pop("reckoning")
         super(ApproveReckoningForm, self).__init__(*args, **kwargs)
         
-        self.fields["question"] = forms.CharField(label="Question", initial=reckoning.question, required=True)
-        self.fields["description"] = forms.CharField(label="Description", initial=reckoning.description, required=False)
+        self.fields["question"] = forms.CharField(max_length=150, label="Question", initial=reckoning.question, required=True, widget=forms.Textarea)
+        self.fields["description"] = forms.CharField(max_length=1000, label="Description", initial=reckoning.description, required=False, widget=forms.Textarea)
         
         for answer in reckoning.answers:
-            self.fields["answer-" + str(answer.index)] = forms.CharField(label="Answer " + str(answer.index), initial=answer.text, required=True)
-            self.fields["subtitle-" + str(answer.index)] = forms.CharField(label="Subtitle " + str(answer.index), initial=answer.subtitle, required=False)
+            self.fields["answer_" + str(int(answer.index)+1)] = forms.CharField(max_length=25, label="Answer " + str(answer.index), initial=answer.text, required=True)
+            self.fields["subtitle_" + str(int(answer.index)+1)] = forms.CharField(max_length=25, label="Subtitle " + str(answer.index), initial=answer.subtitle, required=False)
 
-        self.fields["interval"] = forms.DecimalField(label="Interval (in minutes)", initial=reckoning.interval, required=True)
-        self.fields["tags"] = forms.CharField(label="Tags", initial=reckoning.getTagCSV(), required=False)
+        self.fields["interval"] = forms.DecimalField(max_digits=6, decimal_places=0, label="Interval (in minutes)", initial=reckoning.interval, required=True)
+        self.fields["tags"] = forms.CharField(max_length=100, label="Tags", initial=reckoning.getTagCSV(), required=False)
         self.fields["highlighted"] = forms.BooleanField(label="Highlighted", initial=reckoning.highlighted, required=False)
-        self.fields["commentary"] = forms.CharField(label="Admin Commentary", initial=reckoning.commentary, required=False)
-        
-        print "ApproveReckoningForm" + str(reckoning.highlighted)
+        self.fields["commentary"] = forms.CharField(max_length=1000, label="Admin Commentary", initial=reckoning.commentary, required=False, widget=forms.Textarea)
 
                 
             

@@ -1,10 +1,48 @@
 {% extends "head.html" %}
 
 {% block pagebody %}
-    <div>{% block header %}{% endblock %}</div>
-    <div>
-        <div>{% block main %}{% endblock %}</div>
-        <div>{% block sidebar %}{% endblock %}</div>
+    <div id="site-column">
+        <div id="top-bar">
+            {% block topbar %}
+            <div class="logo-section top-bar-section">
+                <div class="search-wrapper"><img src="{{ STATIC_URL }}images/google-search-image.png"></div>
+                <div class="logo-wrapper"><h1><a href="/"><img src="{{ STATIC_URL }}images/reckoner-top-logo.png" alt="The Reckoner!"></a></h1></div>
+                <div class="login-wrapper">
+                    <div class="login-button">    
+                        <a href="{{ FACEBOOK_OAUTH_URL }}?client_id={{ FACEBOOK_APP_ID }}&redirect_uri={{ FACEBOOK_REDIRECT_URL }}&scope={{ FACEBOOK_SCOPE }}">
+                        <img src="{{ STATIC_URL }}images/facebook-login-button.png" alt="Login with Facebook!">
+                        </a>     
+                    </div>
+                    <div class="login-button">
+					    <a href="{{ GOOGLE_API_OAUTH_URL }}?client_id={{ GOOGLE_APP_ID }}&redirect_uri={{ GOOGLE_REDIRECT_URL }}&scope={{ GOOGLE_SCOPE }}&response_type=code">
+					    <img src="{{ STATIC_URL }}images/google-login-button.png">     
+					    </a>
+                    </div>
+                </div>
+            </div>
+            <div class="navigation-section top-bar-section">
+                {% block topnav %}
+                <div class="nav-text-wrapper"><h2><a href="/post-reckoning">Post A Reckoning!</a> | <a href="/open-reckonings">Open Reckonings!</a> | <a href="/finished-reckonings">Finished Reckonings!</a> | <a href="/random">Random!</a> | <a href="/blog">Blog!</a> | <a href="/about">About!</a></h2></div>
+                {% endblock %}
+            </div>
+            <div class="profile-wrapper"> </div>
+            {% endblock %}
+        </div>
+        <div id="content-area">
+            <div id="main-section">{% block main %}Main Section!{% endblock %}</div>
+            <div id="right-sidebar-section">{% block rightsidebar %}Sidebar!{% endblock %}</div>
+        </div>
+        <div id="bottom-bar">
+            {% block bottombar %}
+            <div class="logo-section bottom-bar-section">
+                <div class="logo-wrapper"><h1><a href="/"><img src="{{ STATIC_URL }}images/bottom-bar-logo.png" alt="The Reckoner!"></a></h1></div>
+            </div>
+            <div class="navigation-section top-bar-section">
+                {% block bottomnav %}
+                <div class="nav-text-wrapper"><h3><a href="/post-reckoning">Post A Reckoning</a> | <a href="/about">About</a> | <a href="/blog">Blog</a> | <a href="/media-kit">Media Kit</a> | <a href="/privacy-policy">Privacy Policy</a> | <a href="/advertisers">Advertisers</a> | <a href="http://www.reckonlabs.org">ReckonLabs</a></h3></div>
+                {% endblock %}  
+            </div>
+            {% endblock %}            
+        </div>
     </div>
-    <div>{% block footer %}{% endblock %}</div>
 {% endblock %}
