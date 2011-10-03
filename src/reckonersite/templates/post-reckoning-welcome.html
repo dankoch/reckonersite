@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block pagetitle %}The Reckoner! - Post A Reckoning!{% endblock %}
+
+{% block main %}
+    <div id="post-reckoning-intro-page" class="static-page">
+        <h1>POST A RECKONING!</h1>
+        <h3>Want to use The Reckoner to settle a decision?<br><span class="highlight">Awesome! Welcome aboard!</span></h3>
+        <p>We're always happy to help, but Reckonbot can be a harsh mistress, and not every question makes it through.  Here are a few helpful tips to ensure your Reckoning gets onto the site and helps you settle things once and for all!</p>
+        <h4>Have Two Clearly Opposed Options</h4>
+        <p>Your fellow Reckonauts are going to need a clear sense of what they're voting between.  This or that.  Yankees versus Red Sox.  Alien versus Predator.  DTMFA versus *don't* DTMFA.</p>
+        <p>Larry The Cable Guy-style 'Women: Amirite or Amirite' questions make Reckonbot emit a combination of ozone and fresh tears, so don't do that.</p>
+        <h4>Be Even-Handed</h4>
+        <p>We all love to have our preconceptions confirmed -- it's an awesome feeling!  At the same time, we can't put our thumb on the scale.  Take the Dragnet approach to your Reckoning -- 'just the facts, ma'am'.  Sergeant Joe Friday will think you're the coolest, and so will Reckonbot!</p>
+        <h4>Use Your Best English</h4>
+        <p>Reckonbot was an English Literature major at Robot Polytechnic University (B.A. 1976), and was voted 'Most Likely to Make a Pedantic Observation About the Use of Subjunctive Versus Indicative Verb Tense in Subordinate Clauses'.  It's gotten better since then, but it's best to stay on its good side.</p>
+        <h4>Do Not Spam</h4>
+        <p>This one isn't for you -- you're the best and we love you!  This is for that other guy who's thinking about posting spam or an empty self link under the guise of a 'Reckoning'.  We're totally going to ban that guy.</p>
+        {% if 'POST_RECKONING' in perms %}
+            <h3><span class="highlight">We know you'll kick ass!</span><br>Good luck, and happy Reckoning!</h4>
+            <h2><a href="/post-reckoning">Let's do this!</a></h2>
+        {% else %}
+        <div class="sign-up-box">
+            <h4>Want to post a reckoning?</h4>
+            <h2>Sign up or log in!</h2>
+            <h3>It's easy!</h3>
+            <div class="login-buttons">
+                 <div class="login-button login-button-1">    
+                     <a href="{{ FACEBOOK_OAUTH_URL }}?client_id={{ FACEBOOK_APP_ID }}&redirect_uri={{ FACEBOOK_REDIRECT_URL }}&scope={{ FACEBOOK_SCOPE }}">
+                     <img src="{{ STATIC_URL }}images/big-facebook-login-button.png" alt="Login with Facebook!">
+                     </a>     
+                 </div>
+                 <div class="login-button login-button-2">
+                     <a href="{{ GOOGLE_API_OAUTH_URL }}?client_id={{ GOOGLE_APP_ID }}&redirect_uri={{ GOOGLE_REDIRECT_URL }}&scope={{ GOOGLE_SCOPE }}&response_type=code">
+                     <img src="{{ STATIC_URL }}images/big-google-login-button.png">     
+                     </a>
+                 </div>                
+            </div>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}

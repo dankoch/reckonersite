@@ -20,8 +20,12 @@
   
   <title>{% block pagetitle %} The Reckoner! - Life's decisions made easy through Democracy! {% endblock %}</title>
   
+  <!-- CSS Includes -->
   <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/reckoner.css">
   <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/html-reset.css">
+
+  <!-- Javascript Includes -->
+  <script src="http://cdn.jquerytools.org/1.2.6/jquery.tools.min.js">
   
   <!-- Google Analytics -->
   <script type="text/javascript">
@@ -41,3 +45,6 @@
 <body>
   {% block pagebody %} {% endblock %}
 </body>
+
+
+{% block javascript %} {% endblock %}

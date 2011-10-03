@@ -1,17 +1,139 @@
 {% extends "base.html" %}
 
-{% block title %}Post a Reckoning!{% endblock %}
+{% block pagetitle %}The Reckoner! - Post A Reckoning!{% endblock %}
 
 {% block main %}
-    <h1>Try filling out this form to post a reckoning!</h1>
-    {% if messages %}
-        <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    <form action="" method="post">{% csrf_token %}
-        {{ form.as_p }}
-    <input type="submit" value="Submit" />  
+    <div id="post-reckoning-page">
+        <h1>POST A RECKONING!</h1><br>
+        {% if 'POST_RECKONING' in perms %}
+
+		    {% if messages %}
+		        <ul class="messages">
+			        {% for message in messages %}
+			        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			        {% endfor %}
+		        </ul>
+		    {% endif %}
+		    
+            <div id="post-reckoning-form" class="form-wrapper edit-reckoning-form">
+                <form action="" method="post">{% csrf_token %}
+                    <div class="field-wrapper">
+                         <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
+                         <div class="tooltip">
+                            <p><b>Here's where the fun begins!</b>  The key is to get the essentials out in 150 characters or less.  This is what's going to pull people in to vote, so make it clear and make it count!</p>
+                            <p><u>Here's a couple good examples:</u></p>
+                            <p>* Batman and Superman have entered the 2012 Betty Crocker 'Mix It Up With Betty' Cookie Mix competition. Who wins the 1,000 free box tops?</p>
+                            <p>* My fiancee refuses to play Settlers of Catan with me.  Is this grounds to call off the wedding?</p>
+                         </div>
+                         {{form.question.errors}} 
+                         <p><label for="id_question"><h5>The Question!</h5></label></p>
+                         <p><textarea maxlength=150 id="id_question" name="question" class="question-edit-field"></textarea></p>
+                         <div class="field-notation">(150 Character Max)</div>
+                    </div><div class="field-wrapper">
+                         <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
+                         <div class="tooltip">
+                            <p><b>Here is where the juicy details come out.</b>  You get 1000 characters to spill your guts.</p>
+                            <p><u>For example, a good explanation would be:</u></p>
+                            <p><i><b>So here's the deal.</b>  Both Superman and Batman entered the Betty Crocker Cookie Mix competition because the fate of the free world hangs in the balance.  Shut up, just go with me here.  Superman, being the sporting type, has pledged not to cheat by frying other people's cookie sheets with his heat vision.  Superpowers are otherwise fair game.  Both are wearing matching floral-print aprons and oven mitts that are just darling.  <b>Who reigns supreme?</b></i></p>
+                         </div>                       
+                         {{form.description.errors}}   
+                         <p><label for="id_description"><h5>The Explanation!</h5></label></p>
+                         <p><textarea maxlength=1000 id="id_description" name="description" class="description-edit-field"></textarea></p>
+                         <div class="field-notation">(1000 Character Max)  Allowed Tags: &lt;p&gt; &lt;i&gt; &lt;strong&gt; &lt;b&gt; &lt;u&gt; &lt;a&gt; &lt;pre&gt; &lt;br&gt; &lt;img&gt;</div>                  
+                    </div>
+                    <div class="reckoning-form-options">
+                        <div class="reckoning-form-option-1 reckoning-form-option">
+                            <div class="field-wrapper">
+                                 {{form.answer_1.errors}}                                 
+                                 <p><label for="id_reckapp_answer_1"><h5>Option 1</h5></label></p>
+                                 <p><textarea maxlength=25 id="id_reckapp_answer_1" name="answer_1" class="answer-edit-field"></textarea></p>
+                                 <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
+                                 <div class="tooltip">
+                                    <p><b>This is the payload!</b> 25 characters to make it happen.</p> 
+                                    <p>If your answer can't fit, trying building out The Explanation.  Superman and Batman don't have this problem (nor even Batman's German cousin, Die Fledermausmensch)</p>
+                                 </div>                             
+                            </div>
+                            <div class="field-wrapper">
+                                 {{form.subtitle_1.errors}}                               
+                                 <p><label for="id_subtitle_1"><h6>Subtitle 1</h6></label></p>
+                                 <p><textarea maxlength=25 id="id_subtitle_1" name="subtitle_1" class="subtitle-edit-field"></textarea></p>
+                                 <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
+                                 <div class="tooltip">
+                                    <p><b>This is for fun!</b> 25 additional characters to annotate your answer.</p> 
+                                    <p><b>The subtitle is a chance to let your own natural wit shine!</b>  Don't worry, Reckonbot barely even reads these.  Give yourself your own little Greek Chorus.</p>
+                                    <p>For our friend Batman, a 'Na-na-na, Batman!' seems like a good fit.  For Superman, good luck.</p>
+                                 </div>                             
+                            </div>
+                        </div>
+                        <div class="reckoning-form-option-2 reckoning-form-option">                 
+                            <div class="field-wrapper">     
+                                 {{form.answer_2.errors}}                     
+                                 <p><label for="id_answer_2"><h5>Option 2</h5></label></p>
+                                 <p><textarea maxlength=25 id="id_answer_2" name="answer_2" class="answer-edit-field"></textarea></p>
+                                 <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
+                                 <div class="tooltip">
+                                    <p><b>This is the payload!</b> 25 characters to make it happen.</p> 
+                                    <p>If your answer can't fit, trying building out The Explanation.  Superman and Batman don't have this problem (nor even Batman's German cousin, Die Fledermausmensch)</p>
+                                 </div> 
+                            </div>
+                            <div class="field-wrapper">     
+                                 {{form.subtitle_2.errors}}                              
+                                 <p><label for="id_subtitle_2"><h6>Subtitle 2</h6></label></p>
+                                 <p><textarea maxlength=25 id="id_subtitle_2" name="subtitle_2" class="subtitle-edit-field"></textarea></p>
+                                 <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
+                                 <div class="tooltip">
+                                    <p><b>This is for fun!</b> 25 additional characters to annotate your answer.</p> 
+                                    <p><b>The subtitle is a chance to let your own natural wit shine!</b>  Don't worry, Reckonbot barely even reads these.  Give yourself your own little Greek Chorus.</p>
+                                    <p>For our friend Batman, a 'Na-na-na, Batman!' seems like a good fit.  For Superman, good luck.</p>
+                                 </div>  
+                            </div>
+                        </div>
+                        <div class="versus">VS.</div>
+                    </div><div class="field-wrapper">
+                         <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
+                         <div class="tooltip">
+                            <p><b>Tags are awesome!</b> These make your Reckoning easy to find so other interested Reckonauts see it quickly.</p> 
+                            <p>All you need to do is type the tags you want, separated by commas.  Label these in groups that make sense: "<b>Superheroes, Baking, Betty Crocker, Floral-Print Oven Mitts</b>" and let it rip.</p>  
+                            <p>Reckonbot'll clean these up, so don't sweat it if you miss a few..</p>
+                         </div>                      
+                         {{form.tags.errors}}                          
+                         <p><label for="id_tags"><h5>Tags!</h5></label></p>
+                         <p><textarea maxlength=100 id="id_tags" name="tags" class="tags-edit-field"></textarea></p>
+                         <div class="field-notation">(Separated by commas - e.g. 'Relationships, Video Games, Television, Jobs', etc.)</div>                                      
+                    </div>         
+                    
+                    <div class="form-buttons">
+                        <input type="submit" name="submit" value="Submit" class="button save-button"/>
+                    </div>
+                </form>
+            </div>
+		{% else %}
+	        <div class="sign-up-box">
+	            <h4>Want to post a reckoning?</h4>
+	            <h2>Sign up or log in!</h2>
+	            <h3>It's easy!</h3>
+	            <div class="login-buttons">
+	                 <div class="login-button login-button-1">    
+	                     <a href="{{ FACEBOOK_OAUTH_URL }}?client_id={{ FACEBOOK_APP_ID }}&redirect_uri={{ FACEBOOK_REDIRECT_URL }}&scope={{ FACEBOOK_SCOPE }}">
+	                     <img src="{{ STATIC_URL }}images/big-facebook-login-button.png" alt="Login with Facebook!">
+	                     </a>     
+	                 </div>
+	                 <div class="login-button login-button-2">
+	                     <a href="{{ GOOGLE_API_OAUTH_URL }}?client_id={{ GOOGLE_APP_ID }}&redirect_uri={{ GOOGLE_REDIRECT_URL }}&scope={{ GOOGLE_SCOPE }}&response_type=code">
+	                     <img src="{{ STATIC_URL }}images/big-google-login-button.png">     
+	                     </a>
+	                 </div>                
+	            </div>
+	        </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script>
+    $(document).ready(function() {
+        $(".tooltip-icon").tooltip();
+   });
+  </script>
 {% endblock %}

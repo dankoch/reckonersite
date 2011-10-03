@@ -12,12 +12,13 @@ from reckonersite.domain.serviceresponse import ServiceResponse
 def client_post_reckoning(reckoning, session_id):
     url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning"
     
-    reckoning.interval = "604800000"
     reckoning.anonymous_requested = False
     
     req = urllib2.Request(url = url,
                           data = reckoning.getPostingXMLString(session_id),
                           headers = {'Content-Type': 'text/xml'})
+
+    print "client_post_reckoning: " + reckoning.getPostingXMLString(session_id)
 
     response = urllib2.urlopen(req)
     content = response.read()

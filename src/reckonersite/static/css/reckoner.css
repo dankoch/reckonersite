@@ -136,15 +136,6 @@ body {
     font-size: 16px;
 }
 
-#content-area ul li {
-    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
-    font-size: 16px;
-}
-
-#content-area ul li .label {
-	font-weight: bold;
-}
-
 #main-section {
 	/* Total width here should add up to 640px - horiz padding + border + width */
     border-right: 1px dotted black;
@@ -205,6 +196,325 @@ body {
 }
 
 /***************************************************************************************
+ * STATIC PAGE STYLES
+ * Styles used for static pages heavy on the HTML content
+ * (i.e. Reckoning Welcome, About, etc.)
+ ***************************************************************************************/
+
+#content-area .static-page {
+	margin: 0 7px;
+}
+
+#content-area .static-page h2 {
+	text-align: center;
+}
+
+#content-area .static-page h3 {
+    font-family: Futura, "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 20px;
+    font-style: italic;
+    font-weight: normal;
+    margin: 1em 0;
+    text-align: center;
+    text-transform: uppercase;	
+}
+
+#content-area .static-page .highlight {
+    color: #cc0000;
+}
+
+#content-area .static-page h4 {
+    margin: 1.5em 0 .2em 0;
+}
+
+#post-reckoning-intro-page p {
+    margin: 0;
+}
+
+#content-area .static-page p {
+    margin: 1em 0;
+}
+
+#content-area .signature-block {
+	background-color: #fff8e0;
+	border: 1px solid #666666;
+	height: 165px;
+	padding: 0px;
+	margin: 40px auto;
+	text-align: center;
+	width: 400px;
+}
+
+#content-area .signature-block h4 {
+    font-size: 12px;
+    margin: 5px 0;
+    position: relative;
+    right: 40px;
+    top: -45px;
+}
+
+/***************************************************************************************
+ * LOGIN BOX STYLES
+ * Styles used for cases where a login box is displayed.
+ * (i.e. Post Reckoning, Comment Box, etc.
+ ***************************************************************************************/
+
+#content-area .sign-up-box {
+	background-color: #f6f6f6;
+	border: 1px solid #666666;
+	margin: 48px 0;
+	padding: 6px;
+	width: 600px;
+}
+
+#content-area .sign-up-box h2 {
+    font-family: Impact, Haettenschweiler, "Franklin Gothic Bold", Charcoal, "Helvetica Inserat", "Bitstream Vera Sans Bold", "Arial Black", sans serif;
+    font-size: 72px;
+    margin: .4em 0 0 0;
+    text-align: center;	
+}
+
+#content-area .sign-up-box h3 {
+    font-family: Futura, "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 36px;
+    font-style: italic;
+    font-weight: normal;
+    margin: 0;
+    text-align: center;
+    text-transform: uppercase;  
+}
+
+#content-area .sign-up-box h4 {
+    font-family: Futura, "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 24px;
+    font-style: italic;
+    font-weight: normal;
+    margin: 0;
+    text-transform: uppercase;  
+}
+
+#content-area .login-buttons {
+	height: 80px;
+}
+
+#content-area .login-buttons .login-button-1 {
+	float: left;
+	position: relative;
+	top: 30px;
+	left: 70px;
+}
+
+#content-area .login-buttons .login-button-2 {
+	float: left;
+    position: relative;
+    top: 30px;
+    left: 110px;
+}
+
+
+/***************************************************************************************
+ * EDIT RECKONING STYLES
+ * Styles used for the reckoning edit screens.
+ ***************************************************************************************/
+
+.edit-reckoning-form .field-wrapper
+ {
+    clear: both;
+    padding: 8px 0;
+ }
+ 
+.edit-reckoning-form .reckoning-form-option .field-wrapper
+ {
+    padding: 0;
+ }
+ 
+.edit-reckoning-form h5
+ {
+    -webkit-margin-before: 0px;
+    -webkit-margin-after: 0px;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+ }
+ 
+.edit-reckoning-form h6
+ {
+    -webkit-margin-before: 0px;
+    -webkit-margin-after: 0px;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+ }
+ 
+.edit-reckoning-form p
+ {
+    margin: 4px 0 0 0;
+ }
+ 
+.edit-reckoning-form .field-notation
+ {
+    margin: 0;
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 8px;    
+ }
+ 
+.edit-reckoning-form .errorlist
+ {
+    margin: 0;
+ }
+ 
+.edit-reckoning-form .errorlist li
+ {
+    color: red;
+    display: inline;
+    float: right;
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 6px 10px 0 0;   
+    text-align: right;
+    text-transform: uppercase; 
+    width: 300px;
+ }
+ 
+.edit-reckoning-form .reckoning-form-options .errorlist li
+ {
+    margin: 0;
+    width: 100px;
+ }
+ 
+.edit-reckoning-form .reckoning-form-option-2 .errorlist li
+{
+   margin: 0;
+   color: #900000;
+}
+
+.edit-reckoning-form .tooltip-icon
+{
+	float: right;
+}
+
+.edit-reckoning-form .tooltip
+{
+	background-color: #ffffcc;
+	border: 2px solid black;
+    display: none;
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 8px;
+    padding: 5px 10px 10px 10px;
+    width: 300px;
+}
+
+#content-area .edit-reckoning-form .tooltip p
+{
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 12px;
+}
+ 
+.edit-reckoning-form .question-edit-field
+ {
+    height: 2.5em;
+    padding: 5px;
+    width: 600px;
+ }
+ 
+.edit-reckoning-form .description-edit-field
+ {
+    height: 12.5em;
+    padding: 5px;
+    width: 600px;
+ }
+ 
+.edit-reckoning-form .answer-edit-field
+ {
+    float: left;
+    height: 1.2em;
+    padding: 5px;
+    width: 185px;
+ }
+ 
+.edit-reckoning-form .subtitle-edit-field
+ {
+    float: left;
+    height: 1.2em;
+    padding: 5px;
+    width: 185px;
+ }
+ 
+.edit-reckoning-form .tags-edit-field
+ {
+    height: 1.2em;
+    padding: 5px;
+    width: 600px;
+ }
+ 
+.edit-reckoning-form .interval-edit-field
+ {
+    height: 1.2em;
+    padding: 5px;
+    width: 200px;
+ }
+
+.edit-reckoning-form .commentary-edit-field
+ {
+    height: 12.5em;
+    padding: 5px;
+    width: 600px;
+ }
+ 
+.edit-reckoning-form .reckoning-form-options {
+    margin: 15px 0;
+ }
+ 
+.edit-reckoning-form .reckoning-form-option {
+    border: 1px solid black;
+    height: 104px;
+    padding: 15px;
+ }
+ 
+.edit-reckoning-form .reckoning-form-option-1 {
+    background-color: #d2e8c5;
+    float: left;
+    width: 225px;
+ }
+ 
+.edit-reckoning-form .reckoning-form-option-2 {
+    background-color: #e37878;
+    float: right;
+    width: 225px;
+ }
+ 
+.edit-reckoning-form .versus {
+    font-family: Haettenschweiler, Impact, "Franklin Gothic Bold", Charcoal, "Helvetica Inserat", "Bitstream Vera Sans Bold", "Arial Black", sans serif;
+    font-size: 48px;
+    line-height: 135px;
+    margin: 0 auto;
+    text-align: center;
+    width: 50px;
+} 
+ 
+.edit-reckoning-form .form-buttons
+ {
+    margin: 30px 0;
+    text-align: center;
+ }
+ 
+.edit-reckoning-form .button
+ {
+    width: 100px;
+ }
+
+
+/***************************************************************************************
+ * POST RECKONING STYLES
+ * Styles used specifically in the Reckoner Administration area.
+ ***************************************************************************************/
+
+#post-reckoning-page
+ {
+    margin: 0 7px 0 7px;
+ }
+ 
+
+/***************************************************************************************
  * ADMIN STYLES
  * Styles used specifically in the Reckoner Administration area.
  ***************************************************************************************/
@@ -244,162 +554,17 @@ body {
     width: 300px;
  }
  
-#selected-pending-form .field-wrapper
+ #pending-select-form .field-wrapper
  {
-    clear: both;
-    padding: 8px 0;
- }
- 
-#selected-pending-form .reckoning-form-option .field-wrapper
- {
-    padding: 0;
- }
- 
-#selected-pending-form h5
- {
-    -webkit-margin-before: 0px;
-    -webkit-margin-after: 0px;
-    -webkit-margin-start: 0px;
-    -webkit-margin-end: 0px;
- }
- 
-#selected-pending-form h6
- {
-    -webkit-margin-before: 0px;
-    -webkit-margin-after: 0px;
-    -webkit-margin-start: 0px;
-    -webkit-margin-end: 0px;
- }
- 
-#selected-pending-form p
- {
-    margin: 4px 0 0 0;
- }
- 
-#selected-pending-form .field-notation
- {
-    margin: 0;
-    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
-    font-size: 8px;    
- }
- 
-#selected-pending-form .errorlist
- {
-    margin: 0;
- }
- 
-#selected-pending-form .errorlist li
- {
-    color: red;
-    display: inline;
-    float: right;
-    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
-    font-size: 12px;
-    font-weight: bold;
-    margin: 0;   
-    text-align: right;
-    text-transform: uppercase; 
     width: 300px;
  }
  
-#selected-pending-form .reckoning-form-options .errorlist li
- {
-    width: 100px;
- }
- 
-#selected-pending-form .reckoning-form-option-2 .errorlist li
-{
-   color: #900000;
+.reckoning-admin-info ul li {
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 16px;
 }
- 
-#selected-pending-form .question-edit-field
- {
-    height: 2.5em;
-    padding: 5px;
-    width: 600px;
- }
- 
-#selected-pending-form .description-edit-field
- {
-    height: 12.5em;
-    padding: 5px;
-    width: 600px;
- }
- 
-#selected-pending-form .answer-edit-field
- {
-    height: 1em;
-    padding: 5px;
-    width: 185px;
- }
- 
-#selected-pending-form .subtitle-edit-field
- {
-    height: 1em;
-    padding: 5px;
-    width: 185px;
- }
- 
-#selected-pending-form .tags-edit-field
- {
-    height: 1em;
-    padding: 5px;
-    width: 600px;
- }
- 
-#selected-pending-form .interval-edit-field
- {
-    height: 1em;
-    padding: 5px;
-    width: 200px;
- }
 
-#selected-pending-form .commentary-edit-field
- {
-    height: 12.5em;
-    padding: 5px;
-    width: 600px;
- }
- 
-#selected-pending-form .reckoning-form-options {
-    margin: 15px 0;
- }
- 
-#selected-pending-form .reckoning-form-option {
-    border: 1px solid black;
-    height: 104px;
-    padding: 15px;
- }
- 
-#selected-pending-form .reckoning-form-option-1 {
-    background-color: #d2e8c5;
-    float: left;
-    width: 200px;
- }
- 
-#selected-pending-form .reckoning-form-option-2 {
-    background-color: #e37878;
-    float: right;
-    width: 200px;
- }
- 
-#selected-pending-form .versus {
-    font-family: Haettenschweiler, Impact, "Franklin Gothic Bold", Charcoal, "Helvetica Inserat", "Bitstream Vera Sans Bold", "Arial Black", sans serif;
-    font-size: 48px;
-    line-height: 135px;
-    margin: 0 auto;
-    text-align: center;
-    width: 50px;
-} 
- 
-#selected-pending-form .form-buttons
- {
-    margin: 30px 0;
-    text-align: center;
- }
- 
-#selected-pending-form .button
- {
-    width: 100px;
- }
+.reckoning-admin-info ul li .label {
+    font-weight: bold;
+}
  

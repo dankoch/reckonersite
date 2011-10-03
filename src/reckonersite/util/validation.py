@@ -10,7 +10,7 @@ def purgeHtml(value):
     return sanitizeHtml(value, "")
 
 def sanitizeFreeTextHtml(value):
-    return (sanitizeHtml, 'p i strong b u a pre br img')
+    return sanitizeHtml(value, 'p i strong b u a pre br img')
 
 def sanitizeHtml(value, valid_tags, base_url=None):
     rjs = r'[\s]*(&#x.{1,7})?'.join(list('javascript:'))
