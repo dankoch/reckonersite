@@ -3,8 +3,10 @@ Created on Oct 1, 2011
 @author: danko
 '''
 import re
-from urlparse import urljoin
+
 from BeautifulSoup import BeautifulSoup, Comment
+from django.template.defaultfilters import slugify
+from urlparse import urljoin
 
 def purgeHtml(value):
     return sanitizeHtml(value, "")
@@ -36,3 +38,15 @@ def sanitizeHtml(value, valid_tags, base_url=None):
                 tag.attrs.append((attr, val))
 
     return soup.renderContents().decode('utf8')
+
+
+def slugifyTitle(value):
+    slugifiedTitle = None;
+    
+    if (value):
+        slugifiedTitle = slugify(value)
+        if (len(slugifiedTitle) > 80):
+            slugifiedTitle = slugifiedTitle[0:79]
+            
+    return slugifiedTitle
+    

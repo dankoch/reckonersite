@@ -10,7 +10,7 @@ class Answer(Base):
     '''Object definition of a single answer (as commonly attached to a Reckoning).  
     Maintained to be synchronized with the Reckoner API'''
 
-    def __init__(self, index=None, text=None, subtitle=None, vote_total=None, votes=None, 
+    def __init__(self, index=None, text=None, subtitle=None, vote_total=None, votes=None, percentage=None,
                  xml_string=None, xml_element=None):
         
         # Note: Since we're building the XML nodes off of the names of the attributes,
@@ -20,6 +20,7 @@ class Answer(Base):
         self.subtitle = subtitle
         self.vote_total = vote_total
         self.votes = votes
+        self.percentage = percentage
         
         if not xml_string is None:
             self.buildFromXMLString(xml_string)
@@ -52,4 +53,7 @@ class Answer(Base):
             self.votes = []
             for voteElement in votesElement.findall('vote'):
                 self.votes.append(Vote(xml_elemnt=voteElement))
+                
+        if (not xml_root.find('percentage') is None):  
+            self.percentage = xml_root.find('percentage').text
         

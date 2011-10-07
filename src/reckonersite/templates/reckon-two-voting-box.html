@@ -1,0 +1,114 @@
+ 
+ {% if not reckoning.open %}
+     <div class="vote-label"><img src="{{ STATIC_URL }}images/reckoning-results-label.png" alt="Reckoning Results!"></div>
+     {% if leader == 0 %}
+     <div class="vote-box vote-box-winner-1">
+        <div class="top-note-area">
+            <div class="winner-text">WINNER!</div>
+     {% else %}{% if leader == 1 %}
+     <div class="vote-box vote-box-winner-2">
+        <div class="top-note-area">
+            <div class="winner-text">WINNER!</div>
+     {% else &}
+     <div class="vote-box vote-box-tie">
+        <div class="top-note-area">
+            <div class="winner-text">TIE!</div>
+     {% endif %} {% endif %}
+        {% if user_vote %}
+            {% if user_vote.answer_index == "0" %}
+                <div class="your-vote-wrapper your-vote-wrapper-1"><img src="{{ STATIC_URL }}images/reckoning-your-vote-label.png" alt="Your vote!"/></div>
+            {% else %}{% if user_vote.answer_index == "1" %}
+                <div class="your-vote-wrapper your-vote-wrapper-2"><img src="{{ STATIC_URL }}images/reckoning-your-vote-label.png" alt="Your vote!"/></div>                     
+            {% endif %} {% endif %}        
+        {% endif %}
+        </div>
+        <div class="button-area">
+            <div class="reckonbutton-wrapper reckonbutton-wrapper-1">
+                <div class="reckonbutton button-1"><span class="button-text">{{ reckoning.answers.0.text }}</span></div>
+            </div> <div class="reckonbutton-wrapper reckonbutton-wrapper-2">
+                <div class="reckonbutton button-2"><span class="button-text">{{ reckoning.answers.1.text }}</span></div>
+            </div>
+        </div>
+        <div class="subtitle-area">
+            {% if reckoning.answers.0.subtitle %}
+            <div class="subtitle-wrapper subtitle-wrapper-1">
+                <div class="subtitle-text">{{ reckoning.answers.0.subtitle }}</div>
+            </div> 
+            {% endif %}
+            {% if reckoning.answers.1.subtitle %}                       
+            <div class="subtitle-wrapper subtitle-wrapper-2">
+                <div class="subtitle-text">{{ reckoning.answers.1.subtitle }}</div>
+            </div>
+            {% endif %}
+        </div>                  
+        <div class="stat-area">
+            <div class="stat-wrapper stats-1">
+              <div class="percentage">{{ reckoning.answers.0.percentage }}</div>
+              <div class="votes">({{ reckoning.answers.0.vote_total }})</div>
+            </div>
+            <div class="stat-wrapper stats-2">
+              <div class="percentage">{{ reckoning.answers.1.percentage }}</div>
+              <div class="votes">({{ reckoning.answers.1.vote_total }})</div>
+            </div>
+        </div>   
+        <div class="bottom-area"></div>           
+     </div>
+ {% else %} {% if user_vote %}
+     <div class="vote-label"><img src="{{ STATIC_URL }}images/reckoning-status-label.png" alt="Reckoning Status!"></div>
+     <div class="vote-box vote-box-open">
+        <div class="top-note-area">
+            {% if user_vote.answer_index == "0" %}
+                <div class="your-vote-wrapper your-vote-wrapper-1"><img src="{{ STATIC_URL }}images/reckoning-your-vote-label.png" alt="Your vote!"/></div>
+            {% else %}{% if user_vote.answer_index == "1" %}
+                <div class="your-vote-wrapper your-vote-wrapper-2"><img src="{{ STATIC_URL }}images/reckoning-your-vote-label.png" alt="Your vote!"/></div>                     
+            {% endif %} {% endif %}        
+        </div>
+        <div class="button-area">
+            <div class="reckonbutton-wrapper reckonbutton-wrapper-1">
+                <div class="reckonbutton button-1"><span class="button-text">{{ reckoning.answers.0.text }}</span></div>
+            </div> <div class="reckonbutton-wrapper reckonbutton-wrapper-2">
+                <div class="reckonbutton button-2"><span class="button-text">{{ reckoning.answers.1.text }}</span></div>
+            </div>
+        </div>
+        <div class="subtitle-area">
+            <div class="subtitle-wrapper subtitle-wrapper-1">
+                <div class="subtitle-text">{{ reckoning.answers.0.subtitle }}</div>
+            </div> <div class="subtitle-wrapper subtitle-wrapper-2">
+                <div class="subtitle-text">{{ reckoning.answers.1.subtitle }}</div>
+            </div>
+        </div>
+        <div class="stat-area">
+            <div class="stat-wrapper stats-1">
+              <div class="percentage">{{ reckoning.answers.0.percentage }}</div>
+              <div class="votes">({{ reckoning.answers.0.vote_total }})</div>
+            </div>
+            <div class="stat-wrapper stats-2">
+              <div class="percentage">{{ reckoning.answers.1.percentage }}</div>
+              <div class="votes">({{ reckoning.answers.1.vote_total }})</div>
+            </div>
+        </div>
+        <div class="bottom-area"></div>                                      
+     </div>              
+ {% else %}
+     <div class="vote-label"><img src="{{ STATIC_URL }}images/reckoning-vote-label.png" alt="Reckoning Status!"></div>
+     <div class="vote-box vote-box-open">
+        <div class="button-area">
+            <form action="" method="get">
+                <div class="reckonbutton-wrapper reckonbutton-wrapper-1">
+                    <button class="reckonbutton button-1" type="submit"><span class="button-text">{{ reckoning.answers.0.text }}</span></button>
+                </div> <div class="reckonbutton-wrapper reckonbutton-wrapper-2">
+                    <button class="reckonbutton button-2" type="submit"><span class="button-text">{{ reckoning.answers.1.text }}</span></button>
+                </div>
+            </form>
+        </div>
+        <div class="subtitle-area">
+            <div class="subtitle-wrapper subtitle-wrapper-1">
+                <div class="subtitle-text">{{ reckoning.answers.0.subtitle }}</div>
+            </div> <div class="subtitle-wrapper subtitle-wrapper-2">
+                <div class="subtitle-text">{{ reckoning.answers.1.subtitle }}</div>
+            </div>
+        </div>
+        <div class="bottom-area"></div>                                  
+     </div>              
+ {% endif %} {% endif %}
+ 

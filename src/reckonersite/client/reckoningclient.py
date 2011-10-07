@@ -45,16 +45,22 @@ def client_update_reckoning(reckoning, session_id):
     return servResponse
 
 
-def client_get_reckoning(id, session_id):
-    url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/" + id
+def client_get_reckoning(id, session_id, include_unaccepted=False):
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/" + id + "?"
     if (session_id):
-        url += "?session_id=" + session_id
+        url += "session_id=" + session_id + "&"
+    if (include_unaccepted):
+        url += "include_unaccepted=true" + "&"
+    
+    print "client_get_reckoning 1:" + url
     
     response = urllib2.urlopen(url)
     content = response.read()
+    print "client_get_reckoning 2: " + content    
+    
     reckoningList = ReckoningServiceList(xml_string = content)
     
-    print "client_get_reckoning 2: " + reckoningList.getXMLString()
+    print "client_get_reckoning 3: " + reckoningList.getXMLString()
 
     return reckoningList   
 

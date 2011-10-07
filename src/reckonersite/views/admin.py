@@ -150,6 +150,14 @@ def reckoning_approval_page(request):
                     print "approveReckoningForm: " + str(approveReckoningForm.errors)
                     
                     if (approveReckoningForm.is_valid()):
+                        commentary = sanitizeFreeTextHtml(approveReckoningForm.cleaned_data['commentary'])
+                        if (commentary and (len(commentary) > 0)):
+                            print"Commentary: " + commentary;
+                            commentary_user_id = request.user.reckoner_id
+                        else:
+                            print"Commentary null: ";
+                            commentary_user_id = None
+                            
                         answers = [Answer(index=0), Answer(index=1)]
                         for key, attr in approveReckoningForm.cleaned_data.iteritems():
                             if (key.startswith("answer")):
@@ -165,8 +173,8 @@ def reckoning_approval_page(request):
                                                  answers=answers,
                                                  interval=approveReckoningForm.cleaned_data['interval'],
                                                  highlighted=approveReckoningForm.cleaned_data['highlighted'],
-                                                 commentary=sanitizeFreeTextHtml(approveReckoningForm.cleaned_data['commentary']),
-                                                 commentary_user_id=request.user.reckoner_id,
+                                                 commentary=commentary,
+                                                 commentary_user_id=commentary_user_id,
                                                  tag_csv=purgeHtml(approveReckoningForm.cleaned_data['tags']))
                         
                         response = client_update_reckoning(savedReckoning, request.user.session_id)
@@ -206,7 +214,7 @@ def reckoning_approval_page(request):
             postingUser = None
             reckoningId = request.session.get('admin_approve_reckoning', None)
             if (reckoningId):
-                reckoningResponse = client_get_reckoning(reckoningId, request.user.session_id)
+                reckoningResponse = client_get_reckoning(reckoningId, request.user.session_id, True)
                 if (reckoningResponse.status.success and len(reckoningResponse.reckonings) > 0):
                     currentReckoning=reckoningResponse.reckonings[0]
                     postingUser = reckonerauthbackend.get_user(request.user.session_id, currentReckoning.submitter_id)

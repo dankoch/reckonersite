@@ -9,6 +9,8 @@ from reckonersite.domain.base import Base, buildXml, convertToDateTime
 from reckonersite.domain.comment import Comment
 from reckonersite.domain.favorite import Favorite
 from reckonersite.domain.flag import Flag
+from reckonersite.domain.reckoneruser import ReckonerUser
+from reckonersite.util.dateutil import getRemainingTime
 
 class Reckoning(Base):
     '''Object definition of a basic reckoning.  Maintained to be synchronized with the Reckoner API'''
@@ -17,7 +19,7 @@ class Reckoning(Base):
                  submitter_id=None, approver_id=None, approved=False, rejected=False,
                  open=False, anonymous_requested=False, anonymous=False, submission_date=None,
                  posting_date=None, closing_date=None, interval=None, comments=None, comment_index=None,
-                 commentary=None, commentary_user_id=None,
+                 commentary=None, commentary_user_id=None, commentary_user=None, posting_user=None,
                  flags=None, favorites=None, tags=None, highlighted=False, 
                  tag_csv=None,
                  xml_string=None, xml_element=None):
@@ -41,6 +43,8 @@ class Reckoning(Base):
         self.comment_index = comment_index
         self.commentary = commentary
         self.commentary_user_id = commentary_user_id
+        self.commentary_user = commentary_user
+        self.posting_user = posting_user
         self.flags = flags
         self.favorites = favorites
         self.tags = tags
@@ -122,6 +126,11 @@ class Reckoning(Base):
             self.commentary = xml_root.find('commentary').text
         if (not xml_root.find('commentary_user_id') is None):
             self.commentary_user_id = xml_root.find('commentary_user_id').text
+        if (not xml_root.find('commentary_user') is None):
+            self.commentary_user=ReckonerUser(xml_element = xml_root.find('commentary_user'))
+
+        if (not xml_root.find('posting_user') is None):
+            self.posting_user=ReckonerUser(xml_element = xml_root.find('posting_user'))
 
         commentsElement = xml_root.find('comments')
         if (not commentsElement is None):
@@ -177,6 +186,9 @@ class Reckoning(Base):
                 tagList.append(Tag(tag))
         
         return tagList
+    
+    def getRemainingTime(self):
+        return getRemainingTime(self.closing_date)
         
 class Tag(Base):
     def __init__(self, tag=None):

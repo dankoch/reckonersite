@@ -7,13 +7,15 @@ from xml.etree import cElementTree as cET
 from reckonersite.domain.base import Base, buildXml, convertToDateTime
 from reckonersite.domain.favorite import Favorite
 from reckonersite.domain.flag import Flag
+from reckonersite.domain.reckoneruser import ReckonerUser
 
 class Comment(Base):
     '''Object definition of a single comment (as attached to content).  
     Maintained to be synchronized with the Reckoner API'''
 
     def __init__(self, id=None, comment=None, poster_id=None, posting_date=None,
-                 favorites=None, flags=None, xml_string=None, xml_element=None):
+                 favorites=None, flags=None, user=None,
+                 xml_string=None, xml_element=None):
         
         # Note: Since we're building the XML nodes off of the names of the attributes,
         # these names need to be kept aligned with the API definition.
@@ -23,6 +25,7 @@ class Comment(Base):
         self.posting_date = posting_date
         self.favorites = favorites
         self.flags = flags
+        self.user = user
         
         if not xml_string is None:
             self.buildFromXMLString(xml_string)
@@ -61,4 +64,7 @@ class Comment(Base):
         if (not favoritesElement is None):               
             self.favorites=[]
             for favoriteElement in favoritesElement.findall('favorite'):
-                self.favorites.append(Favorite(xml_element=favoriteElement))        
+                self.favorites.append(Favorite(xml_element=favoriteElement))
+                
+        if (not xml_root.find('user') is None):
+            self.user=ReckonerUser(xml_root.find('user'))        

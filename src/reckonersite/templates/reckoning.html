@@ -1,40 +1,78 @@
 {% extends "base.html" %}
 
-{% block title %}View a Reckoning!{% endblock %}
+{% block pagetitle %}The Reckoner! - {{ reckoning.question }}{% endblock %}
 
 {% block main %}
-    {% if reckoning %}
-        <h1>Reckoning {{ reckoning.id }}</h1>
-        <ul>
-            <li>Submitter ID: {{ reckoning.submitter_id}}</li>
-            <li>Submission Date: {{ reckoning.submission_date}}</li>
-            <li>Posting Date: {{ reckoning.posting_date}}</li>
-            <li>Closing Date: {{ reckoning.closing_date}}</li>
-        </ul>
-        <h2>{{reckoning.question}}</h2>
-        <p>{{reckoning.description}}</p>
-        {% for answer in reckoning.answers %}
-            <h3>Answer {{forloop.counter}}:</h3>
-            <ul>
-                <li>{{ answer.text }}</li>
-                <li>{{ answer.subtitle }}</li>
-                <li>Votes: {{answer.vote_total}}</li>
-            </ul>
-        {% endfor %}
-        <h2>Comments:</h2>
-        {% for comment in reckoning.comments %}
-            <ul>
-                <li>User: {{ comment.poster_id }}</li>
-                <li>Date: {{ comment.posting_date }}</li>
-                <li>{{ comment.comment }}</li>
-            </ul>
-        {% endfor %}        
-            
-    {% endif %}
+    <div id="reckoning-page">
+        {% if reckoning.commentary %}
+        <div class="commentary-section">
+            <div class="profile-picture-wrapper"><img src="{{reckoning.commentary_user.profile_picture_url}}"></div>
+            <div class="profile-name">{{reckoning.commentary_user.first_name}} {{reckoning.commentary_user.last_name}}</div>
+            <div class="commentary-text">{{reckoning.commentary}}</div>
+        </div>
+        {% endif %}
+        
+        <div class="question-section">
+            <div class="question-wrapper"><h2>{{reckoning.question}}</h2></div> 
+            <div class="description-wrapper"><p>{{reckoning.description}}</p></div>           
+        </div>
+        <div class="voting-section">
+            {% include "reckon-two-voting-box.html" %}
+        </div>
+        <div class="metadata-section">
+            <div class="spec-wrapper">
+	            <div class="tags-wrapper">
+	                <div class="label">Tags:</div>
+	                <div class="tags">
+	                    {% for tag in reckoning.tags %}
+	                        {{tag.tag}}{% if not forloop.last %}, {% endif %}
+	                    {% endfor %}
+	                </div>
+	            </div>
+	            <div class="time-wrapper">
+	                {% if reckoning.open %}
+	                    <div class="label">Remaining Time:</div>
+	                    <div class="time">
+	                        {{time_remaining.days}} days, {{time_remaining.hours}} hours, {{time_remaining.minutes}} minutes
+	                    </div>                    
+		            {% else %}
+	                    <div class="label">Closing Time:</div>
+	                    <div class="time">
+	                        {{reckoning.closing_date}}
+	                    </div>
+		            {% endif %}
+	            </div>
+            </div>
+            <div class="poster-wrapper">
+                <div class="profile-picture-wrapper"><img src="{{reckoning.posting_user.profile_picture_url}}"></div>
+                <div class="label">Posted By:</div>
+                <div class="poster-name">{{reckoning.posting_user.first_name}} {{reckoning.posting_user.last_name}}</div>
+                <div class="poster-date">{{reckoning.posting_date}}</div>
+            </div>
+            <div class="bottom-wrapper"></div>
+        </div>
+    </div>        
 {% endblock %}
 
-{% block sidebar %}
-    <a href="https://www.facebook.com/dialog/oauth?client_id={{facebook_app_id}}&redirect_uri={{facebook_redirect_url}}&scope=offline_access">
-    <img src="{{ STATIC_URL }}images/FacebookLoginButton.png">     
-    </a>
+{% block javascript %}
+  {{ block.super }}
+  <script type="text/javascript">
+  $(document).ready(function(){ 
+      var largestHeight = 0;
+      
+      // The rendering adjustment compensates for how the button 'table-cells' are rendered.
+      // Also establishes a minimum size.
+      var renderAdjustment = 20;
+ 
+      $('.button-area').find(".reckonbutton > span").each(function() {
+          if ($(this).height() > largestHeight) {
+            largestHeight = $(this).height();
+          }
+      });
+      
+      $('.button-area').find(".reckonbutton > span").each(function() {
+          $(this).css('height', largestHeight + renderAdjustment);
+      });
+  });
+  </script>
 {% endblock %}

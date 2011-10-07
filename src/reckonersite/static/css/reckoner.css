@@ -83,6 +83,39 @@ body {
     text-decoration: underline;
 }
 
+#top-bar .profile-wrapper {
+	background-color: #deecf6;
+	border: 2px solid #666666;
+    float: right;
+    height: 50px;
+    padding: 4px;
+    position: relative;
+    top: 11px;
+    right: 30px;
+    width: 154px;	
+}
+
+#top-bar .profile-picture-wrapper {
+	border: 1px solid #666666;
+	height: 36px;
+	float: left;
+	margin: 0 4px 4px 0;
+	width: 36px;
+}
+
+#top-bar .profile-picture-wrapper .profile-picture {
+	height: 36px;
+	width: 36px;
+}
+
+#top-bar .profile-picture-wrapper .profile-info {
+}
+
+#top-bar .profile-wrapper .profile-info p {
+	font-size: 10px;
+	margin: 0;
+}
+
 #content-area {
     clear: both;
     height: 100%;
@@ -512,7 +545,262 @@ body {
  {
     margin: 0 7px 0 7px;
  }
- 
+
+
+/***************************************************************************************
+ * INDIVIDUAL RECKONING STYLES
+ * Styles used specifically to show an individual reckoning
+ ***************************************************************************************/
+
+#reckoning-page {
+	
+}
+
+#reckoning-page .commentary-section {
+	background-color: #f6f6de;
+	border: 3px double black;
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    min-height: 50px;
+	margin: 7px;
+	padding: 12px 6px;
+	width: 594px;
+}
+
+#reckoning-page .profile-picture-wrapper {
+    border: 1px solid #666666;
+    height: 50px;
+    float: left;
+    margin: 0 8px 0px 0;
+    width: 50px;
+}
+
+#reckoning-page .profile-name {
+    font-size: 14px;	
+}
+
+#reckoning-page .commentary-section .commentary-text {
+	font-size: 14px;
+	margin: 0 8px;
+}
+
+#reckoning-page .question-section {
+	margin: 7px;
+}
+
+#reckoning-page .question-section h2 {
+    margin: .3em 0 .8em 0;
+}
+
+#reckoning-page .question-section p {
+    margin: .5em 0;
+}
+
+#reckoning-page .voting-section {
+	margin: 20px 7px;
+}
+
+#reckoning-page .voting-section .vote-box {
+    border: 1px solid #9d9d9d;
+	margin: 54px 0 0 0;
+    padding: 54px 6px 12px 6px;
+    width: 598px;
+}
+
+#reckoning-page .voting-section .vote-box-open {
+	background-color: #e9e9e9;
+}
+
+#reckoning-page .voting-section .vote-box-winner-1 {
+    background-image: url(../images/reckoning-winner-1-background.png);
+    background-repeat: repeat-y;
+}
+
+#reckoning-page .voting-section .vote-box-winner-2 {
+    background-image: url(../images/reckoning-winner-2-background.png);
+    background-repeat: repeat-y;
+}
+
+#reckoning-page .voting-section .vote-label {
+	height: 0px;
+	position: relative;
+	left: 250px;
+}
+
+#reckoning-page .voting-section .vote-box .top-note-area .winner-text {
+	text-align: center;
+    width: 208px;
+}
+
+#reckoning-page .voting-section .vote-box-winner-1 .top-note-area .winner-text {
+	position: relative;
+	left: 40px;
+}
+
+#reckoning-page .voting-section .vote-box-winner-2 .top-note-area .winner-text {
+    position: relative;
+    left: 350px;
+}
+
+#reckoning-page .voting-section .top-note-area .winner-text {
+    font-family: Futura, "Century Gothic", Futura, "Tw Cen MT", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 30px;
+}
+
+#reckoning-page .top-note-area .your-vote-wrapper {
+    bottom: 25px;
+	height: 0px;
+	position: relative;
+}
+
+#reckoning-page .top-note-area .your-vote-wrapper-1 {
+	left: 220px;
+}
+
+#reckoning-page .top-note-area .your-vote-wrapper-2 {
+    left: 530px;
+}
+
+#reckoning-page .voting-section .button-area {
+	margin: 0 40px;
+}
+
+#reckoning-page .voting-section .button-area .reckonbutton {
+    border: 0px;
+    display: block;
+    margin: 0px 0px 6px 0px;
+    padding: 0px 0px 15px 0px; /* sliding doors padding */
+    text-decoration: none;
+    width: 208px;
+}
+
+#reckoning-page .voting-section .button-area .button-1 {
+	float: left;
+}
+
+#reckoning-page .voting-section .button-area .button-2 {
+    float: right;
+}
+
+/* Setting this up as a table cell to allow for the text to be centered.  IE6 and 7
+   will show uncentered text, and the world will continue to spin.            */
+#reckoning-page .voting-section .button-area .reckonbutton span {
+    color: #000000;
+    display: table-cell;
+    font: 24px "Calibri", "Futura", "Tw Cen MT", "Century Gothic", sans-serif;
+    font-weight:bold;
+    padding: 15px 0px 0px 0px;
+    text-align: center;
+    text-transform: uppercase; 
+    vertical-align: middle;
+    width: 208px;
+    word-wrap: break-word;
+}
+
+#reckoning-page .voting-section .button-area .button-1 {
+    background: transparent url('../images/reckon-button-red_02.png') no-repeat scroll bottom;
+}
+
+#reckoning-page .voting-section .button-area .button-1 span {
+    background: transparent url('../images/reckon-button-red_01.png') no-repeat;
+}
+
+#reckoning-page .voting-section .button-area .button-2 {
+    background: transparent url('../images/reckon-button-green_02.png') no-repeat scroll bottom;
+}
+
+#reckoning-page .voting-section .button-area .button-2 span {
+    background: transparent url('../images/reckon-button-green_01.png') no-repeat;
+}
+
+#reckoning-page .voting-section .subtitle-area {
+	min-height: 1em;
+	clear: both;
+}
+
+#reckoning-page .voting-section .subtitle-area .subtitle-wrapper {
+	font-size: 12px;
+	text-align: center;
+}
+
+#reckoning-page .voting-section .subtitle-area .subtitle-wrapper-1 {
+    float: left;
+    margin: 0 40px;
+    width: 208px;
+}
+
+#reckoning-page .voting-section .subtitle-area .subtitle-wrapper-2 {
+    float: right;
+    margin: 0 40px;
+    width: 208px;
+}
+
+#reckoning-page .voting-section .stat-area {
+	text-align: center;
+}
+
+#reckoning-page .voting-section .stat-area .stats-1 {
+    float: left;
+    margin: 0 40px;
+    width: 208px;	
+}
+
+#reckoning-page .voting-section .stat-area .stats-2 {
+    float: right;
+    margin: 0 40px;
+    width: 208px;   
+}
+
+#reckoning-page .voting-section .stat-area .percentage {
+    font-size: 36px;
+}
+
+#reckoning-page .voting-section .bottom-area {
+	clear: both;
+}
+
+#reckoning-page .metadata-section {
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+	margin: 20px 7px;
+	width: 612px;
+}
+
+#reckoning-page .metadata-section .label {
+    font-weight: bold;
+}
+
+#reckoning-page .metadata-section .spec-wrapper {
+	float: left;
+}
+
+#reckoning-page .metadata-section .tags-wrapper {
+    margin: 0px 0px 6px 0;
+    width: 250px;
+}
+
+#reckoning-page .metadata-section .poster-wrapper {
+    background-color: #deecf6;	
+	border: 2px solid black;
+	float: right;
+	padding: 4px;
+	width: 250px;
+}
+
+#reckoning-page .metadata-section .profile-picture-wrapper {
+	float: right;
+    height: 50px;
+    margin: 0px 4px;
+    width: 50px;
+}
+
+#reckoning-page .metadata-section .bottom-wrapper {
+    clear: both;
+}
+
+
+#reckoning-page .metadata-section .time {
+    color: #cc0000;
+}
 
 /***************************************************************************************
  * ADMIN STYLES
