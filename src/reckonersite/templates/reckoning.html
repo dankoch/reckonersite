@@ -6,7 +6,7 @@
     <div id="reckoning-page">
         {% if reckoning.commentary %}
         <div class="commentary-section">
-            <div class="profile-picture-wrapper"><img src="{{reckoning.commentary_user.profile_picture_url}}"></div>
+            <div class="profile-picture-wrapper"><img src="{{reckoning.commentary_user.profile_picture_url}}" class="profile-picture"></div>
             <div class="profile-name">{{reckoning.commentary_user.first_name}} {{reckoning.commentary_user.last_name}}</div>
             <div class="commentary-text">{{reckoning.commentary}}</div>
         </div>
@@ -14,7 +14,7 @@
         
         <div class="question-section">
             <div class="question-wrapper"><h2>{{reckoning.question}}</h2></div> 
-            <div class="description-wrapper"><p>{{reckoning.description}}</p></div>           
+            <div class="description-wrapper"><p>{{reckoning.description|safe}}</p></div>           
         </div>
         <div class="voting-section">
             {% include "reckon-two-voting-box.html" %}
@@ -44,7 +44,7 @@
 	            </div>
             </div>
             <div class="poster-wrapper">
-                <div class="profile-picture-wrapper"><img src="{{reckoning.posting_user.profile_picture_url}}"></div>
+                <div class="profile-picture-wrapper"><img src="{{reckoning.posting_user.profile_picture_url}}" class="profile-picture"></div>
                 <div class="label">Posted By:</div>
                 <div class="poster-name">{{reckoning.posting_user.first_name}} {{reckoning.posting_user.last_name}}</div>
                 <div class="poster-date">{{reckoning.posting_date}}</div>

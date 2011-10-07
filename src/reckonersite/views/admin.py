@@ -263,7 +263,7 @@ class ApproveReckoningForm(forms.Form):
         super(ApproveReckoningForm, self).__init__(*args, **kwargs)
         
         self.fields["question"] = forms.CharField(max_length=150, label="Question", initial=reckoning.question, required=True, widget=forms.Textarea)
-        self.fields["description"] = forms.CharField(max_length=1000, label="Description", initial=reckoning.description, required=False, widget=forms.Textarea)
+        self.fields["description"] = forms.CharField(max_length=3000, label="Description", initial=reckoning.description, required=False, widget=forms.Textarea)
         
         for answer in reckoning.answers:
             self.fields["answer_" + str(int(answer.index)+1)] = forms.CharField(max_length=25, label="Answer " + str(answer.index), initial=answer.text, required=True)
@@ -272,7 +272,7 @@ class ApproveReckoningForm(forms.Form):
         self.fields["interval"] = forms.DecimalField(max_digits=6, decimal_places=0, label="Interval (in minutes)", initial=reckoning.interval, required=True)
         self.fields["tags"] = forms.CharField(max_length=100, label="Tags", initial=reckoning.getTagCSV(), required=False)
         self.fields["highlighted"] = forms.BooleanField(label="Highlighted", initial=reckoning.highlighted, required=False)
-        self.fields["commentary"] = forms.CharField(max_length=1000, label="Admin Commentary", initial=reckoning.commentary, required=False, widget=forms.Textarea)
+        self.fields["commentary"] = forms.CharField(max_length=3000, label="Admin Commentary", initial=reckoning.commentary, required=False, widget=forms.Textarea)
 
                 
             

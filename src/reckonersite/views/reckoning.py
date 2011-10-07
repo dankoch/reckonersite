@@ -75,7 +75,7 @@ def post_reckoning(request):
 
 class PostReckoningForm(forms.Form):  
     question = forms.CharField(max_length=150, label="Question", required=True, widget=forms.Textarea)
-    description = forms.CharField(max_length=1000, label="Description", required=False, widget=forms.Textarea)
+    description = forms.CharField(max_length=3000, label="Description", required=False, widget=forms.Textarea)
     
     answer_1 = forms.CharField(max_length=25, label="Answer 1", required=True)
     subtitle_1 = forms.CharField(max_length=25, label="Subtitle 1", required=False)

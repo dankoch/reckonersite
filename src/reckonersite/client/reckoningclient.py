@@ -46,7 +46,7 @@ def client_update_reckoning(reckoning, session_id):
 
 
 def client_get_reckoning(id, session_id, include_unaccepted=False):
-    url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/" + id + "?"
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/id/" + id + "?"
     if (session_id):
         url += "session_id=" + session_id + "&"
     if (include_unaccepted):

@@ -2,6 +2,11 @@
 
 {% block pagetitle %}The Reckoner! - Post A Reckoning!{% endblock %}
 
+{% block extraheader %}
+      <script src="{{ STATIC_URL }}ckeditor/ckeditor.js"></script>
+      <script src="{{ STATIC_URL }}ckeditor/adapters/jquery.js"> </script>
+{% endblock %}
+
 {% block main %}
     <div id="post-reckoning-page">
         <h1>POST A RECKONING!</h1><br>
@@ -32,14 +37,15 @@
                     </div><div class="field-wrapper">
                          <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
                          <div class="tooltip">
-                            <p><b>Here is where the juicy details come out.</b>  You get 1000 characters to spill your guts.</p>
+                            <p><b>Here is where the juicy details come out.</b>  Spill your guts!.</p>
                             <p><u>For example, a good explanation would be:</u></p>
                             <p><i><b>So here's the deal.</b>  Both Superman and Batman entered the Betty Crocker Cookie Mix competition because the fate of the free world hangs in the balance.  Shut up, just go with me here.  Superman, being the sporting type, has pledged not to cheat by frying other people's cookie sheets with his heat vision.  Superpowers are otherwise fair game.  Both are wearing matching floral-print aprons and oven mitts that are just darling.  <b>Who reigns supreme?</b></i></p>
-                         </div>                       
-                         {{form.description.errors}}   
+                         </div>                    
+                         {{form.description.errors}}    
                          <p><label for="id_description"><h5>The Explanation!</h5></label></p>
-                         <p><textarea maxlength=1000 id="id_description" name="description" class="description-edit-field"></textarea></p>
-                         <div class="field-notation">(1000 Character Max)  Allowed Tags: &lt;p&gt; &lt;i&gt; &lt;strong&gt; &lt;b&gt; &lt;u&gt; &lt;a&gt; &lt;pre&gt; &lt;br&gt; &lt;img&gt;</div>                  
+                         <p><textarea maxlength=3000 id="id_description" name="description" class="description-edit-field"></textarea></p>
+                         <noscript><div class="field-notation">(3000 Character Max)  Allowed Tags: &lt;p&gt; &lt;i&gt; &lt;strong&gt; &lt;b&gt; &lt;u&gt; &lt;a&gt; &lt;pre&gt; &lt;br&gt; &lt;img&gt; &lt;ul&gt; &lt;li&gt;</div></noscript>                   
+                         <div class="field-notation"><div class="free-text">(This is the fun part.  Have at it.)</div></div>  
                     </div>
                     <div class="reckoning-form-options">
                         <div class="reckoning-form-option-1 reckoning-form-option">
@@ -94,7 +100,7 @@
                          <div class="tooltip">
                             <p><b>Tags are awesome!</b> These make your Reckoning easy to find so other interested Reckonauts see it quickly.</p> 
                             <p>All you need to do is type the tags you want, separated by commas.  Label these in groups that make sense: "<b>Superheroes, Baking, Betty Crocker, Floral-Print Oven Mitts</b>" and let it rip.</p>  
-                            <p>Reckonbot'll clean these up, so don't sweat it if you miss a few..</p>
+                            <p>Reckonbot'll clean these up, so don't sweat it if you miss a few.</p>
                          </div>                      
                          {{form.tags.errors}}                          
                          <p><label for="id_tags"><h5>Tags!</h5></label></p>
@@ -134,6 +140,13 @@
   <script>
     $(document).ready(function() {
         $(".tooltip-icon").tooltip();
-   });
+    });
+    
+    $(".description-edit-field").ckeditor(
+            function () { /* Callback code */}, {
+                skin: 'v2',
+                toolbar: 'Basic'
+            }             
+    );
   </script>
 {% endblock %}

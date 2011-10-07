@@ -228,6 +228,11 @@ body {
     text-decoration: underline;
 }
 
+#content-area .profile-picture {
+	height: 50px;
+	width: 50px;
+}
+
 /***************************************************************************************
  * STATIC PAGE STYLES
  * Styles used for static pages heavy on the HTML content
@@ -389,6 +394,11 @@ body {
     font-size: 8px;    
  }
  
+ .edit-reckoning-form .field-notation .free-text
+ {
+    margin: 3px 0 0 0;   
+ }
+ 
 .edit-reckoning-form .errorlist
  {
     margin: 0;
@@ -427,7 +437,7 @@ body {
 
 .edit-reckoning-form .tooltip
 {
-	background-color: #ffffcc;
+	background-color: #fdfed5;
 	border: 2px solid black;
     display: none;
     font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
@@ -557,7 +567,7 @@ body {
 }
 
 #reckoning-page .commentary-section {
-	background-color: #f6f6de;
+	background-color: #fdfed5;
 	border: 3px double black;
     font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
     min-height: 50px;
@@ -800,6 +810,7 @@ body {
 
 #reckoning-page .metadata-section .time {
     color: #cc0000;
+    font-size: 20px;
 }
 
 /***************************************************************************************

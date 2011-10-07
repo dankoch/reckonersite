@@ -3,16 +3,24 @@ Created on Oct 1, 2011
 @author: danko
 '''
 import re
+import logging
 
 from BeautifulSoup import BeautifulSoup, Comment
+from django.conf import settings
 from django.template.defaultfilters import slugify
+from tidylib import tidy_document
 from urlparse import urljoin
+
+logger = logging.getLogger(settings.STANDARD_LOGGER)
 
 def purgeHtml(value):
     return sanitizeHtml(value, "")
 
 def sanitizeFreeTextHtml(value):
-    return sanitizeHtml(value, 'p i strong b u a pre br img')
+    print "html to sanitize: " + value
+    document = sanitizeHtml(value, 'p i em strong b u a pre br ol ul li img')
+    document = tidyTextInput(document)
+    return document
 
 def sanitizeHtml(value, valid_tags, base_url=None):
     rjs = r'[\s]*(&#x.{1,7})?'.join(list('javascript:'))
@@ -49,4 +57,9 @@ def slugifyTitle(value):
             slugifiedTitle = slugifiedTitle[0:79]
             
     return slugifiedTitle
+
+
+def tidyTextInput(document):
+    tidy_doc, errors = tidy_document(document, options={'show-body-only' : 1})
+    return tidy_doc
     
