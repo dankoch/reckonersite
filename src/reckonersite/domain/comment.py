@@ -67,4 +67,4 @@ class Comment(Base):
                 self.favorites.append(Favorite(xml_element=favoriteElement))
                 
         if (not xml_root.find('user') is None):
-            self.user=ReckonerUser(xml_root.find('user'))        
+            self.user=ReckonerUser(xml_element=xml_root.find('user'))        

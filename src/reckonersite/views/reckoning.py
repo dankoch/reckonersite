@@ -14,13 +14,16 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from reckonersite.client.reckoningclient import client_get_reckoning, client_post_reckoning
+from reckonersite.client.reckoningclient import client_get_reckoning, \
+                                                client_post_reckoning, \
+                                                client_get_random_open_reckoning, \
+                                                client_get_random_closed_reckoning
 from reckonersite.client.voteclient import client_get_user_reckoning_vote
 from reckonersite.domain.answer import Answer
 from reckonersite.domain.reckoning import Reckoning
 from reckonersite.domain.vote import Vote
 from reckonersite.util.math import computeReckoningAnswerPercentages
-from reckonersite.util.validation import purgeHtml, sanitizeFreeTextHtml, slugifyTitle
+from reckonersite.util.validation import purgeHtml, sanitizeFreeTextHtml
 
 logger = logging.getLogger(settings.STANDARD_LOGGER)
 
@@ -114,11 +117,13 @@ def get_reckoning(request, id = None, title = None):
             raise BaseException() 
         elif (not service_response.reckonings):
             raise Http404
-        elif (slugifyTitle(service_response.reckonings[0].question) != title):
-            return HttpResponseRedirect('/reckoning/' + id + "/" + slugifyTitle(service_response.reckonings[0].question))
+        elif (request.path != service_response.reckonings[0].url):
+            return HttpResponseRedirect(service_response.reckonings[0].url)
         else:            
             reckoning = computeReckoningAnswerPercentages(service_response.reckonings[0])
             leader = None
+            next_reck = None
+            prev_reck = None
             
             # Pull the user's vote for this reckoning and add it to the context.
             user_vote_response = client_get_user_reckoning_vote(id, request.user.reckoner_id, request.user.session_id)
@@ -131,17 +136,30 @@ def get_reckoning(request, id = None, title = None):
                     user_vote = user_vote_response.votes[0]
             
             # Compute which answer has received the most votes as an index (-1 meaning a tie)
-            if (reckoning.answers[0].vote_total > reckoning.answers[1].vote_total):
-                leader = 0
-            elif (reckoning.answers[0].vote_total < reckoning.answers[1].vote_total):
-                leader = 1
+            if (reckoning.answers[0].vote_total > reckoning.answers[1].vote_total): leader = 0
+            elif (reckoning.answers[0].vote_total < reckoning.answers[1].vote_total): leader = 1
+            else: leader = -1
+            
+            # Get the Next and Last Reckoning items for the display.  Get open reckonings if the current
+            # reckoning is open, and vice versa.  
+            if (reckoning.open):
+                next_reck_response = client_get_random_open_reckoning(request.user.session_id)
+                prev_reck_response = client_get_random_open_reckoning(request.user.session_id)
             else:
-                leader = -1
+                next_reck_response = client_get_random_closed_reckoning(request.user.session_id)
+                prev_reck_response = client_get_random_closed_reckoning(request.user.session_id)                
+            
+            if (next_reck_response.reckonings):
+                next_reck = next_reck_response.reckonings[0]
+            if (prev_reck_response.reckonings):
+                prev_reck = prev_reck_response.reckonings[0]
             
             c = RequestContext(request, {'reckoning' : reckoning,
                                          'user_vote' : user_vote,
                                          'leader' : leader,
-                                         'time_remaining' : reckoning.getRemainingTime()})
+                                         'time_remaining' : reckoning.getRemainingTime(),
+                                         'next_reck' : next_reck,
+                                         'prev_reck' : prev_reck})
             
             return render_to_response('reckoning.html', c)
     except Http404:

@@ -18,8 +18,6 @@ def client_post_reckoning(reckoning, session_id):
                           data = reckoning.getPostingXMLString(session_id),
                           headers = {'Content-Type': 'text/xml'})
 
-    print "client_post_reckoning: " + reckoning.getPostingXMLString(session_id)
-
     response = urllib2.urlopen(req)
     content = response.read()
     servResponse = ServiceResponse(xml_string = content)
@@ -34,14 +32,10 @@ def client_update_reckoning(reckoning, session_id):
                           data = reckoning.getPostingXMLString(session_id),
                           headers = {'Content-Type': 'text/xml'})
 
-    print "client_update_reckoning 1: " + reckoning.getPostingXMLString(session_id)
-
     response = urllib2.urlopen(req)
     content = response.read()
     servResponse = ServiceResponse(xml_string = content)
-    
-    print "client_update_reckoning 2: " + servResponse.getXMLString()
-    
+       
     return servResponse
 
 
@@ -51,17 +45,15 @@ def client_get_reckoning(id, session_id, include_unaccepted=False):
         url += "session_id=" + session_id + "&"
     if (include_unaccepted):
         url += "include_unaccepted=true" + "&"
-    
-    print "client_get_reckoning 1:" + url
-    
-    response = urllib2.urlopen(url)
+        
+    response = urllib2.urlopen(url)    
     content = response.read()
-    print "client_get_reckoning 2: " + content    
     
+    print "Get Reckoning 1: " + content
     reckoningList = ReckoningServiceList(xml_string = content)
-    
-    print "client_get_reckoning 3: " + reckoningList.getXMLString()
 
+    print "Get Reckoning 2: " + reckoningList.getXMLString()
+    
     return reckoningList   
 
 def client_get_reckoning_approval_queue(session_id):
@@ -69,7 +61,7 @@ def client_get_reckoning_approval_queue(session_id):
     if (session_id):
         url += "?session_id=" + session_id
     
-    response = urllib2.urlopen(url)
+    response = urllib2.urlopen(url)    
     content = response.read()
     reckoningList = ReckoningServiceList(xml_string = content)
 
@@ -97,5 +89,25 @@ def client_reject_reckoning(reckoning_id, session_id):
     
     return servResponse      
     
+def client_get_random_open_reckoning(session_id):
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/random/open"
+    if (session_id):
+        url += "?session_id=" + session_id
     
+    response = urllib2.urlopen(url)
+    content = response.read()
+    reckoningList = ReckoningServiceList(xml_string = content)
+
+    return reckoningList  
+
+def client_get_random_closed_reckoning(session_id):
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/random/closed"
+    if (session_id):
+        url += "?session_id=" + session_id
+    
+    response = urllib2.urlopen(url)
+    content = response.read()
+    reckoningList = ReckoningServiceList(xml_string = content)
+
+    return reckoningList  
         

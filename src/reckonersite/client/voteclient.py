@@ -18,8 +18,6 @@ def client_post_reckoning(reckoning, session_id):
                           data = reckoning.getPostingXMLString(session_id),
                           headers = {'Content-Type': 'text/xml'})
 
-    print "client_post_reckoning: " + reckoning.getPostingXMLString(session_id)
-
     response = urllib2.urlopen(req)
     content = response.read()
     servResponse = ServiceResponse(xml_string = content)
@@ -33,12 +31,8 @@ def client_get_user_reckoning_vote(reckoning_id, user_id, session_id):
     if (session_id):
         url += "session_id=" + session_id + "&"
     
-    print "client_get_user_reckoning_vote 1:" + url
-    
     response = urllib2.urlopen(url)
     content = response.read()
     voteList = VoteServiceList(xml_string = content)
-    
-    print "client_get_user_reckoning_vote 2: " + voteList.getXMLString()
 
     return voteList   

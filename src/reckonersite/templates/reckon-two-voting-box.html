@@ -9,10 +9,10 @@
      <div class="vote-box vote-box-winner-2">
         <div class="top-note-area">
             <div class="winner-text">WINNER!</div>
-     {% else &}
+     {% else %}
      <div class="vote-box vote-box-tie">
         <div class="top-note-area">
-            <div class="winner-text">TIE!</div>
+            <div class="winner-text">A TIE!</div>
      {% endif %} {% endif %}
         {% if user_vote %}
             {% if user_vote.answer_index == "0" %}
@@ -29,6 +29,7 @@
                 <div class="reckonbutton button-2"><span class="button-text">{{ reckoning.answers.1.text }}</span></div>
             </div>
         </div>
+        
         <div class="subtitle-area">
             {% if reckoning.answers.0.subtitle %}
             <div class="subtitle-wrapper subtitle-wrapper-1">
@@ -71,11 +72,16 @@
             </div>
         </div>
         <div class="subtitle-area">
+            {% if reckoning.answers.0.subtitle %}
             <div class="subtitle-wrapper subtitle-wrapper-1">
                 <div class="subtitle-text">{{ reckoning.answers.0.subtitle }}</div>
-            </div> <div class="subtitle-wrapper subtitle-wrapper-2">
+            </div> 
+            {% endif %}
+            {% if reckoning.answers.1.subtitle %}                       
+            <div class="subtitle-wrapper subtitle-wrapper-2">
                 <div class="subtitle-text">{{ reckoning.answers.1.subtitle }}</div>
             </div>
+            {% endif %}
         </div>
         <div class="stat-area">
             <div class="stat-wrapper stats-1">
@@ -102,11 +108,16 @@
             </form>
         </div>
         <div class="subtitle-area">
+            {% if reckoning.answers.0.subtitle %}
             <div class="subtitle-wrapper subtitle-wrapper-1">
                 <div class="subtitle-text">{{ reckoning.answers.0.subtitle }}</div>
-            </div> <div class="subtitle-wrapper subtitle-wrapper-2">
+            </div> 
+            {% endif %}
+            {% if reckoning.answers.1.subtitle %}                       
+            <div class="subtitle-wrapper subtitle-wrapper-2">
                 <div class="subtitle-text">{{ reckoning.answers.1.subtitle }}</div>
             </div>
+            {% endif %}
         </div>
         <div class="bottom-area"></div>                                  
      </div>              

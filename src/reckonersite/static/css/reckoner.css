@@ -300,9 +300,13 @@ body {
 #content-area .sign-up-box {
 	background-color: #f6f6f6;
 	border: 1px solid #666666;
-	margin: 48px 0;
+	margin: 48px 7px;
 	padding: 6px;
-	width: 600px;
+	width: 598px;
+}
+
+#post-reckoning-intro-page .sign-up-box {
+    margin: 48px 0px;
 }
 
 #content-area .sign-up-box h2 {
@@ -355,6 +359,11 @@ body {
  * Styles used for the reckoning edit screens.
  ***************************************************************************************/
 
+.edit-reckoning-form textarea {
+	font-family: Verdana, Tahoma, sans-serif;
+	font-size: 11px;
+}
+
 .edit-reckoning-form .field-wrapper
  {
     clear: both;
@@ -368,6 +377,7 @@ body {
  
 .edit-reckoning-form h5
  {
+    margin: 0;
     -webkit-margin-before: 0px;
     -webkit-margin-after: 0px;
     -webkit-margin-start: 0px;
@@ -376,6 +386,7 @@ body {
  
 .edit-reckoning-form h6
  {
+     margin: 0;
     -webkit-margin-before: 0px;
     -webkit-margin-after: 0px;
     -webkit-margin-start: 0px;
@@ -566,6 +577,18 @@ body {
 	
 }
 
+#reckoning-page .section-divider {
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 1px;
+    border-bottom-color: #9d9d9d;
+    clear: both;
+    height: 10px;
+    margin: 10px 8px;
+    text-align: center;
+}
+
 #reckoning-page .commentary-section {
 	background-color: #fdfed5;
 	border: 3px double black;
@@ -617,7 +640,7 @@ body {
 }
 
 #reckoning-page .voting-section .vote-box-open {
-	background-color: #e9e9e9;
+	background-color: #f6f6f6;
 }
 
 #reckoning-page .voting-section .vote-box-winner-1 {
@@ -630,15 +653,19 @@ body {
     background-repeat: repeat-y;
 }
 
+#reckoning-page .voting-section .vote-box-tie {
+    background-color: #deecf6;
+}
+
 #reckoning-page .voting-section .vote-label {
 	height: 0px;
 	position: relative;
-	left: 250px;
+	left: 252px;
 }
 
 #reckoning-page .voting-section .vote-box .top-note-area .winner-text {
 	text-align: center;
-    width: 208px;
+    width: 214px;
 }
 
 #reckoning-page .voting-section .vote-box-winner-1 .top-note-area .winner-text {
@@ -649,6 +676,11 @@ body {
 #reckoning-page .voting-section .vote-box-winner-2 .top-note-area .winner-text {
     position: relative;
     left: 350px;
+}
+
+#reckoning-page .voting-section .vote-box-tie .top-note-area .winner-text {
+    position: relative;
+    left: 195px;
 }
 
 #reckoning-page .voting-section .top-note-area .winner-text {
@@ -678,17 +710,20 @@ body {
     border: 0px;
     display: block;
     margin: 0px 0px 6px 0px;
-    padding: 0px 0px 15px 0px; /* sliding doors padding */
+    padding: 0px 0px 14px 0px; /* sliding doors padding */
+    text-align: center;
     text-decoration: none;
-    width: 208px;
+    width: 214px;
 }
 
 #reckoning-page .voting-section .button-area .button-1 {
 	float: left;
+	width: 214px;
 }
 
 #reckoning-page .voting-section .button-area .button-2 {
     float: right;
+    width: 214px;
 }
 
 /* Setting this up as a table cell to allow for the text to be centered.  IE6 and 7
@@ -698,7 +733,7 @@ body {
     display: table-cell;
     font: 24px "Calibri", "Futura", "Tw Cen MT", "Century Gothic", sans-serif;
     font-weight:bold;
-    padding: 15px 0px 0px 0px;
+    padding: 15px 3px 0px 3px;
     text-align: center;
     text-transform: uppercase; 
     vertical-align: middle;
@@ -711,7 +746,7 @@ body {
 }
 
 #reckoning-page .voting-section .button-area .button-1 span {
-    background: transparent url('../images/reckon-button-red_01.png') no-repeat;
+    background: transparent url('../images/reckon-button-red_01.png') no-repeat center top;
 }
 
 #reckoning-page .voting-section .button-area .button-2 {
@@ -719,11 +754,10 @@ body {
 }
 
 #reckoning-page .voting-section .button-area .button-2 span {
-    background: transparent url('../images/reckon-button-green_01.png') no-repeat;
+    background: transparent url('../images/reckon-button-green_01.png') no-repeat center top;
 }
 
 #reckoning-page .voting-section .subtitle-area {
-	min-height: 1em;
 	clear: both;
 }
 
@@ -735,13 +769,13 @@ body {
 #reckoning-page .voting-section .subtitle-area .subtitle-wrapper-1 {
     float: left;
     margin: 0 40px;
-    width: 208px;
+    width: 214px;
 }
 
 #reckoning-page .voting-section .subtitle-area .subtitle-wrapper-2 {
     float: right;
     margin: 0 40px;
-    width: 208px;
+    width: 214px;
 }
 
 #reckoning-page .voting-section .stat-area {
@@ -777,6 +811,7 @@ body {
 
 #reckoning-page .metadata-section .label {
     font-weight: bold;
+    line-height: 14px;
 }
 
 #reckoning-page .metadata-section .spec-wrapper {
@@ -807,10 +842,145 @@ body {
     clear: both;
 }
 
-
 #reckoning-page .metadata-section .time {
     color: #cc0000;
     font-size: 20px;
+}
+
+#reckoning-page .prev-next-section {
+    margin: 0px 7px;
+    width: 612px;	
+}
+
+#reckoning-page .prev-next-section a {
+	color: black;
+    text-decoration: none;  
+}
+
+#reckoning-page .prev-next-section a:hover {
+	text-decoration: underline;
+}
+
+#reckoning-page .prev-next-section .prev-wrapper {
+	float: left;
+	text-align: left;
+	width: 300px;
+}
+
+#reckoning-page .prev-next-section .next-wrapper {
+    float: right;
+    text-align: right;
+    width: 300px;
+}
+
+#reckoning-page .prev-next-section .previous-reck-img {
+    float: left;
+    margin: 0 5px 0 0;
+}
+
+#reckoning-page .prev-next-section .next-reck-img {
+    float: right;
+    margin: 0 0 0 5px;
+}
+
+#reckoning-page .prev-next-section .label {
+    font-family: Futura, "Century Gothic", Futura, "Tw Cen MT", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 18px;	
+    text-decoration: underline;
+}
+
+#reckoning-page .prev-next-section .question {
+	color: blue;
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+	font-size: 9pt;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+#reckoning-page .comment-section {
+	clear: both;
+	font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+	margin: 0 7px;
+}
+
+#reckoning-page .comment-section .comment-box {
+    background-color: #f6f6f6;
+    border: 1px solid #9d9d9d;
+    margin: 54px 0 0 0;
+    padding: 72px 6px 12px 6px;
+    width: 598px;
+}
+
+#reckoning-page .comment-section .inner-comment-box {
+    background-color: white;
+    border: 1px solid #9d9d9d;
+    padding: 10px 0 0 0;
+    margin: 0px 10px;
+    width: 578px;
+}
+
+#reckoning-page .comment-section .comment-label {
+    height: 0px;
+    position: relative;
+    left: 252px;
+}
+
+#reckoning-page .comment-section .comment-data {
+    float: right;
+    width: 450px;
+}
+
+#reckoning-page .comment-section .comment {
+	background-color: white;
+    margin: 10px 30px;
+}
+
+#reckoning-page .comment-section .comment-header {
+    margin: 0 0 5px 0;	
+}
+
+#reckoning-page .comment-section .comment-footer {
+	font-size: 10px;
+    margin: 5px 0 0 0;  
+}
+
+#reckoning-page .comment-section .comment-divider {
+	border-top-width: 0px;
+	border-left-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-bottom-color: #9d9d9d;
+	clear: both;
+	height: 20px;
+    margin: 20px 20px;
+    text-align: center;
+}
+
+#reckoning-page .comment-section .favorite {
+	color: #0d4268;
+}
+
+#reckoning-page .comment-section .flag {
+    color: #0d4268;
+}
+
+#reckoning-page .comment-section .favorite {
+    color: #c54913;
+}
+
+#reckoning-page .comment-section .no-comment-text {
+    font-family: Futura, "Century Gothic", Futura, "Tw Cen MT", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 18px;
+    font-style: italic;
+    font-weight: normal;
+    margin: 12px 0 18px 0;
+    text-align: center;
+    text-transform: uppercase;	
+}
+
+#reckoning-page .comment-section .no-comment-text .subtitle {
+	font-size: 10px;
 }
 
 /***************************************************************************************

@@ -11,6 +11,7 @@ from reckonersite.domain.favorite import Favorite
 from reckonersite.domain.flag import Flag
 from reckonersite.domain.reckoneruser import ReckonerUser
 from reckonersite.util.dateutil import getRemainingTime
+from reckonersite.util.validation import slugifyTitle
 
 class Reckoning(Base):
     '''Object definition of a basic reckoning.  Maintained to be synchronized with the Reckoner API'''
@@ -58,6 +59,8 @@ class Reckoning(Base):
             
         if not xml_element is None:
             self.buildFromXMLElement(xml_element)
+            
+        self.url = self.getURL()
         
     def getXML(self):
         return (buildXml(self.__dict__, 'reckoning'))
@@ -189,6 +192,12 @@ class Reckoning(Base):
     
     def getRemainingTime(self):
         return getRemainingTime(self.closing_date)
+    
+    def getURL(self):
+        if (self.id and self.question):
+            return '/reckoning/' + self.id + "/" + slugifyTitle(self.question)
+        
+        return None
         
 class Tag(Base):
     def __init__(self, tag=None):

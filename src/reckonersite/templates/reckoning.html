@@ -51,6 +51,84 @@
             </div>
             <div class="bottom-wrapper"></div>
         </div>
+        <hr class="section-divider">
+        <div class="prev-next-section">
+            {% if prev_reck %}
+            <a href="{{next_reck.url}}">
+            <div class="prev-wrapper">
+                <img src="{{ STATIC_URL }}images/chevron_prev.png" alt="Previous Reckoning!" class="previous-reck-img"/>
+                <div class="label">PREVIOUS!</div>
+                <div class="question">{{ prev_reck.question }}</div>
+            </div>
+            </a>
+            {% endif %}
+            {% if next_reck %}
+            <a href="{{next_reck.url}}">
+            <div class="next-wrapper">
+                <img src="{{ STATIC_URL }}images/chevron_next.png" alt="Next Reckoning!" class="next-reck-img"/>
+                <div class="label">NEXT!</div>
+                <div class="question">{{ next_reck.question }}</div>            
+            </div>
+            </a>
+            {% endif %}
+        </div>
+        <hr class="section-divider">
+        <div class="comment-section">
+             <div class="comment-label"><img src="{{ STATIC_URL }}images/reckoning-comment-label.png" alt="Reckoning Comments!"></div>
+             <div class="comment-box">
+                <div class="inner-comment-box">
+	                {% if reckoning.comments %}
+	                    {% for comment in reckoning.comments %}
+	                        <div class="comment">
+		                        <div class="profile-picture-wrapper"><img src="{{comment.user.profile_picture_url}}" class="profile-picture"></div>
+		                        <div class="comment-data">
+			                        <div class="comment-header">
+			                            <span class="profile-name">{{comment.user.first_name}} {{comment.user.last_name}}</span>
+			                        </div>
+			                        <div class="comment-text">{{comment.comment}}</div>
+			                        <div class="comment-footer">
+			                            <span class="date">Posted {{comment.posting_date}}</span>
+			                            {% if 'FAVORITE' in perms %}
+			                            <span class="favorite"> - Favorite</span>
+			                            {% endif %}      
+			                            {% if 'FLAG' in perms %}
+			                            <span class="flag"> - Flag</span>
+			                            {% endif %}                            
+			                        </div>
+		                        </div>
+	                        </div>
+	                    <hr class="comment-divider">
+	                    {% endfor %}
+	                {% else %}
+	                    <div class="no-comment-text">No comments yet!  Be the first!
+	                        <div class="subtitle">(And don't say 'first!')</div>
+	                    </div>
+	                {% endif %}
+                </div>
+             </div> 
+        </div>
+        <div class="post-comment-section">
+            {% if 'POST_COMMENT' in perms %}
+            {% else %}
+		        <div class="sign-up-box">
+		            <h4>Want to post a comment?</h4>
+		            <h2>Sign up or log in!</h2>
+		            <h3>It's easy!</h3>
+		            <div class="login-buttons">
+		                 <div class="login-button login-button-1">    
+		                     <a href="{{ FACEBOOK_OAUTH_URL }}?client_id={{ FACEBOOK_APP_ID }}&redirect_uri={{ FACEBOOK_REDIRECT_URL }}&scope={{ FACEBOOK_SCOPE }}">
+		                     <img src="{{ STATIC_URL }}images/big-facebook-login-button.png" alt="Login with Facebook!">
+		                     </a>     
+		                 </div>
+		                 <div class="login-button login-button-2">
+		                     <a href="{{ GOOGLE_API_OAUTH_URL }}?client_id={{ GOOGLE_APP_ID }}&redirect_uri={{ GOOGLE_REDIRECT_URL }}&scope={{ GOOGLE_SCOPE }}&response_type=code">
+		                     <img src="{{ STATIC_URL }}images/big-google-login-button.png">     
+		                     </a>
+		                 </div>                
+		            </div>
+		        </div>               
+            {% endif %}
+        </div>
     </div>        
 {% endblock %}
 
