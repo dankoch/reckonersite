@@ -16,8 +16,12 @@ logger = logging.getLogger(settings.STANDARD_LOGGER)
 def purgeHtml(value):
     return sanitizeHtml(value, "")
 
-def sanitizeFreeTextHtml(value):
-    print "html to sanitize: " + value
+def sanitizeCommentHtml(value):
+    document = sanitizeHtml(value, 'p i em strong b u a pre br ol ul li img')
+    document = tidyTextInput(document)
+    return document
+
+def sanitizeDescriptionHtml(value):
     document = sanitizeHtml(value, 'p i em strong b u a pre br ol ul li img')
     document = tidyTextInput(document)
     return document

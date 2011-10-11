@@ -39,6 +39,18 @@ class Comment(Base):
     def getXMLString(self):
         return cET.tostring(self.getXML())
     
+    def getPostingXML(self, session_id):
+        posting = cET.Element('comment_post')
+        posting.append(self.getXML())
+        
+        token = cET.SubElement(posting, 'session_id')
+        token.text = session_id
+        
+        return posting
+    
+    def getPostingXMLString(self, session_id):
+        return cET.tostring(self.getPostingXML(session_id))
+    
     def buildFromXMLString(self, xml):
         xml_root = cET.XML(xml)
         self.buildFromXMLElement(xml_root)

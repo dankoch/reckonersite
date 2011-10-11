@@ -920,6 +920,11 @@ body {
     width: 578px;
 }
 
+#reckoning-page .comment-section .post-comment-box {
+    margin: 20px 10px;
+    overflow: auto;
+}
+
 #reckoning-page .comment-section .comment-label {
     height: 0px;
     position: relative;
@@ -934,6 +939,22 @@ body {
 #reckoning-page .comment-section .comment {
 	background-color: white;
     margin: 10px 30px;
+}
+
+#reckoning-page .comment-section .comment p {
+	margin: 5px 0;
+	font-size: 10pt;
+    word-wrap: break-word;
+}
+
+#reckoning-page .comment-section .comment ol {
+    margin: 8px 0;
+    word-wrap: break-word;
+}
+
+#reckoning-page .comment-section .comment ul {
+    margin: 8px 0;
+    word-wrap: break-word;
 }
 
 #reckoning-page .comment-section .comment-header {
@@ -969,6 +990,38 @@ body {
     color: #c54913;
 }
 
+#reckoning-page .comment-section .comment-form-label {
+	display: none;
+}
+
+#reckoning-page .comment-section .comment-edit-field {
+	height: 150px;
+	width: 450px;
+}
+
+#reckoning-page .comment-section .field-notation {
+    margin: 0;
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 8px;    
+}
+
+#reckoning-page .comment-section .post-comment-box h4 {
+    font-family: Futura, "Century Gothic", Futura, "Tw Cen MT", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 24px;   
+    font-style: italic;
+    margin: 0;
+    text-align: center;
+}
+
+#reckoning-page .comment-section .post-comment-box h4 .subtitle {
+	font-size: 14px;
+}
+
+#reckoning-page .comment-section .comment-post-options {
+	margin: 20px 0px;
+	text-align: right;
+}
+
 #reckoning-page .comment-section .no-comment-text {
     font-family: Futura, "Century Gothic", Futura, "Tw Cen MT", "URW Gothic L", Tahoma, sans-serif;
     font-size: 18px;
@@ -982,6 +1035,26 @@ body {
 #reckoning-page .comment-section .no-comment-text .subtitle {
 	font-size: 10px;
 }
+
+#reckoning-page .comment-section .comment-header ul
+ {
+    float: right;
+    margin: 0 0 8px 0;
+    text-align: right;
+    width: 250px;
+ }
+ 
+#reckoning-page .errorlist li
+ {
+    color: red;
+    display: inline;
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 0;   
+    text-transform: uppercase; 
+    width: 300px;
+ }
 
 /***************************************************************************************
  * ADMIN STYLES

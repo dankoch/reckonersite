@@ -14,16 +14,18 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
+from reckonersite.client.commentclient import client_post_reckoning_comment
 from reckonersite.client.reckoningclient import client_get_reckoning, \
                                                 client_post_reckoning, \
                                                 client_get_random_open_reckoning, \
                                                 client_get_random_closed_reckoning
 from reckonersite.client.voteclient import client_get_user_reckoning_vote
 from reckonersite.domain.answer import Answer
+from reckonersite.domain.comment import Comment
 from reckonersite.domain.reckoning import Reckoning
 from reckonersite.domain.vote import Vote
 from reckonersite.util.math import computeReckoningAnswerPercentages
-from reckonersite.util.validation import purgeHtml, sanitizeFreeTextHtml
+from reckonersite.util.validation import purgeHtml, sanitizeDescriptionHtml, sanitizeCommentHtml
 
 logger = logging.getLogger(settings.STANDARD_LOGGER)
 
@@ -52,7 +54,7 @@ def post_reckoning(request):
                         answers[int(index)-1].subtitle = purgeHtml(attr)
 
                 reckoning=Reckoning(question=purgeHtml(form.cleaned_data['question']),
-                                    description=sanitizeFreeTextHtml(form.cleaned_data['description']),
+                                    description=sanitizeDescriptionHtml(form.cleaned_data['description']),
                                     answers=answers,
                                     tag_csv=purgeHtml(form.cleaned_data['tags']),
                                     submitter_id=request.user.reckoner_id)
@@ -107,8 +109,35 @@ def post_reckoning_thanks(request):
 
 
 def get_reckoning(request, id = None, title = None):
+    commentFormPrefix="commentform"
+    errors={}
+    
     try:
-        service_response = client_get_reckoning(id, "none")
+        # Check to see if we're coming here from a POST.  If so, we've got work to do.
+        if request.method == 'POST':
+            if 'postcomment' in request.POST:
+                if (request.user.has_perm('COMMENT')):
+                    commentForm = CommentReckoningForm(request.POST, prefix=commentFormPrefix)
+                    if (commentForm.is_valid()):
+                        print "Comment Text: " + commentForm.cleaned_data.get('comment')
+                        comment = Comment(comment = sanitizeCommentHtml(commentForm.cleaned_data.get('comment')),
+                                          poster_id = request.user.reckoner_id)
+                        print "Comment Post-Clean Text: " + comment.comment
+                        comment_service_response = client_post_reckoning_comment(comment, id, request.user.session_id)
+                        if not comment_service_response.success:
+                            logger.error("Failed to post comment to ID: " + id)
+                            messages.error(request, "Sorry!  Reckonbot choked on that last comment!  I'm looking into it, ASAP.  - DK")
+                    else:
+                        for attr, value in commentForm.errors.iteritems():
+                            logger.info("Invalid comment submitted: " + str(attr) + ": " + str(value))
+                            errors[attr] = value
+                            
+                service_response = client_get_reckoning(id, request.user.session_id)
+                                                  
+            elif 'postvote' in request.POST:
+                pass
+        else:
+            service_response = client_get_reckoning(id, request.user.session_id, page_visit=True)
         
         # Check to see if the API submission was a success.  If not, straight to the fail-page!
         # If the Reckoning list is empty, there's no Reckoning by that ID.  Straight to the 404 page!
@@ -119,7 +148,8 @@ def get_reckoning(request, id = None, title = None):
             raise Http404
         elif (request.path != service_response.reckonings[0].url):
             return HttpResponseRedirect(service_response.reckonings[0].url)
-        else:            
+        else:
+            commentForm = CommentReckoningForm(prefix=commentFormPrefix)            
             reckoning = computeReckoningAnswerPercentages(service_response.reckonings[0])
             leader = None
             next_reck = None
@@ -159,7 +189,8 @@ def get_reckoning(request, id = None, title = None):
                                          'leader' : leader,
                                          'time_remaining' : reckoning.getRemainingTime(),
                                          'next_reck' : next_reck,
-                                         'prev_reck' : prev_reck})
+                                         'prev_reck' : prev_reck,
+                                         'errors' : errors})
             
             return render_to_response('reckoning.html', c)
     except Http404:
@@ -168,5 +199,9 @@ def get_reckoning(request, id = None, title = None):
     except Exception:
         logger.error("Exception when showing a reckoning:") 
         logger.error(traceback.print_exc(8))
-        raise Exception        
+        raise Exception     
+    
+    
+class CommentReckoningForm(forms.Form):  
+    comment = forms.CharField(max_length=5000, label="Comment", required=True, widget=forms.Textarea)  
         

@@ -2,6 +2,11 @@
 
 {% block pagetitle %}The Reckoner! - {{ reckoning.question }}{% endblock %}
 
+{% block extraheader %}
+      <script src="{{ STATIC_URL }}ckeditor/ckeditor.js"></script>
+      <script src="{{ STATIC_URL }}ckeditor/adapters/jquery.js"> </script>
+{% endblock %}
+
 {% block main %}
     <div id="reckoning-page">
         {% if reckoning.commentary %}
@@ -85,14 +90,14 @@
 			                        <div class="comment-header">
 			                            <span class="profile-name">{{comment.user.first_name}} {{comment.user.last_name}}</span>
 			                        </div>
-			                        <div class="comment-text">{{comment.comment}}</div>
+			                        <div class="comment-text">{{comment.comment|safe}}</div>
 			                        <div class="comment-footer">
-			                            <span class="date">Posted {{comment.posting_date}}</span>
+			                            <span class="date">Posted {{comment.posting_date}}</span> -
 			                            {% if 'FAVORITE' in perms %}
-			                            <span class="favorite"> - Favorite</span>
+			                            <span class="favorite">Favorite</span> -
 			                            {% endif %}      
 			                            {% if 'FLAG' in perms %}
-			                            <span class="flag"> - Flag</span>
+			                            <span class="flag">Flag</span>
 			                            {% endif %}                            
 			                        </div>
 		                        </div>
@@ -105,11 +110,41 @@
 	                    </div>
 	                {% endif %}
                 </div>
+                {% if 'COMMENT' in perms %}
+                <div class="post-comment-box inner-comment-box">
+                    <h4>Post a Comment!
+                        <div class="subtitle">Add your two cents!</div>
+                    </h4>
+                    <div class="comment">
+	                    <div class="profile-picture-wrapper"><img src="{{ user.profile_picture_url }}" alt="You!" class="profile-picture"></div>
+	                    <div class="comment-data">
+                            <form action="" method="post">{% csrf_token %}	                    
+		                        <div class="comment-header">
+                                   {{errors.comment}}		                        
+			                       <div class="profile-name">{{user.first_name}} {{user.last_name}}</div>
+			                    </div>
+                                <div class="comment-field">
+                                     <label for="id_commentform-comment" class="comment-form-label"><h5>Comment!</h5></label>
+                                     <textarea maxlength=5000 id="id_commentform-comment" name="commentform-comment" class="comment-edit-field"></textarea>
+                                     <div class="field-notation">(5000 Character Max)<noscript> Allowed Tags: &lt;p&gt; &lt;i&gt; &lt;strong&gt; &lt;b&gt; &lt;u&gt; &lt;a&gt; &lt;pre&gt; &lt;br&gt; &lt;img&gt; &lt;ul&gt; &lt;li&gt;</noscript></div>
+                                </div>
+                                <div class="comment-footer">
+                                     <span class="date">Posted &lt;now!&gt; - </span>
+                                     <span class="favorite">Favorite &lt;of course!&gt;</span> -
+                                     <span class="flag">Flag &lt;no way!&gt;</span>                              
+                                </div>	
+                                <div class="comment-post-options">
+                                    <input type="submit" name="postcomment" value="Comment!" class="button comment-button"/> 
+                                </div>		                    
+		                    </form>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
              </div> 
         </div>
         <div class="post-comment-section">
-            {% if 'POST_COMMENT' in perms %}
-            {% else %}
+            {% if not 'COMMENT' in perms %}
 		        <div class="sign-up-box">
 		            <h4>Want to post a comment?</h4>
 		            <h2>Sign up or log in!</h2>
@@ -151,6 +186,14 @@
       $('.button-area').find(".reckonbutton > span").each(function() {
           $(this).css('height', largestHeight + renderAdjustment);
       });
+      
+      $(".comment-edit-field").ckeditor(
+              function () { /* Callback code */}, {
+            	  forcePasteAsPlainText: true,
+                  skin: 'v2',
+                  toolbar: 'Basic'
+              }             
+            );
   });
   </script>
 {% endblock %}

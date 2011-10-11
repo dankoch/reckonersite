@@ -21,7 +21,7 @@ class Reckoning(Base):
                  open=False, anonymous_requested=False, anonymous=False, submission_date=None,
                  posting_date=None, closing_date=None, interval=None, comments=None, comment_index=None,
                  commentary=None, commentary_user_id=None, commentary_user=None, posting_user=None,
-                 flags=None, favorites=None, tags=None, highlighted=False, 
+                 flags=None, favorites=None, tags=None, highlighted=False, views=None, 
                  tag_csv=None,
                  xml_string=None, xml_element=None):
         
@@ -50,6 +50,7 @@ class Reckoning(Base):
         self.favorites = favorites
         self.tags = tags
         self.highlighted = highlighted
+        self.views = views
         
         if not tag_csv is None:
             self.setTagsFromCSV(tag_csv)
@@ -162,6 +163,9 @@ class Reckoning(Base):
 
         if (not xml_root.find('highlighted') is None):           
             self.highlighted = (xml_root.find('highlighted').text == 'true')
+            
+        if (not xml_root.find('views') is None):
+            self.views = xml_root.find('views').text
     
     def getTagCSV(self):
         csv=""

@@ -22,7 +22,7 @@ from reckonersite.client.reckoningclient import client_get_reckoning_approval_qu
                                                 client_reject_reckoning
 from reckonersite.domain.answer import Answer
 from reckonersite.domain.reckoning import Reckoning
-from reckonersite.util.validation import purgeHtml, sanitizeFreeTextHtml
+from reckonersite.util.validation import purgeHtml, sanitizeDescriptionHtml
 
 logger = logging.getLogger(settings.STANDARD_LOGGER)
 
@@ -114,7 +114,6 @@ class SetUserGroup(forms.Form):
         super(SetUserGroup, self).__init__(*args, **kwargs)
         
         if (groups):
-            print "SetUserGroup Init XX00"
             for group, value in groups.iteritems():
                 self.fields[group] = forms.BooleanField(initial = value, required=False)
 
@@ -147,15 +146,12 @@ def reckoning_approval_page(request):
                                                       
                 elif ('save' in request.POST) or ('approve' in request.POST):
                     approveReckoningForm = ApproveReckoningForm(request.POST, prefix=approveReckoningFormPrefix)
-                    print "approveReckoningForm: " + str(approveReckoningForm.errors)
                     
                     if (approveReckoningForm.is_valid()):
-                        commentary = sanitizeFreeTextHtml(approveReckoningForm.cleaned_data['commentary'])
+                        commentary = sanitizeDescriptionHtml(approveReckoningForm.cleaned_data['commentary'])
                         if (commentary and (len(commentary) > 0)):
-                            print"Commentary: " + commentary;
                             commentary_user_id = request.user.reckoner_id
                         else:
-                            print"Commentary null: ";
                             commentary_user_id = None
                             
                         answers = [Answer(index=0), Answer(index=1)]
@@ -169,7 +165,7 @@ def reckoning_approval_page(request):
 
                         savedReckoning=Reckoning(id=request.session["admin_approve_reckoning"],
                                                  question=purgeHtml(approveReckoningForm.cleaned_data['question']),
-                                                 description=sanitizeFreeTextHtml(approveReckoningForm.cleaned_data['description']),
+                                                 description=sanitizeDescriptionHtml(approveReckoningForm.cleaned_data['description']),
                                                  answers=answers,
                                                  interval=approveReckoningForm.cleaned_data['interval'],
                                                  highlighted=approveReckoningForm.cleaned_data['highlighted'],

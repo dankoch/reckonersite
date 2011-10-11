@@ -24,7 +24,6 @@ def client_post_reckoning(reckoning, session_id):
     
     return servResponse
 
-
 def client_update_reckoning(reckoning, session_id):
     url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/update"
     
@@ -39,20 +38,18 @@ def client_update_reckoning(reckoning, session_id):
     return servResponse
 
 
-def client_get_reckoning(id, session_id, include_unaccepted=False):
+def client_get_reckoning(id, session_id, include_unaccepted=False, page_visit=False):
     url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/id/" + id + "?"
     if (session_id):
         url += "session_id=" + session_id + "&"
     if (include_unaccepted):
         url += "include_unaccepted=true" + "&"
+    if (page_visit):
+        url += "page_visit=true" + "&"
         
     response = urllib2.urlopen(url)    
     content = response.read()
-    
-    print "Get Reckoning 1: " + content
     reckoningList = ReckoningServiceList(xml_string = content)
-
-    print "Get Reckoning 2: " + reckoningList.getXMLString()
     
     return reckoningList   
 
