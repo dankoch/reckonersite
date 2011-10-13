@@ -52,7 +52,7 @@
                             <div class="field-wrapper">
                                  {{form.answer_1.errors}}                                 
                                  <p><label for="id_reckapp_answer_1"><h5>Option 1</h5></label></p>
-                                 <p><textarea maxlength=25 id="id_reckapp_answer_1" name="answer_1" class="answer-edit-field"></textarea></p>
+                                 <p><input type="text" maxlength=25 id="id_reckapp_answer_1" name="answer_1" class="answer-edit-field"></input></p>
                                  <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
                                  <div class="tooltip">
                                     <p><b>This is the payload!</b> 25 characters to make it happen.</p> 
@@ -62,7 +62,7 @@
                             <div class="field-wrapper">
                                  {{form.subtitle_1.errors}}                               
                                  <p><label for="id_subtitle_1"><h6>Subtitle 1</h6></label></p>
-                                 <p><textarea maxlength=25 id="id_subtitle_1" name="subtitle_1" class="subtitle-edit-field"></textarea></p>
+                                 <p><input type="text" maxlength=25 id="id_subtitle_1" name="subtitle_1" class="subtitle-edit-field"></input></p>
                                  <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
                                  <div class="tooltip">
                                     <p><b>This is for fun!</b> 25 additional characters to annotate your answer.</p> 
@@ -75,7 +75,7 @@
                             <div class="field-wrapper">     
                                  {{form.answer_2.errors}}                     
                                  <p><label for="id_answer_2"><h5>Option 2</h5></label></p>
-                                 <p><textarea maxlength=25 id="id_answer_2" name="answer_2" class="answer-edit-field"></textarea></p>
+                                 <p><input type="text" maxlength=25 id="id_answer_2" name="answer_2" class="answer-edit-field"></input></p>
                                  <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
                                  <div class="tooltip">
                                     <p><b>This is the payload!</b> 25 characters to make it happen.</p> 
@@ -85,7 +85,7 @@
                             <div class="field-wrapper">     
                                  {{form.subtitle_2.errors}}                              
                                  <p><label for="id_subtitle_2"><h6>Subtitle 2</h6></label></p>
-                                 <p><textarea maxlength=25 id="id_subtitle_2" name="subtitle_2" class="subtitle-edit-field"></textarea></p>
+                                 <p><input type="text" maxlength=25 id="id_subtitle_2" name="subtitle_2" class="subtitle-edit-field"></input></p>
                                  <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
                                  <div class="tooltip">
                                     <p><b>This is for fun!</b> 25 additional characters to annotate your answer.</p> 
@@ -104,7 +104,7 @@
                          </div>                      
                          {{form.tags.errors}}                          
                          <p><label for="id_tags"><h5>Tags!</h5></label></p>
-                         <p><textarea maxlength=100 id="id_tags" name="tags" class="tags-edit-field"></textarea></p>
+                         <p><input type="text" maxlength=100 id="id_tags" name="tags" class="tags-edit-field"></input></p>
                          <div class="field-notation">(Separated by commas - e.g. 'Relationships, Video Games, Television, Jobs', etc.)</div>                                      
                     </div>         
                     

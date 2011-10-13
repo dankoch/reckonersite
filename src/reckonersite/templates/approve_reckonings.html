@@ -83,7 +83,7 @@
 					        <div class="field-wrapper">
                                  {{errors.answer_1}}					             
 		                         <p><label for="id_reckapp_answer_1"><h5>Option 1</h5></label></p>
-		                         <p><textarea maxlength=25 id="id_reckapp_answer_1" name="reckapp-answer_1" class="answer-edit-field">{% if approveReckoningForm.answer_1.value %}{{approveReckoningForm.answer_1.value}}{% endif %}</textarea></p>
+		                         <p><input type="text" maxlength=25 id="id_reckapp_answer_1" name="reckapp-answer_1" class="answer-edit-field" value="{% if approveReckoningForm.answer_1.value %}{{approveReckoningForm.answer_1.value}}{% endif %}"></input></p>
 		                         <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
 		                         <div class="tooltip">
 		                            <p><b>This is the payload!</b> 25 characters to make it happen.</p> 
@@ -93,7 +93,7 @@
 	                        <div class="field-wrapper">
                                  {{errors.subtitle_1}}	                             
 	                             <p><label for="id_reckapp-subtitle_1"><h6>Subtitle 1</h6></label></p>
-	                             <p><textarea maxlength=25 id="id_reckapp-subtitle_1" name="reckapp-subtitle_1" class="subtitle-edit-field">{% if approveReckoningForm.subtitle_1.value %}{{approveReckoningForm.subtitle_1.value}}{% endif %}</textarea></p>
+	                             <p><input type="text" maxlength=25 id="id_reckapp-subtitle_1" name="reckapp-subtitle_1" class="subtitle-edit-field" value="{% if approveReckoningForm.subtitle_1.value %}{{approveReckoningForm.subtitle_1.value}}{% endif %}"></input></p>
                                  <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
                                  <div class="tooltip">
                                     <p><b>This is for fun!</b> 25 additional characters to annotate your answer.</p> 
@@ -106,7 +106,7 @@
 	                        <div class="field-wrapper">     
                                  {{errors.answer_2}}    	             
 	                             <p><label for="id_reckapp-answer_2"><h5>Option 2</h5></label></p>
-	                             <p><textarea maxlength=25 id="id_reckapp-answer_2" name="reckapp-answer_2" class="answer-edit-field">{% if approveReckoningForm.answer_2.value %}{{approveReckoningForm.answer_2.value}}{% endif %}</textarea></p>
+	                             <p><input type="text" maxlength=25 id="id_reckapp-answer_2" name="reckapp-answer_2" class="answer-edit-field" value="{% if approveReckoningForm.answer_2.value %}{{approveReckoningForm.answer_2.value}}{% endif %}"></input></p>
                                  <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
                                  <div class="tooltip">
                                     <p><b>This is the payload!</b> 25 characters to make it happen.</p> 
@@ -116,7 +116,7 @@
 	                        <div class="field-wrapper">     
                                  {{errors.subtitle_2}}    	                        
 	                             <p><label for="id_reckapp-subtitle_2"><h6>Subtitle 2</h6></label></p>
-	                             <p><textarea maxlength=25 id="id_reckapp-subtitle_2" name="reckapp-subtitle_2" class="subtitle-edit-field">{% if approveReckoningForm.subtitle_2.value %}{{approveReckoningForm.subtitle_2.value}}{% endif %}</textarea></p>
+	                             <p><input type="text" maxlength=25 id="id_reckapp-subtitle_2" name="reckapp-subtitle_2" class="subtitle-edit-field" value="{% if approveReckoningForm.subtitle_2.value %}{{approveReckoningForm.subtitle_2.value}}{% endif %}"></input></p>
                                  <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
                                  <div class="tooltip">
                                     <p><b>This is for fun!</b> 25 additional characters to annotate your answer.</p> 
@@ -135,12 +135,12 @@
                          </div>  
                          {{errors.tags}}                          
                          <p><label for="id_reckapp-tags"><h5>Tags!</h5></label></p>
-                         <p><textarea maxlength=100 id="id_reckapp-tags" name="reckapp-tags" class="tags-edit-field">{% if approveReckoningForm.tags.value %}{{approveReckoningForm.tags.value}}{% endif %}</textarea></p>
+                         <p><input type="text" maxlength=100 id="id_reckapp-tags" name="reckapp-tags" class="tags-edit-field" value="{% if approveReckoningForm.tags.value %}{{approveReckoningForm.tags.value}}{% endif %}"></input></p>
                          <div class="field-notation">(Separated by commas - e.g. 'Relationships, Video Games, Television, Jobs', etc.)</div>
                     </div><div class="field-wrapper"> 
                          {{errors.interval}}                         
                          <p><label for="id_reckapp-interval"><h5>Interval (in minutes)!</h5></label></p>
-                         <p><textarea maxlength=6 id="id_reckapp-interval" name="reckapp-interval" class="interval-edit-field">{% if approveReckoningForm.interval.value %}{{approveReckoningForm.interval.value}}{% endif %}</textarea></p>
+                         <p><input type="text" maxlength=6 id="id_reckapp-interval" name="reckapp-interval" class="interval-edit-field" value="{% if approveReckoningForm.interval.value %}{{approveReckoningForm.interval.value}}{% endif %}"></input></p>
                     </div><div class="field-wrapper">   
                          {{errors.highlighted}}                       
                          <p><label for="id_reckapp-highlighted"><h5>Highlighted!</h5></label></p>
