@@ -6,16 +6,14 @@ import urllib2
 
 from django.conf import settings
 from reckonersite.domain.serviceresponse import ServiceResponse
-from reckonersite.domain.vote import Vote
 from reckonersite.domain.voteservicelist import VoteServiceList
 
-def client_post_reckoning(reckoning, session_id):
-    url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning"
-    
-    reckoning.anonymous_requested = False
-    
+def client_post_reckoning_vote(vote, reckoning_id, answer_index, session_id):
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/vote/reckoning/" \
+                                 + reckoning_id + "/answer/" + answer_index
+
     req = urllib2.Request(url = url,
-                          data = reckoning.getPostingXMLString(session_id),
+                          data = vote.getPostingXMLString(session_id),
                           headers = {'Content-Type': 'text/xml'})
 
     response = urllib2.urlopen(req)

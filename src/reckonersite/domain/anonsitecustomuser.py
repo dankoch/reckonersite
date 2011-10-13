@@ -12,7 +12,7 @@ class AnonSiteCustomUser(SiteCustomUser):
     
     def __init__(self, session_id=None):
         
-        self.reckoner_id = 'anon'
+        self.reckoner_id = session_id
         self.username = 'anon'
         self.first_name = None
         self.last_name = None
@@ -26,8 +26,8 @@ class AnonSiteCustomUser(SiteCustomUser):
         
         # Default permissions for anonymous users.  Reckon Site will
         # vouch for anonymous 
-        self.groups = ['ANON']
-        self.permissions = ['vote']
+        self.groups = ['ANONYMOUS']
+        self.permissions = ['VIEW_LIST', 'VIEW_RECKONING', 'VOTE',]
         self.active = True
         
         self.session_id = session_id

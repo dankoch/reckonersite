@@ -30,6 +30,8 @@ class ReckonerAuthMiddleware(object):
     
     def process_request(self, request):
         
+        print "Current Session " + str(request.session.get(settings.RECKONER_API_SESSION_ID, None))
+        
         # Check the session to see if a user token is specified.
         if (request.session.get(settings.RECKONER_API_SESSION_ID, None)):
             
@@ -67,5 +69,5 @@ class ReckonerAuthMiddleware(object):
         if (not request.session.get(settings.RECKONER_API_SESSION_ID, None)):
             request.session[settings.RECKONER_API_SESSION_ID] = "anon_" + str(uuid.uuid4())
             request.user = AnonSiteCustomUser(request.session.get(settings.RECKONER_API_SESSION_ID, None))
-
+            print "New Anon Session " + str(request.session.get(settings.RECKONER_API_SESSION_ID, None))
         

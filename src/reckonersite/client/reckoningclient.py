@@ -30,6 +30,8 @@ def client_update_reckoning(reckoning, session_id):
     req = urllib2.Request(url = url,
                           data = reckoning.getPostingXMLString(session_id),
                           headers = {'Content-Type': 'text/xml'})
+    
+    print "Update Reckoning: " + reckoning.getPostingXMLString(session_id)
 
     response = urllib2.urlopen(req)
     content = response.read()

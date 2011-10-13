@@ -148,8 +148,9 @@ def reckoning_approval_page(request):
                     approveReckoningForm = ApproveReckoningForm(request.POST, prefix=approveReckoningFormPrefix)
                     
                     if (approveReckoningForm.is_valid()):
-                        commentary = sanitizeDescriptionHtml(approveReckoningForm.cleaned_data['commentary'])
+                        commentary = approveReckoningForm.cleaned_data['commentary'].strip()
                         if (commentary and (len(commentary) > 0)):
+                            commentary = sanitizeDescriptionHtml(commentary)
                             commentary_user_id = request.user.reckoner_id
                         else:
                             commentary_user_id = None
@@ -189,7 +190,6 @@ def reckoning_approval_page(request):
                                 messages.info(request, "Approved reckoning " + request.session["admin_approve_reckoning"] + "!")
                                 request.session["admin_approve_reckoning"] = None
                     else:
-                        print "reckoning_approval_page: " + str(approveReckoningForm.errors) 
                         for attr, value in approveReckoningForm.errors.iteritems():
                             errors[attr] = value
                     

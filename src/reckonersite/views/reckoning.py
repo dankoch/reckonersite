@@ -19,7 +19,8 @@ from reckonersite.client.reckoningclient import client_get_reckoning, \
                                                 client_post_reckoning, \
                                                 client_get_random_open_reckoning, \
                                                 client_get_random_closed_reckoning
-from reckonersite.client.voteclient import client_get_user_reckoning_vote
+from reckonersite.client.voteclient import client_get_user_reckoning_vote, \
+                                           client_post_reckoning_vote
 from reckonersite.domain.answer import Answer
 from reckonersite.domain.comment import Comment
 from reckonersite.domain.reckoning import Reckoning
@@ -36,47 +37,50 @@ logger = logging.getLogger(settings.STANDARD_LOGGER)
 
 
 def post_reckoning(request):
-      
-    try:
-        # Check to see if we're coming here from a POST.  If so, process it.  If not, give 'em a fresh form.
-        if request.method == 'POST' :
-            form = PostReckoningForm(request.POST)
-            
-            # Check form validation -- kick the form back out with error messages if failed.
-            if form.is_valid():
-                answers = [Answer(index=0), Answer(index=1)]
-                for key, attr in form.cleaned_data.iteritems():
-                    if (key.startswith("answer")):
-                        index = key.split('_')[1]
-                        answers[int(index)-1].text = purgeHtml(attr)
-                    elif (key.startswith("subtitle")):
-                        index = key.split('_')[1]
-                        answers[int(index)-1].subtitle = purgeHtml(attr)
-
-                reckoning=Reckoning(question=purgeHtml(form.cleaned_data['question']),
-                                    description=sanitizeDescriptionHtml(form.cleaned_data['description']),
-                                    answers=answers,
-                                    tag_csv=purgeHtml(form.cleaned_data['tags']),
-                                    submitter_id=request.user.reckoner_id)
-            
-                # Submit to the API
-                response = client_post_reckoning(reckoning, request.user.session_id)
+    
+    if request.user.has_perm('POST_RECKONING'):  
+        try:
+            # Check to see if we're coming here from a POST.  If so, process it.  If not, give 'em a fresh form.
+            if request.method == 'POST' :
+                form = PostReckoningForm(request.POST)
                 
-                # Check to see if the API submission was a success.  If not, clean the error and display.  Otherwise, great!
-                if not response.success:
-                    logger.error("Error from post attempt: " + response.message)
-                    raise Exception
-                else:                    
-                    return HttpResponseRedirect('/thanks-for-playing')
-        else :
-            form = PostReckoningForm()
-        
-        c = RequestContext(request,{'form' : form,})
-        return render_to_response('post-reckoning.html', c)
-    except Exception:      
-        logger.error("Exception when showing and processing the Submit-a-Reckoning form:") 
-        logger.error(traceback.print_exc(8))
-        raise Exception        
+                # Check form validation -- kick the form back out with error messages if failed.
+                if form.is_valid():
+                    answers = [Answer(index=0), Answer(index=1)]
+                    for key, attr in form.cleaned_data.iteritems():
+                        if (key.startswith("answer")):
+                            index = key.split('_')[1]
+                            answers[int(index)-1].text = purgeHtml(attr)
+                        elif (key.startswith("subtitle")):
+                            index = key.split('_')[1]
+                            answers[int(index)-1].subtitle = purgeHtml(attr)
+    
+                    reckoning=Reckoning(question=purgeHtml(form.cleaned_data['question']),
+                                        description=sanitizeDescriptionHtml(form.cleaned_data['description']),
+                                        answers=answers,
+                                        tag_csv=purgeHtml(form.cleaned_data['tags']),
+                                        submitter_id=request.user.reckoner_id)
+                
+                    # Submit to the API
+                    response = client_post_reckoning(reckoning, request.user.session_id)
+                    
+                    # Check to see if the API submission was a success.  If not, clean the error and display.  Otherwise, great!
+                    if not response.success:
+                        logger.error("Error from post attempt: " + response.message)
+                        raise Exception
+                    else:                    
+                        return HttpResponseRedirect('/thanks-for-playing')
+            else :
+                form = PostReckoningForm()
+            
+            c = RequestContext(request,{'form' : form,})
+            return render_to_response('post-reckoning.html', c)
+        except Exception:      
+            logger.error("Exception when showing and processing the Submit-a-Reckoning form:") 
+            logger.error(traceback.print_exc(8))
+            raise Exception  
+    else:
+        return HttpResponseRedirect("/post-reckoning-welcome")      
 
 class PostReckoningForm(forms.Form):  
     question = forms.CharField(max_length=150, label="Question", required=True, widget=forms.Textarea)
@@ -119,10 +123,8 @@ def get_reckoning(request, id = None, title = None):
                 if (request.user.has_perm('COMMENT')):
                     commentForm = CommentReckoningForm(request.POST, prefix=commentFormPrefix)
                     if (commentForm.is_valid()):
-                        print "Comment Text: " + commentForm.cleaned_data.get('comment')
                         comment = Comment(comment = sanitizeCommentHtml(commentForm.cleaned_data.get('comment')),
                                           poster_id = request.user.reckoner_id)
-                        print "Comment Post-Clean Text: " + comment.comment
                         comment_service_response = client_post_reckoning_comment(comment, id, request.user.session_id)
                         if not comment_service_response.success:
                             logger.error("Failed to post comment to ID: " + id)
@@ -135,7 +137,30 @@ def get_reckoning(request, id = None, title = None):
                 service_response = client_get_reckoning(id, request.user.session_id)
                                                   
             elif 'postvote' in request.POST:
-                pass
+                if (request.user.has_perm('VOTE')):
+                    if ('answer' in request.POST):
+                        vote = Vote(voter_id=request.user.reckoner_id,
+                                    answer_index=request.POST.get('answer', None),
+                                    anonymous=request.user.is_anonymous,
+                                    ip=request.META.get('REMOTE_ADDR', None),
+                                    user_agent=request.META.get('HTTP_USER_AGENT', None))
+                        
+                        vote_service_response = client_post_reckoning_vote(vote, id, 
+                                                                           request.POST.get('answer'), 
+                                                                           request.user.reckoner_id)
+                        # If the vote update failed, check to see if it's the error code that corresponds
+                        # with a suspected duplicate vote.  If so, mark it as such.
+                        if not vote_service_response.success:
+                            if (vote_service_response.message == "R602_POST_VOTE"):
+                                errors["phony_vote"]=True
+                            else:
+                                errors["vote"]=True
+                            logger.info("Invalid vote submitted: " + id + " " + request.POST.get('answer') + \
+                                        " " + request.user.reckoner_id + " " + str(request.META.get('REMOTE_ADDR', None)) +
+                                        " " + vote_service_response.message)
+        
+                service_response = client_get_reckoning(id, request.user.session_id)        
+        
         else:
             service_response = client_get_reckoning(id, request.user.session_id, page_visit=True)
         
@@ -156,8 +181,8 @@ def get_reckoning(request, id = None, title = None):
             prev_reck = None
             
             # Pull the user's vote for this reckoning and add it to the context.
-            user_vote_response = client_get_user_reckoning_vote(id, request.user.reckoner_id, request.user.session_id)
             user_vote = None
+            user_vote_response = client_get_user_reckoning_vote(id, request.user.reckoner_id, request.user.session_id)
             if (not user_vote_response.status.success):
                 logger.error(user_vote_response.status.message)
                 user_vote = Vote(answer_index=-1)
@@ -183,7 +208,7 @@ def get_reckoning(request, id = None, title = None):
                 next_reck = next_reck_response.reckonings[0]
             if (prev_reck_response.reckonings):
                 prev_reck = prev_reck_response.reckonings[0]
-            
+
             c = RequestContext(request, {'reckoning' : reckoning,
                                          'user_vote' : user_vote,
                                          'leader' : leader,

@@ -710,10 +710,15 @@ body {
     border: 0px;
     display: block;
     margin: 0px 0px 6px 0px;
+    overflow: auto;
     padding: 0px 0px 14px 0px; /* sliding doors padding */
     text-align: center;
     text-decoration: none;
     width: 214px;
+}
+
+#reckoning-page .voting-section .button-area .reckonbutton-live {
+    cursor: pointer;
 }
 
 #reckoning-page .voting-section .button-area .button-1 {
@@ -800,6 +805,28 @@ body {
 
 #reckoning-page .voting-section .bottom-area {
 	clear: both;
+	padding: 10px 0 0 0;
+}
+
+#reckoning-page .voting-section .error-box {
+    background-color: #fefde5;
+    border: 1px solid #9d9d9d;
+    font-family: Futura, "Century Gothic", Futura, "Tw Cen MT", "URW Gothic L", Tahoma, sans-serif;
+    margin: 0px 10px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 578px;
+}
+
+#reckoning-page .voting-section .error-box .error {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 5px 20px;
+}
+
+#reckoning-page .voting-section .error-box .description {
+    font-size: 12px;
+    margin: 5px 20px;
 }
 
 #reckoning-page .metadata-section {

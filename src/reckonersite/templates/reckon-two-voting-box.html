@@ -54,7 +54,7 @@
         </div>   
         <div class="bottom-area"></div>           
      </div>
- {% else %} {% if user_vote %}
+ {% else %} {% if user_vote or errors.phony_vote %}
      <div class="vote-label"><img src="{{ STATIC_URL }}images/reckoning-status-label.png" alt="Reckoning Status!"></div>
      <div class="vote-box vote-box-open">
         <div class="top-note-area">
@@ -93,19 +93,32 @@
               <div class="votes">({{ reckoning.answers.1.vote_total }})</div>
             </div>
         </div>
-        <div class="bottom-area"></div>                                      
+        <div class="bottom-area">
+            {% if errors.phony_vote %}
+            <div class="error-box">
+                <div class="error">Whoops!</div>
+                <div class="description">Reckonbot thinks that you may have already voted!<br>
+                We're looking into it - in the meantime, enjoy the totals!</div>
+            </div>
+            {% endif %}
+        </div>                                      
      </div>              
  {% else %}
      <div class="vote-label"><img src="{{ STATIC_URL }}images/reckoning-vote-label.png" alt="Reckoning Status!"></div>
      <div class="vote-box vote-box-open">
         <div class="button-area">
-            <form action="" method="get">
-                <div class="reckonbutton-wrapper reckonbutton-wrapper-1">
-                    <button class="reckonbutton button-1" type="submit"><span class="button-text">{{ reckoning.answers.0.text }}</span></button>
-                </div> <div class="reckonbutton-wrapper reckonbutton-wrapper-2">
-                    <button class="reckonbutton button-2" type="submit"><span class="button-text">{{ reckoning.answers.1.text }}</span></button>
-                </div>
-            </form>
+             <div class="reckonbutton-wrapper reckonbutton-wrapper-1">
+                 <form action="" method="post"> {% csrf_token %}
+                     <button class="reckonbutton reckonbutton-live button-1" type="submit" name="postvote"><span class="button-text">{{ reckoning.answers.0.text }}</span></button>
+                     <input type="hidden" name="answer" value="0">
+                 </form>
+             </div> 
+             <div class="reckonbutton-wrapper reckonbutton-wrapper-2">
+                 <form action="" method="post"> {% csrf_token %}
+                     <button class="reckonbutton reckonbutton-live button-2" type="submit" name="postvote"><span class="button-text">{{ reckoning.answers.1.text }}</span></button>
+                     <input type="hidden" name="answer" value="1">
+                 </form>
+             </div>
         </div>
         <div class="subtitle-area">
             {% if reckoning.answers.0.subtitle %}
@@ -119,7 +132,15 @@
             </div>
             {% endif %}
         </div>
-        <div class="bottom-area"></div>                                  
+        <div class="bottom-area">
+            {% if errors.vote %}
+            <div class="error-box">
+                <div class="error">Whoops!</div>
+                <div class="description">Reckonbot crashed on that last vote.<br>
+                We're looking into it - try back soon!</div>
+            </div>
+            {% endif %}
+        </div>                                  
      </div>              
  {% endif %} {% endif %}
  

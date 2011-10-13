@@ -79,8 +79,6 @@ def client_get_user_by_id(user_id, session_id):
     if (session_id):
         url += "?session_id=" + session_id
     
-    print "client_get_user: " + url
-    
     response = urllib2.urlopen(url)
     content = response.read()
     servResponse = UserServiceResponse(xml_string = content)

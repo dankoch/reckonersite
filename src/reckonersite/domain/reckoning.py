@@ -180,9 +180,6 @@ class Reckoning(Base):
     
     def setTagsFromCSV(self, csv):
         tags = csv.split(",")
-        if (tags):
-            for tag in tags:
-                tag.strip()
         
         self.tags = self.buildTagList(tags)
         
@@ -190,7 +187,7 @@ class Reckoning(Base):
         tagList = []
         for tag in tags:
             if (tag and not tag == ""):
-                tagList.append(Tag(tag))
+                tagList.append(Tag(tag.strip()))
         
         return tagList
     
