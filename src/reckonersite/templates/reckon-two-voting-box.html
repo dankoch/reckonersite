@@ -1,11 +1,12 @@
+{% load humanize %}
  
  {% if not reckoning.open %}
      <div class="vote-label"><img src="{{ STATIC_URL }}images/reckoning-results-label.png" alt="Reckoning Results!"></div>
-     {% if leader == 0 %}
+     {% if reckoning.getLeadingAnswer == '0' %}
      <div class="vote-box vote-box-winner-1">
         <div class="top-note-area">
             <div class="winner-text">WINNER!</div>
-     {% else %}{% if leader == 1 %}
+     {% else %}{% if reckoning.getLeadingAnswer == '1' %}
      <div class="vote-box vote-box-winner-2">
         <div class="top-note-area">
             <div class="winner-text">WINNER!</div>
@@ -45,11 +46,11 @@
         <div class="stat-area">
             <div class="stat-wrapper stats-1">
               <div class="percentage">{{ reckoning.answers.0.percentage }}</div>
-              <div class="votes">({{ reckoning.answers.0.vote_total }})</div>
+              <div class="votes">({{ reckoning.answers.0.vote_total|intcomma }})</div>
             </div>
             <div class="stat-wrapper stats-2">
               <div class="percentage">{{ reckoning.answers.1.percentage }}</div>
-              <div class="votes">({{ reckoning.answers.1.vote_total }})</div>
+              <div class="votes">({{ reckoning.answers.1.vote_total|intcomma }})</div>
             </div>
         </div>   
         <div class="bottom-area"></div>           
@@ -86,11 +87,11 @@
         <div class="stat-area">
             <div class="stat-wrapper stats-1">
               <div class="percentage">{{ reckoning.answers.0.percentage }}</div>
-              <div class="votes">({{ reckoning.answers.0.vote_total }})</div>
+              <div class="votes">({{ reckoning.answers.0.vote_total|intcomma }})</div>
             </div>
             <div class="stat-wrapper stats-2">
               <div class="percentage">{{ reckoning.answers.1.percentage }}</div>
-              <div class="votes">({{ reckoning.answers.1.vote_total }})</div>
+              <div class="votes">({{ reckoning.answers.1.vote_total|intcomma }})</div>
             </div>
         </div>
         <div class="bottom-area">
@@ -111,12 +112,14 @@
                  <form action="" method="post"> {% csrf_token %}
                      <button class="reckonbutton reckonbutton-live button-1" type="submit" name="postvote"><span class="button-text">{{ reckoning.answers.0.text }}</span></button>
                      <input type="hidden" name="answer" value="0">
+                     <input type="hidden" name="id" value="{{reckoning.id}}">
                  </form>
              </div> 
              <div class="reckonbutton-wrapper reckonbutton-wrapper-2">
                  <form action="" method="post"> {% csrf_token %}
                      <button class="reckonbutton reckonbutton-live button-2" type="submit" name="postvote"><span class="button-text">{{ reckoning.answers.1.text }}</span></button>
                      <input type="hidden" name="answer" value="1">
+                     <input type="hidden" name="id" value="{{reckoning.id}}">
                  </form>
              </div>
         </div>
@@ -133,7 +136,7 @@
             {% endif %}
         </div>
         <div class="bottom-area">
-            {% if errors.vote %}
+            {% if errors.vote_error  %}
             <div class="error-box">
                 <div class="error">Whoops!</div>
                 <div class="description">Reckonbot crashed on that last vote.<br>

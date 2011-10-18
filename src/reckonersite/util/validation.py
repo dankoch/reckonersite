@@ -66,4 +66,3 @@ def slugifyTitle(value):
 def tidyTextInput(document):
     tidy_doc, errors = tidy_document(document, options={'show-body-only' : 1})
     return tidy_doc
-    

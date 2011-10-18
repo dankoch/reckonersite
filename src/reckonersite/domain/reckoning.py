@@ -10,7 +10,6 @@ from reckonersite.domain.comment import Comment
 from reckonersite.domain.favorite import Favorite
 from reckonersite.domain.flag import Flag
 from reckonersite.domain.reckoneruser import ReckonerUser
-from reckonersite.util.dateutil import getRemainingTime
 from reckonersite.util.validation import slugifyTitle
 
 class Reckoning(Base):
@@ -191,14 +190,36 @@ class Reckoning(Base):
         
         return tagList
     
-    def getRemainingTime(self):
-        return getRemainingTime(self.closing_date)
+    def getTotalVotes(self):
+        totalVotes = 0
+        for answer in self.answers:
+            totalVotes += int(answer.vote_total)
+
+        return totalVotes
     
     def getURL(self):
         if (self.id and self.question):
             return '/reckoning/' + self.id + "/" + slugifyTitle(self.question)
         
         return None
+    
+    def getLeadingAnswer(self):
+        '''
+        Gets the index of the answer with the most votes.
+        A '-1' value connotes a tie or an error.
+        '''
+        index=-1
+        highVal=0
+        
+        for answer in self.answers:
+            if (answer.vote_total > highVal):
+                highVal = answer.vote_total
+                index = answer.index
+            elif (answer.vote_total == highVal):
+                index = -1
+        
+        print "Leading Answer Index: " + str(index)
+        return index
         
 class Tag(Base):
     def __init__(self, tag=None):

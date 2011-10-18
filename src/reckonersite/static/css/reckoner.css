@@ -233,6 +233,50 @@ body {
 	width: 50px;
 }
 
+#content-area .section-header {
+    background: transparent url('../images/reckoner-section-label_left.png') no-repeat scroll left;
+	color: #f9f4f4;
+	display: inline-block;
+    font-family: Futura, "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 16px;
+    font-style: italic;
+    height: 42px;
+    left: -6px;
+    padding: 0 0 0 27px;
+    position: relative;
+    text-align: center;
+}
+
+#content-area .section-header span {
+    background: transparent url('../images/reckoner-section-label_right.png') no-repeat scroll right;
+	display: block;
+	line-height: 42px;
+	padding: 0 30px 0 0;
+	vertical-align: middle;
+}
+
+#content-area .stat-box {
+	background-color: #f1fee9;
+	border: 1px solid #666666;
+	display: inline-block;
+    min-height: 30px;
+    padding: 12px 5px 9px 5px;
+    text-align: center;
+    width: 65px;
+}
+
+#content-area .stat-box .count {
+	font-family: Futura, "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 18px;
+    line-height: 16px;
+    vertical-align: center;
+}
+
+#content-area .stat-box .label {
+    font-family: Futura, "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 12px;
+}
+
 /***************************************************************************************
  * STATIC PAGE STYLES
  * Styles used for static pages heavy on the HTML content
@@ -567,6 +611,112 @@ body {
     margin: 0 7px 0 7px;
  }
 
+/***************************************************************************************
+ * MAIN PAGE STYLES
+ * Styles used specifically for the main page.
+ ***************************************************************************************/
+
+#main-page {
+	
+}
+
+#main-page .main-area {
+}
+
+#main-page .main-area .highlighted-reckoning {
+	margin: 10px 0 30px 0px;
+}
+
+#main-page .main-area .recent-reckonings {
+}
+
+#main-page .section {
+	margin: 10px 7px;
+}
+
+#main-page .highlighted-reckoning .bottom-section {
+    clear: both;
+}
+
+#main-page .secondary-area {
+	
+}
+
+#main-page .secondary-area .secondary-block {
+    width: 296px;
+}
+
+#main-page .secondary-area .block-1 {
+	float: left;
+}
+
+#main-page .secondary-area .block-2 {
+    float: right;
+}
+
+#main-page .reckoning {
+	min-height: 54px;
+	margin: 6px 0 18px 0;
+}
+
+#main-page .reckoning .reckoning-text {
+	position: relative;
+    top: 6px;
+}
+
+#main-page .reckoning .reckoning-question {
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 11pt;
+    font-weight: bold;
+    text-transform: capitalize;	
+}
+
+#main-page .reckoning .reckoning-question a {
+    color: black;
+    text-decoration: none;	
+}
+
+#main-page .reckoning .reckoning-question a:hover {
+	color: #cc0000;
+}
+
+#main-page .reckoning .reckoning-data {
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 9pt;
+    margin: 3px 0 0 0;
+    text-decoration: none;
+}
+
+#main-page .reckoning .reckoning-data .time-remaining {
+	color: #900000;
+}
+
+
+#main-page .reckoning .reckoning-stats {
+	float: right;
+	margin:  0 0 0 20px;
+}
+
+#main-page .see-more-link {
+	color: #cc0000;
+    font-family: Futura, "Century Gothic", Futura, "Tw Cen MT", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+	text-align: center;
+	text-decoration: underline;
+	text-transform: uppercase;
+}
+
+#main-page .section-divider {
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 1px;
+    border-bottom-color: #9d9d9d;
+    clear: both;
+    height: 5px;
+    text-align: center;
+}
 
 /***************************************************************************************
  * INDIVIDUAL RECKONING STYLES
@@ -784,6 +934,7 @@ body {
 }
 
 #reckoning-page .voting-section .stat-area {
+	clear: both;
 	text-align: center;
 }
 
@@ -848,6 +999,10 @@ body {
 #reckoning-page .metadata-section .tags-wrapper {
     margin: 0px 0px 6px 0;
     width: 250px;
+}
+
+#reckoning-page .metadata-section .tags {
+    text-transform: capitalize;
 }
 
 #reckoning-page .metadata-section .poster-wrapper {

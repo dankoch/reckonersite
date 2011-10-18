@@ -19,12 +19,12 @@ from reckonersite.client.reckoningclient import client_get_reckoning, \
                                                 client_post_reckoning, \
                                                 client_get_random_open_reckoning, \
                                                 client_get_random_closed_reckoning
-from reckonersite.client.voteclient import client_get_user_reckoning_vote, \
-                                           client_post_reckoning_vote
+
 from reckonersite.domain.answer import Answer
 from reckonersite.domain.comment import Comment
 from reckonersite.domain.reckoning import Reckoning
 from reckonersite.domain.vote import Vote
+from reckonersite.views.vote import post_reckoning_vote, get_user_reckoning_vote
 from reckonersite.util.math import computeReckoningAnswerPercentages
 from reckonersite.util.validation import purgeHtml, sanitizeDescriptionHtml, sanitizeCommentHtml
 
@@ -139,25 +139,7 @@ def get_reckoning(request, id = None, title = None):
             elif 'postvote' in request.POST:
                 if (request.user.has_perm('VOTE')):
                     if ('answer' in request.POST):
-                        vote = Vote(voter_id=request.user.reckoner_id,
-                                    answer_index=request.POST.get('answer', None),
-                                    anonymous=request.user.is_anonymous,
-                                    ip=request.META.get('REMOTE_ADDR', None),
-                                    user_agent=request.META.get('HTTP_USER_AGENT', None))
-                        
-                        vote_service_response = client_post_reckoning_vote(vote, id, 
-                                                                           request.POST.get('answer'), 
-                                                                           request.user.reckoner_id)
-                        # If the vote update failed, check to see if it's the error code that corresponds
-                        # with a suspected duplicate vote.  If so, mark it as such.
-                        if not vote_service_response.success:
-                            if (vote_service_response.message == "R602_POST_VOTE"):
-                                errors["phony_vote"]=True
-                            else:
-                                errors["vote"]=True
-                            logger.info("Invalid vote submitted: " + id + " " + request.POST.get('answer') + \
-                                        " " + request.user.reckoner_id + " " + str(request.META.get('REMOTE_ADDR', None)) +
-                                        " " + vote_service_response.message)
+                        errors.update(post_reckoning_vote(request))
         
                 service_response = client_get_reckoning(id, request.user.session_id)        
         
@@ -176,24 +158,11 @@ def get_reckoning(request, id = None, title = None):
         else:
             commentForm = CommentReckoningForm(prefix=commentFormPrefix)            
             reckoning = computeReckoningAnswerPercentages(service_response.reckonings[0])
-            leader = None
             next_reck = None
             prev_reck = None
             
             # Pull the user's vote for this reckoning and add it to the context.
-            user_vote = None
-            user_vote_response = client_get_user_reckoning_vote(id, request.user.reckoner_id, request.user.session_id)
-            if (not user_vote_response.status.success):
-                logger.error(user_vote_response.status.message)
-                user_vote = Vote(answer_index=-1)
-            else:
-                if (user_vote_response.votes):
-                    user_vote = user_vote_response.votes[0]
-            
-            # Compute which answer has received the most votes as an index (-1 meaning a tie)
-            if (reckoning.answers[0].vote_total > reckoning.answers[1].vote_total): leader = 0
-            elif (reckoning.answers[0].vote_total < reckoning.answers[1].vote_total): leader = 1
-            else: leader = -1
+            user_vote = get_user_reckoning_vote(request, id=id)
             
             # Get the Next and Last Reckoning items for the display.  Get open reckonings if the current
             # reckoning is open, and vice versa.  
@@ -211,8 +180,6 @@ def get_reckoning(request, id = None, title = None):
 
             c = RequestContext(request, {'reckoning' : reckoning,
                                          'user_vote' : user_vote,
-                                         'leader' : leader,
-                                         'time_remaining' : reckoning.getRemainingTime(),
                                          'next_reck' : next_reck,
                                          'prev_reck' : prev_reck,
                                          'errors' : errors})

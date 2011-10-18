@@ -3,5 +3,14 @@ Created on Aug 25, 2011
 @author: danko
 '''
 
-def client_error_mapper(client_error):
-    return "Oh boy!"
+import urllib
+
+def url_encode_list(list):
+    encodedList = None
+    
+    if (list):
+        for item in list:
+            encodedList = str.join((encodedList, urllib.quote_plus(item.strip())))
+    
+    return encodedList
+    

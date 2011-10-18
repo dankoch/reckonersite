@@ -5,6 +5,7 @@ Created on Sept 4, 2011
 from datetime import datetime
 from xml.etree import cElementTree as cET
 from reckonersite.domain.base import Base, buildXml, convertToDateTime
+from reckonersite.util.validation import slugifyTitle
 
 class ReckonerUser(Base):
     '''Object definition of a single user (as defined in the Reckoner DB)  
@@ -89,3 +90,9 @@ class ReckonerUser(Base):
               
         if (not xml_root.find('active') is None):
             self.active = (xml_root.find('active').text == 'true')    
+            
+    def getURL(self):
+        if (self.id and self.first_name):
+            return '/user/' + self.id + "/" + slugifyTitle(self.first_name + " " + self.last_name)
+        
+        return None
