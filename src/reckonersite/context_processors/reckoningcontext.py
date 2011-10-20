@@ -8,10 +8,10 @@ from django.conf import settings
 
 logger = logging.getLogger(settings.STANDARD_LOGGER)
 
-def set_user_info(request):
-    user_info = None
+
+def set_reckoning_context(request):
     
-    if (request.user):
-        user_info = {'user' : request.user, 'perms' : request.user.permissions}
+    site_context = {'SITE_ROOT' : settings.SITE_ROOT,
+                    'SITE_NAME' : settings.SITE_NAME}
     
-    return user_info
+    return site_context

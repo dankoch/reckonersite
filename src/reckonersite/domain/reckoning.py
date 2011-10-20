@@ -217,8 +217,7 @@ class Reckoning(Base):
                 index = answer.index
             elif (answer.vote_total == highVal):
                 index = -1
-        
-        print "Leading Answer Index: " + str(index)
+
         return index
         
 class Tag(Base):

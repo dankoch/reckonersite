@@ -116,8 +116,6 @@ def client_get_open_reckonings(posted_before=None, posted_after=None, closed_bef
         url += "size=" + str(size) + "&" 
     if (session_id):
         url += "session_id=" + session_id + "&"
-        
-    print "Client Get Open Reckonings: " + url
     
     response = urllib2.urlopen(url)    
     content = response.read()
@@ -152,8 +150,6 @@ def client_get_closed_reckonings(posted_before=None, posted_after=None, closed_b
         url += "size=" + str(size) + "&" 
     if (session_id):
         url += "session_id=" + session_id + "&"
-        
-    print "Client Get Closed Reckonings: " + url
     
     response = urllib2.urlopen(url)    
     content = response.read()
@@ -224,12 +220,9 @@ def client_get_open_highlighted_reckonings(page, size, session_id):
         url += "size=" + str(size) + "&" 
     if (session_id):
         url += "session_id=" + session_id + "&"
-        
-    print "Client Open Highlighted Reckonings: " + url
-    
+           
     response = urllib2.urlopen(url)    
     content = response.read()
     reckoningList = ReckoningServiceList(xml_string = content)
     
     return reckoningList       
-        

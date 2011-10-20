@@ -29,3 +29,49 @@
      <div class="poster-name">{{reckoning.posting_user|print_user_name}}</div>
      <div class="poster-date">{{reckoning.posting_date}}</div>
  </div>
+ <div class="stat-share-wrapper">
+     <div class="reckoning-stats">
+         <div class="stat-box views-stat-box">
+            <div class="count">{{ reckoning.views|condense_int }}</div>
+            <div class="box-label">VIEW{% if popular_reckoning.views != 1 %}S{%endif%}</div> 
+         </div> 
+         <div class="stat-box views-stat-box">
+            <div class="count">{{ reckoning.comments|length|condense_int }}</div>
+            <div class="box-label-small">COMMENT{% if reckoning.comments|length != 1 %}S{%endif%}</div> 
+         </div>   
+         <div class="stat-box favorites-stat-box">
+            <div class="count favorite-count-{{reckoning.id}}">{{ reckoning.favorites|length|condense_int }}</div>
+            <div class="box-label-small">TRACKING</div> 
+         </div>         
+     </div>
+     <div class="social-options">
+        <div class="tweet-wrapper like-button">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-text="{{ reckoning.question|truncatewords:15 }}" data-count="vertical" data-via="TheReckonerSite">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>       
+        </div>
+		<div class="plusone-wrapper like-button">
+		    <div class="g-plusone" data-size="tall" expandto="top"></div>  
+		</div>
+        <div class="fblike-wrapper like-button">
+            <div class="fb-like" data-send="false" data-layout="box_count" data-width="50" data-show-faces="false" data-font="lucida grande"></div>
+        </div>
+     </div>
+     <div class="favorite-flag">
+         {% if 'FAVORITE' in perms %}
+         <span class="favorite">[
+             <form class="reckoning-favorite-form reckoning-favorite-form-{{reckoning.id}} form">
+                      <input type="hidden" name="reckoning-id" value="{{reckoning.id}}">
+                      <input class="button favorite-button" type="submit" name="favorite-submit" value="Track">
+             </form> ]
+         </span>                                     
+         -
+         {% endif %}      
+         {% if 'FLAG' in perms %}
+         <span class="flag">[
+             <form class="reckoning-flag-form reckoning-flag-form-{{reckoning.id}} form">
+                      <input type="hidden" name="reckoning-id" value="{{reckoning.id}}">
+                      <input class="button flag-button" type="submit" name="flag-submit" value="Flag">
+             </form> ]
+         </span> 
+         {% endif %} 
+     </div>
+ </div>

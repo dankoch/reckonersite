@@ -13,13 +13,13 @@ class Comment(Base):
     '''Object definition of a single comment (as attached to content).  
     Maintained to be synchronized with the Reckoner API'''
 
-    def __init__(self, id=None, comment=None, poster_id=None, posting_date=None,
+    def __init__(self, comment_id=None, comment=None, poster_id=None, posting_date=None,
                  favorites=None, flags=None, user=None,
                  xml_string=None, xml_element=None):
         
         # Note: Since we're building the XML nodes off of the names of the attributes,
         # these names need to be kept aligned with the API definition.
-        self.id = id
+        self.comment_id = comment_id
         self.comment = comment
         self.poster_id = poster_id
         self.posting_date = posting_date
@@ -56,8 +56,8 @@ class Comment(Base):
         self.buildFromXMLElement(xml_root)
     
     def buildFromXMLElement(self, xml_root):
-        if (not xml_root.find('id') is None):
-            self.id = xml_root.find('id').text
+        if (not xml_root.find('comment_id') is None):
+            self.id = xml_root.find('comment_id').text
         if (not xml_root.find('comment') is None):
             self.comment = xml_root.find('comment').text
         if (not xml_root.find('poster_id') is None):

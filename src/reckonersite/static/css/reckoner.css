@@ -259,22 +259,44 @@ body {
 	background-color: #f1fee9;
 	border: 1px solid #666666;
 	display: inline-block;
-    min-height: 30px;
-    padding: 12px 5px 9px 5px;
+    height: 55px;
     text-align: center;
     width: 65px;
 }
 
 #content-area .stat-box .count {
-	font-family: Futura, "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
-    font-size: 18px;
-    line-height: 16px;
-    vertical-align: center;
+	font-family: "Futura", "Lucida Sans", "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 20px;
+    line-height: 12px;
+    margin: 14px auto 1px auto;
 }
 
-#content-area .stat-box .label {
-    font-family: Futura, "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
+#content-area .stat-box .box-label {
+	display: inline-block;
+	margin: 0 auto;
+    font-family: "Futura", "Lucida Sans", "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
     font-size: 12px;
+}
+
+#content-area .stat-box .box-label-small {
+	display: inline-block;
+    margin: 0 auto;
+    font-family: "Futura", "Lucida Sans","Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 10px;
+}
+
+#content-area .reckoning-divider {
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 1px;
+    border-bottom-color: #BBBBBB;
+    border-bottom-style: dotted;
+    clear: both;
+    height: 3px;
+    margin: 5px auto;
+    text-align: center;	
+    width: 100%;
 }
 
 /***************************************************************************************
@@ -656,12 +678,12 @@ body {
 
 #main-page .reckoning {
 	min-height: 54px;
-	margin: 6px 0 18px 0;
+	margin: 12px 0 12px 0;
 }
 
 #main-page .reckoning .reckoning-text {
 	position: relative;
-    top: 6px;
+    top: 0px;
 }
 
 #main-page .reckoning .reckoning-question {
@@ -671,12 +693,12 @@ body {
     text-transform: capitalize;	
 }
 
-#main-page .reckoning .reckoning-question a {
+#main-page .reckoning-question a {
     color: black;
     text-decoration: none;	
 }
 
-#main-page .reckoning .reckoning-question a:hover {
+#main-page .reckoning-question a:hover {
 	color: #cc0000;
 }
 
@@ -690,7 +712,6 @@ body {
 #main-page .reckoning .reckoning-data .time-remaining {
 	color: #900000;
 }
-
 
 #main-page .reckoning .reckoning-stats {
 	float: right;
@@ -779,7 +800,7 @@ body {
 }
 
 #reckoning-page .voting-section {
-	margin: 20px 7px;
+	margin: 10px 7px;
 }
 
 #reckoning-page .voting-section .vote-box {
@@ -982,8 +1003,7 @@ body {
 
 #reckoning-page .metadata-section {
     font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
-    font-size: 14px;
-	margin: 20px 7px;
+	margin: 0px 7px;
 	width: 612px;
 }
 
@@ -994,6 +1014,9 @@ body {
 
 #reckoning-page .metadata-section .spec-wrapper {
 	float: left;
+    font-size: 14px;
+    position: relative;
+    top: -4px;
 }
 
 #reckoning-page .metadata-section .tags-wrapper {
@@ -1009,8 +1032,43 @@ body {
     background-color: #deecf6;	
 	border: 2px solid black;
 	float: right;
+    font-size: 14px;
+    height: 100%;
 	padding: 4px;
 	width: 250px;
+}
+
+#reckoning-page .metadata-section .stat-share-wrapper {
+    clear: both;
+    padding: 10px 0 0 0;
+}
+
+#reckoning-page .metadata-section .stat-box {
+	border-color: #9d9d9d;
+}
+
+#reckoning-page .metadata-section .favorite-flag {
+    display: inline-block;
+    font-size: 14px;
+    position: relative;
+    margin: 0;
+    text-align: left;
+    max-width: 100px;
+}
+
+#reckoning-page .metadata-section .form {
+    display: inline;
+}
+
+#reckoning-page .metadata-section .favorite-flag .button {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    display: inline;
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;     
 }
 
 #reckoning-page .metadata-section .profile-picture-wrapper {
@@ -1027,6 +1085,41 @@ body {
 #reckoning-page .metadata-section .time {
     color: #cc0000;
     font-size: 20px;
+}
+
+#reckoning-page .metadata-section .row-wrapper {
+	clear: both;
+}
+
+#reckoning-page .metadata-section .row-wrapper-2 {
+    margin-top: 10px;
+}
+
+#reckoning-page .metadata-section .reckoning-stats {
+	float: left;
+}
+
+#reckoning-page .metadata-section .social-options {
+	background-color: #f6f6f6;
+    border: 1px solid #9d9d9d;
+	float: right;
+	padding: 4px 4px 1px 4px;
+	text-align: center;
+	width: 252px;
+}
+
+#reckoning-page .metadata-section .like-button {
+	display: inline-block;
+	margin: 0 6px 0 6px;
+}
+
+#reckoning-page .metadata-section .fblike-wrapper {
+	position: relative;
+	top: -4px;
+}
+
+#reckoning-page .metadata-section .plusone-wrapper {
+	margin: 0px 6px 0 0px;
 }
 
 #reckoning-page .prev-next-section {
@@ -1084,6 +1177,7 @@ body {
 	font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
     font-size: 14px;
 	margin: 0 7px;
+    word-wrap: break-word;
 }
 
 #reckoning-page .comment-section .comment-box {
@@ -1126,7 +1220,6 @@ body {
 #reckoning-page .comment-section .comment p {
 	margin: 5px 0;
 	font-size: 10pt;
-    word-wrap: break-word;
 }
 
 #reckoning-page .comment-section .comment ol {
@@ -1160,16 +1253,54 @@ body {
     text-align: center;
 }
 
-#reckoning-page .comment-section .favorite {
-	color: #0d4268;
-}
-
-#reckoning-page .comment-section .flag {
+#reckoning-page .flag {
     color: #0d4268;
 }
 
-#reckoning-page .comment-section .favorite {
+#reckoning-page .favorite {
     color: #c54913;
+}
+
+#reckoning-page .favorite-button {
+    color: #c54913;
+}
+
+#reckoning-page .flag-button {
+    color: #0d4268;
+}
+
+#reckoning-page .comment-section .favorites {
+    float: right;
+}
+
+#reckoning-page .comment-section .comment-footer .message {
+	font-weight: bold;
+	text-align: center;
+}
+
+#reckoning-page .comment-section .comment-footer .form {
+	display: inline;
+}
+
+#reckoning-page .comment-section .comment-footer .button {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    display: inline;
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    margin: 0;
+    padding: 0;     
+}
+
+*:first-child+html #reckoning-page .comment-section .comment-footer .button  {  /* hack needed for IE 7 */
+    border-bottom: 0;
+    text-decoration: underline;
+}
+
+* html #reckoning-page .comment-section .comment-footer .button  {  /* hack needed for IE 5/6 */
+    border-bottom: 0;
+    text-decoration: underline;
 }
 
 #reckoning-page .comment-section .comment-form-label {
@@ -1219,12 +1350,12 @@ body {
 }
 
 #reckoning-page .comment-section .comment-header ul
- {
+{
     float: right;
     margin: 0 0 8px 0;
     text-align: right;
     width: 250px;
- }
+}
  
 #reckoning-page .errorlist li
  {

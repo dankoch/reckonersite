@@ -4,11 +4,17 @@ from mongoengine import connect
 # Application Name -- used for identifying permissions and other labeling
 APPLICATION_NAME='reckonersite'
 
+# Site Name -- Used for Display Purposes
+SITE_NAME='The Reckoner!'
+
 # Triggers Django Debugging Console
 DEBUG = True
 
 # Host Name Contacted By The Reckoner Site Client
 RECKON_CONTENT_SERVICES_HOST = 'http://localhost:8080/reckoner-content-services'
+
+# Root URL for the website
+SITE_ROOT = 'http://www.thereckoner.net'
 
 # Information Used to Communicate With Facebook
 # Each element is used as part of the OAUTH verification process to build the correct URLs for
@@ -23,6 +29,11 @@ FACEBOOK_OAUTH_URL = "https://www.facebook.com/dialog/oauth"
 FACEBOOK_GRAPH_TOKEN_URL = "https://graph.facebook.com/oauth/access_token"
 
 FACEBOOK_SCOPE = "offline_access"
+
+# Additional settings used for FB JDK Integration
+FACEBOOK_PAGE_ID= '185721918154268'
+FACEBOOK_ADMIN_ID= '613012'
+FACEBOOK_SITE_TYPE= 'website'
 
 # Information Used to Communicate With Google
 # Each element is used as part of the OAUTH verification process to build the correct URLs for
@@ -132,6 +143,7 @@ TEMPLATE_CONTEXT_PROCESSORS = ("django.core.context_processors.debug",
                                "django.core.context_processors.static",
                                "django.contrib.messages.context_processors.messages",
                                'reckonersite.context_processors.reckonerauth.set_user_info', 
+                               'reckonersite.context_processors.reckoningcontext.set_reckoning_context',            
                                'reckonersite.context_processors.socialconnections.set_social_info',)
 
 # List of finder classes that know how to find static files in

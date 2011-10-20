@@ -9,30 +9,59 @@
 	    <div class="main-area">
 	       <div id="reckoning-page" class="highlighted-reckoning section">
 	           <div class="question-section">
-		           <div class="question-wrapper"><h2>{{reckoning.question}}</h2></div>
-		           <div class="description-wrapper">{{reckoning.description|safe}}</div>
+		           <div class="reckoning-question"><h2><a href="{{reckoning.getURL}}">{{reckoning.question}}</a></h2></div>
+		           <div class="reckoning-description">{{reckoning.description|safe}}</div>
 	           </div>
 	           <div class="voting-section">
                     {% include "reckon-two-voting-box.html" %}	
                </div>
                <div class="metadata-section">
-                    {% include "reckoning-metadata.html" %}
+					 <div class="spec-wrapper">
+					     <div class="tags-wrapper">
+					         <div class="label">Tags:</div>
+					         <div class="tags">
+					             {% for tag in reckoning.tags %}
+					                 {{tag.tag}}{% if not forloop.last %}, {% endif %}
+					             {% endfor %}
+					         </div>
+					     </div>
+					     <div class="time-wrapper">
+					         {% if reckoning.open %}
+					             <div class="label">Remaining Time:</div>
+					             <div class="time">
+					                {{ reckoning.closing_date|until_time }}
+					             </div>                    
+					         {% else %}
+					             <div class="label">Closing Time:</div>
+					             <div class="time">
+					                 {{reckoning.closing_date}}
+					             </div>
+					         {% endif %}
+					     </div>
+					 </div>
+					 <div class="poster-wrapper">
+					     <div class="profile-picture-wrapper"><img src="{{reckoning.posting_user.profile_picture_url}}" class="profile-picture"></div>
+					     <div class="label">Posted By:</div>
+					     <div class="poster-name">{{reckoning.posting_user|print_user_name}}</div>
+					     <div class="poster-date">{{reckoning.posting_date}}</div>
+					 </div>
                </div>   
                <div class="bottom-section"></div>        
 	       </div>
            <hr class="section-divider">
            <div class="recent-reckonings section">
                <div class="section-header"><span>HOT RECKONINGS!</span></div>
+               <hr class="reckoning-divider">
                {% for popular_reckoning in popular_reckonings %}
                    <div class="reckoning">
                        <div class="reckoning-stats">
                            <div class="stat-box views-stat-box">
                               <div class="count">{{ popular_reckoning.views|condense_int }}</div>
-                              <div class="label">VIEW{% if popular_reckoning.views != 1 %}S{%endif%}</div> 
+                              <div class="box-label">VIEW{% if popular_reckoning.views != 1 %}S{%endif%}</div> 
                            </div>
                            <div class="stat-box votes-stat-box">
                               <div class="count">{{ popular_reckoning.getTotalVotes|condense_int}}</div>
-                              <div class="label">VOTE{% if popular_reckoning.getTotalVotes != 1 %}S{%endif%}</div>
+                              <div class="box-label">VOTE{% if popular_reckoning.getTotalVotes != 1 %}S{%endif%}</div>
                            </div>
                        </div>
                        <div class="reckoning-text">
@@ -43,22 +72,24 @@
                            </div>
                        </div>
                    </div>
+                   <hr class="reckoning-divider">
                {% endfor %}
                <div class="see-more-link">(See More Reckonings!)</div>
            </div>
 	       <hr class="section-divider">
 	       <div class="recent-reckonings section">
                <div class="section-header"><span>RECENT RECKONINGS!</span></div>
+               <hr class="reckoning-divider">
 	           {% for recent_reckoning in recent_reckonings %}
 	               <div class="reckoning">
                        <div class="reckoning-stats">
                            <div class="stat-box views-stat-box">
                               <div class="count">{{ recent_reckoning.views|condense_int }}</div>
-                              <div class="label">VIEW{% if recent_reckoning.views != 1 %}S{%endif%}</div> 
+                              <div class="box-label">VIEW{% if recent_reckoning.views != 1 %}S{%endif%}</div> 
                            </div>
                            <div class="stat-box votes-stat-box">
                               <div class="count">{{ recent_reckoning.getTotalVotes|condense_int}}</div>
-                              <div class="label">VOTE{% if recent_reckoning.getTotalVotes != 1 %}S{%endif%}</div>
+                              <div class="box-label">VOTE{% if recent_reckoning.getTotalVotes != 1 %}S{%endif%}</div>
                            </div>
                        </div>
                        <div class="reckoning-text">
@@ -69,6 +100,7 @@
 			               </div>
 		               </div>
 	               </div>
+               <hr class="reckoning-divider">	               
 	           {% endfor %}
 	           <div class="see-more-link">(See More Reckonings!)</div>
 	       </div>
@@ -77,6 +109,7 @@
 	    <div class="secondary-area">
 	       <div class="secondary-block block-1 section">
 	           <div class="section-header"><span>LAST CALL RECKONINGS!</span></div>
+               <hr class="reckoning-divider">	           
                {% for last_call_reckoning in last_call_reckonings %}
                    <div class="reckoning">                   
 	                   <div class="reckoning-question"><a href="{{last_call_reckoning.getURL}}">{{ last_call_reckoning.question }}</a></div>
@@ -85,11 +118,13 @@
 	                       <span class="time-remaining">{{ last_call_reckoning.closing_date|until_time }} Remaining</span>
 	                   </div>
                    </div>
+                   <hr class="reckoning-divider">                   
                {% endfor %}
                <div class="see-more-link">(See More!)</div>	       
 	       </div>
            <div class="secondary-block block-2 section">
                <div class="section-header"><span>FINISHED RECKONINGS!</span></div>
+               <hr class="reckoning-divider">               
                {% for finished_reckoning in finished_reckonings %}
                    <div class="reckoning">   
 	                   <div class="reckoning-question"><a href="{{finished_reckoning.getURL}}">{{ finished_reckoning.question }}</a></div>
@@ -98,6 +133,7 @@
 	                       <span class="time-remaining">Closed {{ finished_reckoning.closing_date|time_since }} Ago</span>
 	                   </div>
 	               </div>
+                   <hr class="reckoning-divider">	               
                {% endfor %}
                <div class="see-more-link">(See More!)</div>           
            </div>

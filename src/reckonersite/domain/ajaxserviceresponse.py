@@ -1,13 +1,12 @@
 '''
-Created on Aug 23, 2011
+Created on Oct 17, 2011
 @author: danko
 '''
 from xml.etree import cElementTree as cET
 from reckonersite.domain.base import Base, buildXml
 
-class ServiceResponse(Base):
-    '''Object definition of a response returned by the Reckoner API for data posts.  
-    Maintained to be synchronized with the Reckoner API'''
+class AjaxServiceResponse(Base):
+    '''Object definition of the response provided to an AJAX call.'''
 
     def __init__(self, message = None, message_description = None, success = False, 
                  xml_string = None, xml_element = None):
@@ -25,7 +24,7 @@ class ServiceResponse(Base):
             self.buildFromXMLElement(xml_element)
     
     def getXML(self):
-        return (buildXml(self.__dict__, 'service_response'))
+        return (buildXml(self.__dict__, 'ajax_service_response'))
     
     def getXMLString(self):
         return cET.tostring(self.getXML())
