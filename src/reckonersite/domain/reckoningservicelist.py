@@ -13,11 +13,12 @@ class ReckoningServiceList(Base):
     '''Object definition of a list of Reckonings as returned from the Reckoner Content Services.  
     Maintained to be synchronized with the Reckoner API'''
 
-    def __init__(self, status = None, reckonings = None, success = False, 
+    def __init__(self, status = None, reckonings = None, count = None, 
                  xml_string = None, xml_element = None):
         
         self.status = status
         self.reckonings = reckonings
+        self.count = count
         
         if not xml_string is None:
             self.buildFromXMLString(xml_string)
@@ -44,3 +45,6 @@ class ReckoningServiceList(Base):
             self.reckonings = []
             for reckoningElement in reckoningsElement.findall('reckoning'):
                 self.reckonings.append(Reckoning(xml_element=reckoningElement))
+                
+        if (not xml_root.find('count') is None):
+            self.count=xml_root.find('count').text

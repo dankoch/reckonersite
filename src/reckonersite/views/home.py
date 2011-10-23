@@ -13,7 +13,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from reckonersite.client.reckoningclient import client_get_open_highlighted_reckonings, \
+from reckonersite.client.reckoningclient import client_get_reckonings, \
                                                 client_get_open_reckonings, \
                                                 client_get_closed_reckonings
 
@@ -34,8 +34,10 @@ def home_page(request):
         
         reckoning = None
         user_vote = None
-        highlighted_response = client_get_open_highlighted_reckonings(page="0", size="4", 
-                                                                      session_id=request.user.session_id)
+        highlighted_response = client_get_reckonings(sort_by="postingDate",
+                                                     page="0", size="1",
+                                                     highlighted=True, 
+                                                     session_id=request.user.session_id)
         if (highlighted_response.reckonings):
             reckoning = computeReckoningAnswerPercentages(highlighted_response.reckonings[0])
             user_vote = get_user_reckoning_vote(request, reckoning.id)

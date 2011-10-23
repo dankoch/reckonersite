@@ -10,7 +10,7 @@ def url_encode_list(list):
     
     if (list):
         for item in list:
-            encodedList = str.join((encodedList, urllib.quote_plus(item.strip())))
+            encodedList = "".join((encodedList, urllib.quote_plus(item.strip())))
     
     return encodedList
-    
+        

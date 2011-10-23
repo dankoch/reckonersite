@@ -2,12 +2,11 @@
 Created on Aug 25, 2011
 @author: danko
 '''
+import urllib
 import urllib2
-import datetime
 
 from django.conf import settings
 from reckonersite.client.utilities import url_encode_list
-from reckonersite.domain.reckoning import Reckoning
 from reckonersite.domain.reckoningservicelist import ReckoningServiceList
 from reckonersite.domain.serviceresponse import ServiceResponse
 
@@ -56,7 +55,7 @@ def client_get_reckoning(id, session_id, include_unaccepted=False, page_visit=Fa
     return reckoningList   
 
 def client_get_reckonings(posted_before=None, posted_after=None, closed_before=None, closed_after=None,
-                          include_tags=None, exclude_tags=None,
+                          include_tags=None, exclude_tags=None, highlighted=None,
                           sort_by=None, ascending=False, page=None, size=None,
                           session_id=None):
     url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning" + "?"
@@ -69,9 +68,19 @@ def client_get_reckonings(posted_before=None, posted_after=None, closed_before=N
     if (closed_after):
         url += "closed_after=" + posted_before.isoformat() + "&"  
     if (include_tags):
-        url += "include_tags=" + url_encode_list(include_tags) + "&"  
+        if (isinstance(include_tags, list) or isinstance(include_tags, tuple)):
+            url += "include_tags=" + url_encode_list(include_tags) + "&" 
+        else:
+            url += "include_tags=" + urllib.quote_plus(include_tags) + "&"  
     if (exclude_tags):
-        url += "exclude_tags=" + url_encode_list(exclude_tags) + "&"  
+        if (isinstance(exclude_tags, list) or isinstance(exclude_tags, tuple)):
+            url += "exclude_tags=" + url_encode_list(exclude_tags) + "&" 
+        else:
+            url += "exclude_tags=" + urllib.quote_plus(exclude_tags) + "&"   
+    if (highlighted is False):
+        url += "highlighted=false&"
+    if (highlighted is True):
+        url += "highlighted=true&"
     if (sort_by):
         url += "sort_by=" + sort_by + "&" 
     if (ascending):
@@ -90,7 +99,7 @@ def client_get_reckonings(posted_before=None, posted_after=None, closed_before=N
     return reckoningList   
 
 def client_get_open_reckonings(posted_before=None, posted_after=None, closed_before=None, closed_after=None,
-                          include_tags=None, exclude_tags=None,
+                          include_tags=None, exclude_tags=None, highlighted=None,
                           sort_by=None, ascending=False, page=None, size=None,
                           session_id=None):
     url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/open" + "?"
@@ -103,14 +112,24 @@ def client_get_open_reckonings(posted_before=None, posted_after=None, closed_bef
     if (closed_after):
         url += "closed_after=" + posted_before.isoformat() + "&"  
     if (include_tags):
-        url += "include_tags=" + url_encode_list(include_tags) + "&"  
+        if (isinstance(include_tags, list) or isinstance(include_tags, tuple)):
+            url += "include_tags=" + url_encode_list(include_tags) + "&" 
+        else:
+            url += "include_tags=" + urllib.quote_plus(include_tags) + "&"  
     if (exclude_tags):
-        url += "exclude_tags=" + url_encode_list(exclude_tags) + "&"  
+        if (isinstance(exclude_tags, list) or isinstance(exclude_tags, tuple)):
+            url += "exclude_tags=" + url_encode_list(exclude_tags) + "&" 
+        else:
+            url += "exclude_tags=" + urllib.quote_plus(exclude_tags) + "&"
+    if (highlighted is False):
+        url += "highlighted=false&"
+    if (highlighted is True):
+        url += "highlighted=true&"
     if (sort_by):
         url += "sort_by=" + sort_by + "&" 
     if (ascending):
         url += "ascending=true" + "&"
-    if (page):
+    if (page is not None):
         url += "page=" + str(page) + "&" 
     if (size):
         url += "size=" + str(size) + "&" 
@@ -124,7 +143,7 @@ def client_get_open_reckonings(posted_before=None, posted_after=None, closed_bef
     return reckoningList 
 
 def client_get_closed_reckonings(posted_before=None, posted_after=None, closed_before=None, closed_after=None,
-                          include_tags=None, exclude_tags=None,
+                          include_tags=None, exclude_tags=None, highlighted=None,
                           sort_by=None, ascending=False, page=None, size=None,
                           session_id=None):
     url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/closed" + "?"
@@ -137,9 +156,19 @@ def client_get_closed_reckonings(posted_before=None, posted_after=None, closed_b
     if (closed_after):
         url += "closed_after=" + posted_before.isoformat() + "&"  
     if (include_tags):
-        url += "include_tags=" + url_encode_list(include_tags) + "&"  
+        if (isinstance(include_tags, list) or isinstance(include_tags, tuple)):
+            url += "include_tags=" + url_encode_list(include_tags) + "&" 
+        else:
+            url += "include_tags=" + urllib.quote_plus(include_tags) + "&"  
     if (exclude_tags):
-        url += "exclude_tags=" + url_encode_list(exclude_tags) + "&"  
+        if (isinstance(exclude_tags, list) or isinstance(exclude_tags, tuple)):
+            url += "exclude_tags=" + url_encode_list(exclude_tags) + "&" 
+        else:
+            url += "exclude_tags=" + urllib.quote_plus(exclude_tags) + "&"
+    if (highlighted is False):
+        url += "highlighted=false&"
+    if (highlighted is True):
+        url += "highlighted=true&"
     if (sort_by):
         url += "sort_by=" + sort_by + "&" 
     if (ascending):
@@ -210,19 +239,4 @@ def client_get_random_closed_reckoning(session_id):
     content = response.read()
     reckoningList = ReckoningServiceList(xml_string = content)
 
-    return reckoningList  
-
-def client_get_open_highlighted_reckonings(page, size, session_id):
-    url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/highlighted/open?"
-    if (page):
-        url += "page=" + str(page) + "&" 
-    if (size):
-        url += "size=" + str(size) + "&" 
-    if (session_id):
-        url += "session_id=" + session_id + "&"
-           
-    response = urllib2.urlopen(url)    
-    content = response.read()
-    reckoningList = ReckoningServiceList(xml_string = content)
-    
-    return reckoningList       
+    return reckoningList      

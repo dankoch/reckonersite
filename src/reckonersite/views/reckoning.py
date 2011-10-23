@@ -18,7 +18,9 @@ from reckonersite.client.commentclient import client_post_reckoning_comment
 from reckonersite.client.reckoningclient import client_get_reckoning, \
                                                 client_post_reckoning, \
                                                 client_get_random_open_reckoning, \
-                                                client_get_random_closed_reckoning
+                                                client_get_random_closed_reckoning, \
+                                                client_get_open_reckonings, \
+                                                client_get_closed_reckonings
 
 from reckonersite.domain.answer import Answer
 from reckonersite.domain.comment import Comment
@@ -27,6 +29,7 @@ from reckonersite.domain.vote import Vote
 from reckonersite.views.vote import post_reckoning_vote, get_user_reckoning_vote
 from reckonersite.util.math import computeReckoningAnswerPercentages
 from reckonersite.util.validation import purgeHtml, sanitizeDescriptionHtml, sanitizeCommentHtml
+from reckonersite.util.pagination import pageDisplay
 
 logger = logging.getLogger(settings.STANDARD_LOGGER)
 
@@ -196,4 +199,90 @@ def get_reckoning(request, id = None, title = None):
     
 class CommentReckoningForm(forms.Form):  
     comment = forms.CharField(max_length=5000, label="Comment", required=True, widget=forms.Textarea)  
-        
+    
+###############################################################################################
+# The page responsible for showing a list of current open reckonings
+###############################################################################################
+
+
+def get_open_reckonings(request, id = None, title = None):
+
+    page_url = "/open-reckonings"
+
+    try:        
+        # Check to see if we're coming here from a GET.  If so, we've got work to do.
+        if request.method == 'GET':
+            
+            # Pull the relevant variables from the request string.
+            include_tags = request.GET.get('include_tags', None)
+            exclude_tags = request.GET.get('exclude_tags', None)
+            page = request.GET.get('page', "1")
+            size = request.GET.get('size', None)
+            tab = request.GET.get('tab', None)
+            
+            # Persist the specified variables in the session for when the user navigates away and back.
+            # Otherwise, pull the information out of the session
+            if (include_tags is not None):
+                request.session['open-include-tags'] = include_tags
+            else:
+                include_tags = request.session.get('open-include-tags', None)
+    
+            if (exclude_tags is not None): 
+                request.session['open-exclude-tags'] = exclude_tags
+            else:
+                exclude_tags = request.session.get('open-exclude-tags', None)
+                
+            if (size):
+                request.session['open-size'] = size
+            else:
+                size = request.session.get('open-size', '15')         
+                
+            if (tab):
+                request.session['open-tab'] = tab
+            else:
+                tab = request.session.get('open-tab', 'newest')                         
+
+            # Execute the correct action based on the selected tab and info.  Valid tabs:
+            #  * 'popular', 'lastcall', 'featured', 'newest' (default)
+            if (tab == "popular"):
+                reckoning_response = client_get_open_reckonings(sort_by="views",
+                                                                include_tags=include_tags, exclude_tags=exclude_tags,
+                                                                page=(int(page)-1), size=size, 
+                                                                session_id=request.user.session_id)
+                        
+            elif (tab == "lastcall"):
+                reckoning_response = client_get_open_reckonings(sort_by="closingDate", ascending=True,
+                                                                include_tags=include_tags, exclude_tags=exclude_tags,
+                                                                page=(int(page)-1), size=size, 
+                                                                session_id=request.user.session_id)
+                
+            elif (tab == "highlighted"):
+                reckoning_response = client_get_open_reckonings(highlighted=True,
+                                                                include_tags=include_tags, exclude_tags=exclude_tags,                                                                
+                                                                page=(int(page)-1), size=size, 
+                                                                session_id=request.user.session_id)
+            else:
+                tab = 'newest'
+                reckoning_response = client_get_open_reckonings(page=(int(page)-1), size=size, 
+                                                                include_tags=include_tags, exclude_tags=exclude_tags,                                                                
+                                                                session_id=request.user.session_id)
+            
+            context = {'reckonings' : reckoning_response.reckonings,
+                                         'page' : int(page),
+                                         'size' : int(size),
+                                         'tab' : tab,
+                                         'include_tags' : include_tags,
+                                         'exclude_tags' : exclude_tags,
+                                         'page_url' : page_url}
+            
+            print ("Reckoning View: " + str(context))
+            
+            context.update(pageDisplay(page, size, reckoning_response.count))
+            
+            c = RequestContext(request, context)
+            
+            return render_to_response('open_reckonings.html', c)
+    except Exception:
+        logger.error("Exception when showing a reckoning:") 
+        logger.error(traceback.print_exc(8))
+        raise Exception         

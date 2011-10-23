@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load reckontags %}
+
+{% block pagetitle %}The Reckoner! - Open Reckonings!{% endblock %}
+
+{% block fb-title %}"The Reckoner! - Open Reckonings!"{% endblock %}
+{% block fb-url %}"{{ SITE_ROOT }}{{ page_url }}"{% endblock %}
+{% block fb-description %}"People are in need of help! Catch the latest open Reckonings on the Reckoner and give them a piece of your mind!"{% endblock %}
+
+{% block gplus-title %}"The Reckoner! - Open Reckonings!"{% endblock %}
+{% block gplus-description %}"People are in need of help! Catch the latest open Reckonings on the Reckoner and give them a piece of your mind!"{% endblock %}
+
+{% block canon-url %}"{{ SITE_ROOT }}{{ page_url }}"{% endblock %}
+
+{% block extraheader %}
+      <script src="{{ STATIC_URL }}js/ajax-post.js"></script>
+      <script src="{{ STATIC_URL }}ckeditor/ckeditor.js"></script>
+      <script src="{{ STATIC_URL }}ckeditor/adapters/jquery.js"> </script>
+{% endblock %}
+
+{% block main %}
+    <div id="open-reckonings-page">
+        <div class=page-header><h1>Open Reckonings</h1></div>
+        <div class="reckonings-list-box tab-box">
+            <div class="reckoning-tabs">
+                <div class="reckoning-tab reckoning-tab-left {% if tab == "newest" %}reckoning-tab-selected{% endif %}">
+                    <h3><a href="{{page_url}}?tab=newest">Newest!</a></h3>
+                </div>
+                <div class="reckoning-tab {% if tab == "popular" %}reckoning-tab-selected{% endif %}">
+                    <h3><a href="{{page_url}}?tab=popular">Most Popular!</a></h3>
+                </div>
+                <div class="reckoning-tab {% if tab == "lastcall" %}reckoning-tab-selected{% endif %}">
+                    <h3><a href="{{page_url}}?tab=lastcall">Last Call!</a></h3>
+                </div>
+                <div class="reckoning-tab reckoning-tab-right {% if tab == "highlighted" %}reckoning-tab-selected{% endif %}">
+                    <h3><a href="{{page_url}}?tab=highlighted">Highlighted!</a></h3>
+                </div>      
+                <div class="float-clear"></div>                          
+            </div>
+            <div class="reckonings-content-section">
+                {% for reckoning in reckonings %}
+                    <div class="reckoning">
+                        <div class="stat-boxes">
+                            <div class="stat-box views-stat-box">
+                                <div class="count">{{ reckoning.views|condense_int }}</div>
+                                <div class="box-label">VIEW{% if reckoning.views != 1 %}S{%endif%}</div>                                 
+                            </div>
+                            <div class="stat-box votes-stat-box">
+                                <div class="count">{{ reckoning.getTotalVotes|condense_int}}</div>
+                                <div class="box-label">VOTE{% if reckoning.getTotalVotes != 1 %}S{%endif%}</div>
+                            </div>
+                        </div>
+                        <div class="content-wrapper">
+	                        <div class="question">
+	                            <a href="{{ reckoning.getURL }}">{{ reckoning.question }}</a>
+	                        </div>
+                            <div class="poster-wrapper">
+                                <div class="profile-picture-wrapper"><img src="{{reckoning.posting_user.profile_picture_url}}" class="profile-picture"></div>
+                                <div class="profile-info-wrapper">
+                                    <span class="label">Posted By:</span>
+                                    <span class="poster-name">{{reckoning.posting_user|print_user_name}}</span><br>
+                                    <span class="poster-date">{{reckoning.posting_date}}</span>                        
+                                </div>
+                            </div>	                        
+                            <div class="time-wrapper spec-wrapper">
+                                 <div class="label">Time Remaining:</div>
+                                 <div class="time">
+                                    {{ reckoning.closing_date|until_time }}
+                                 </div>                                    
+                            </div>	                        
+                            <div class="tags-wrapper spec-wrapper">
+                                 <span class="label">Tags:</span>
+                                 <span class="tags">
+                                     {% for tag in reckoning.tags %}
+                                         <a href="{{ page_url }}?include_tags={{tag.tag|urlencode}}">{{tag.tag}}</a>{% if not forloop.last %}, {% endif %}
+                                     {% endfor %}
+                                 </span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="reckoning-divider">
+                {% endfor %}
+            </div>
+            <div class="paging-section">
+                <div class="page-select">
+                    {% if page < final_page %}
+                        <a href="{{ page_url }}?page={{page|add:'1'}}">
+                            <div class="next-page">
+                                <img src="{{ STATIC_URL }}images/chevron_next.png" alt="Next Page!" class="next-page-img"/>
+                                <div class="label">NEXT PAGE!</div>                    
+                            </div>
+                        </a>
+                    {% endif %}
+                    {% if page > 1 %}
+                        <a href="{{ page_url }}?page={{page|add:'-1'}}">
+		                    <div class="previous-page">
+				                <img src="{{ STATIC_URL }}images/chevron_prev.png" alt="Previous Page!" class="previous-page-img"/>
+				                <div class="label">PREVIOUS PAGE!</div>                    
+		                    </div>
+	                    </a>
+                    {% endif %}
+                    <div class="pages">
+                        {% if begin_pages %} 
+                            {% for page_list in begin_pages %}
+                                {% if page_list == page %} <span class="active-page"> {% endif %}
+                                [<a href="{{ page_url }}?page={{page_list}}">{{ page_list }}</a>]
+                                {% if page_list == page %} </span> {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% if page_spread %} 
+                        ...
+                            {% for page_list in page_spread %}
+                                {% if page_list == page %} <span class="active-page"> {% endif %}
+                                [<a href="{{ page_url }}?page={{page_list}}">{{ page_list }}</a>]
+                                {% if page_list == page %} </span> {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% if end_pages %} 
+                        ...
+                            {% for page_list in end_pages %}
+                                {% if page_list == page %} <span class="active-page"> {% endif %}
+                                [<a href="{{ page_url }}?page={{page_list}}">{{ page_list }}</a>]
+                                {% if page_list == page %} </span> {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="page-size-select">
+                    <div class="page-box {% if size == 15 %}page-box-selected{% endif %}">
+                        <a href="{{ page_url }}?size=15">
+		                    <div class="count">15</div>
+		                    <div class="box-label">Per Page</div>    
+	                    </a>                
+                    </div>
+                    <div class="page-box {% if size == 30 %}page-box-selected{% endif %}">
+                        <a href="{{ page_url }}?size=30">
+                            <div class="count">30</div>
+                            <div class="box-label">Per Page</div>    
+                        </a>                
+                    </div>
+                    <div class="page-box {% if size == 50 %}page-box-selected{% endif %}">
+                        <a href="{{ page_url }}?size=50">
+                            <div class="count">50</div>
+                            <div class="box-label">Per Page</div>    
+                        </a>                
+                    </div>                                  
+                </div>
+            </div>
+        </div>
+    </div>        
+{% endblock %}
+
+{% block rightsidebar %}
+    <div id = "tag-filter-form">
+        <div class="section-header"><span>FILTER BY TAG!</span></div>
+        <div class="tag-form-box">
+            <form action="" method="get" class="tag-form">
+                <label for="id_include_tags"><h5>Tags to Include</h5></label>
+                <input type="text" maxlength=100 id="id_include_tags" name="include_tags" class="tag-field" value="{{include_tags}}"></input>
+                <div class="field-notation">(Separated by commas - e.g. 'Video Games, Relationships')</div>
+                
+                <label for="id_exclude_tags"><h5>Tags to Exclude</h5></label>
+                <input type="text" maxlength=100 id="id_exclude_tags" name="exclude_tags" class="tag-field" value="{{exclude_tags}}"></input>
+                <div class="field-notation">(Separated by commas - e.g. 'Video Games, Relationships')</div>
+                
+                <input type="submit" name="submit" value="Submit" class="button save-tags-button"/>            
+            </form>
+        </div>        
+    </div>
+{% endblock %}

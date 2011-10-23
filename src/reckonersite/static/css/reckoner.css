@@ -129,11 +129,22 @@ body {
     text-align: center;  
 }
 
+#content-area .page-header h1 {
+    margin: 8px 0;
+    text-align: center;
+}
+
 #content-area h2 {
     font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
     font-size: 28px;
     font-weight: bold;
+    margin: .5em 0;
     text-transform: uppercase;  
+}
+
+#content-area .page-header h2 {
+	margin: 16px 0;
+	text-align: center;
 }
 
 #content-area h3 {
@@ -297,6 +308,10 @@ body {
     margin: 5px auto;
     text-align: center;	
     width: 100%;
+}
+
+.float-clear {
+	clear: both;
 }
 
 /***************************************************************************************
@@ -800,7 +815,7 @@ body {
 }
 
 #reckoning-page .voting-section {
-	margin: 10px 7px;
+	margin: 30px 7px 10px 7px;
 }
 
 #reckoning-page .voting-section .vote-box {
@@ -1100,8 +1115,6 @@ body {
 }
 
 #reckoning-page .metadata-section .social-options {
-	background-color: #f6f6f6;
-    border: 1px solid #9d9d9d;
 	float: right;
 	padding: 4px 4px 1px 4px;
 	text-align: center;
@@ -1368,6 +1381,304 @@ body {
     text-transform: uppercase; 
     width: 300px;
  }
+ 
+ /***************************************************************************************
+ * OPEN / CLOSED RECKONINGS
+ * Styles used specifically in the Reckoner Administration area.
+ ***************************************************************************************/
+
+#content-area .reckonings-list-box {
+	border: 1px solid #9d9d9d;
+	margin: 0px 7px;
+}
+
+#content-area .reckonings-list-box .reckoning-tabs {
+
+}
+
+#content-area .reckonings-list-box .reckoning-tab {
+	background-color: #cc0000;
+    border-left: 1px solid #555555;
+    border-bottom: 1px solid #555555;
+    float: left;
+    margin: 0px;
+    text-align: center;
+    width: 151px;
+}
+
+#content-area .reckonings-list-box .reckoning-tab-left {
+    border-left: 0px;
+    width: 152px;
+}
+
+#content-area .reckonings-list-box .reckoning-tab-right {
+    width: 152px;
+}
+
+#content-area .reckonings-list-box .reckoning-tab-selected {
+	background-color: white;
+	border-bottom: 0px;
+	color: black;
+}
+
+#content-area .reckonings-list-box .reckoning-tabs h3 {
+	font-size: 16px;
+	margin: 2px 0;
+}
+
+#content-area .reckonings-list-box .reckoning-tabs a {
+    color: white;
+    text-decoration: none;
+}
+
+#content-area .reckonings-list-box .reckoning-tab-selected a {
+    color: black;
+    text-decoration: none;
+}
+
+#content-area .reckonings-list-box .reckoning-tabs a:hover {
+    text-decoration: underline;
+}
+
+#content-area .reckonings-list-box .reckoning-tab {
+	display: inline-block;
+}
+
+#content-area .reckonings-list-box .reckonings-content-section {
+	clear: both;
+	margin: 14px 7px;
+}
+
+#content-area .reckonings-list-box .reckoning {
+	
+}
+
+#content-area .reckonings-list-box .reckoning .stat-boxes {
+	float: left;
+}
+
+#content-area .reckonings-list-box .reckoning .content-wrapper {
+	float: right;
+	margin: 0 2px 0 4px;
+	width: 444px;
+}
+
+#content-area .reckonings-list-box .reckoning .question {
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 11pt;
+    font-weight: bold;
+    line-height: 20px;
+    margin: 0 0 15px 0;
+    text-transform: capitalize; 	
+}
+
+#content-area .reckonings-list-box .reckoning .question a {
+    color: black;
+    text-decoration: none;  
+}
+
+#content-area .reckonings-list-box .reckoning .question a:hover {
+    color: #cc0000;
+}
+
+#content-area .reckonings-list-box .reckoning .spec-wrapper {
+	display: inline-block;
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 9pt; 
+    text-transform: capitalize;
+    width: 198px;
+}
+
+#content-area .reckonings-list-box .reckoning .tags-wrapper {
+    margin-top: 6px;
+}
+
+#content-area .reckonings-list-box .reckoning .label {
+	font-size: 9pt;
+    font-weight: bold;
+    text-transform: capitalize; 	
+}
+
+#content-area .reckonings-list-box .reckoning .poster-wrapper {
+    background-color: #deecf6;  
+    border: 1px solid black;
+	display: inline-block;
+	float: right;
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 9pt; 
+    margin: 0 0 6px 0;
+    padding: 4px 4px 2px 4px;
+	width: 232px;
+}
+
+#content-area .reckonings-list-box .profile-picture-wrapper {
+	display: inline-block;
+    float: left;
+}
+
+#content-area .reckonings-list-box .profile-picture-wrapper img {
+	border: 1px solid black;
+	height: 30px;
+	width: 30px;
+}
+
+#content-area .reckonings-list-box .poster-wrapper .profile-info-wrapper {
+	float: right;
+    display: inline-block;
+    width: 196px;
+}
+
+#content-area .reckonings-list-box .poster-wrapper .poster-date {
+	font-size: 7pt;
+	line-height: 4px;
+	position: relative;
+	top: -4px;
+}
+
+#content-area .reckonings-list-box .paging-section {
+    font-family: Futura, "Century Gothic", Futura, "Tw Cen MT", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+	margin: 15px 7px;
+    text-transform: uppercase;
+	width: 595px;
+}
+
+#content-area .reckonings-list-box .paging-section a {
+	color: black;
+    text-decoration: none;
+}
+
+#content-area .reckonings-list-box .paging-section a:hover {
+    text-decoration: underline;
+}
+
+#content-area .reckonings-list-box .paging-section .pages {
+	color: #9b9b9b;
+    text-align: center;
+}
+
+#content-area .reckonings-list-box .paging-section .pages a {
+    color: #9b9b9b;
+}
+
+#content-area .reckonings-list-box .paging-section .pages .active-page {
+    color: black;
+}
+
+#content-area .reckonings-list-box .paging-section .pages .active-page a {
+    color: black;
+}
+
+#content-area .reckonings-list-box .paging-section .previous-page {
+    float: left;
+    text-align: left;
+    width: 160px;
+}
+
+#content-area .reckonings-list-box .paging-section .next-page  {
+    float: right;
+    text-align: right;
+    width: 160px;
+}
+
+#content-area .reckonings-list-box .paging-section .previous-page img {
+    float: left;
+    margin: 0 5px 0 0;
+}
+
+#content-area .reckonings-list-box .paging-section .next-page img {
+    float: right;
+    margin: 0 0 0 5px;
+}
+
+#content-area .reckonings-list-box .paging-section .label {
+    font-family: Futura, "Century Gothic", Futura, "Tw Cen MT", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 18px;    
+}
+
+#content-area .reckonings-list-box .paging-section .page-size-select {
+    margin: 20px 0;
+    text-align: center;
+}
+
+#content-area .reckonings-list-box .paging-section .page-box {
+    background-color: #f1fee9;
+    border: 1px solid #666666;
+    display: inline-block;
+    height: 45px;
+    text-align: center;
+    width: 55px;
+}
+
+#content-area .reckonings-list-box .paging-section .page-box a {
+    color: #9b9b9b;
+}
+
+#content-area .reckonings-list-box .paging-section .page-box-selected a {
+    color: black;
+    text-decoration: none;
+}
+
+#content-area .reckonings-list-box .paging-section .page-box .count {
+    font-family: "Futura", "Lucida Sans", "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 18px;
+    line-height: 12px;
+    margin: 8px auto 1px auto;
+}
+
+#content-area .reckonings-list-box .paging-section .page-box .box-label {
+    display: inline-block;
+    margin: 0 auto;
+    font-family: "Futura", "Lucida Sans", "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 10px;
+}
+
+#content-area .reckonings-list-box .reckoning-divider {
+    padding: 8px 0 0 0;
+    margin: 0 0 8px 0;
+}
+
+#tag-filter-form {
+	margin: 7px 2px;
+}
+
+#tag-filter-form .tag-form-box {
+	background-color: #f6f6f6;
+	border: 1px solid #9d9d9d;
+	margin: 4px 0;
+    padding: 7px 15px;
+}
+
+#tag-filter-form .tag-form-box h5 {
+    margin: 16px 0 4px 0;
+}
+
+#tag-filter-form .tag-form-box .field-notation {
+	margin: 0;
+	font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+	font-size: 9px;
+}
+
+#tag-filter-form .tag-form-box .tag-field {
+    width: 180px;
+}
+
+#tag-filter-form .tag-form-box .save-tags-checkbox-wrapper {
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 10px;
+    margin: 16px 0;
+}
+
+#tag-filter-form .tag-form-box .save-tags-label {
+    position: relative;
+    top: -1px;
+}
+
+#tag-filter-form .tag-form-box .save-tags-button {
+	margin: 15px 0;
+}
+
 
 /***************************************************************************************
  * ADMIN STYLES
