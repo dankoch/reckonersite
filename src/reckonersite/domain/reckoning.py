@@ -2,6 +2,8 @@
 Created on Aug 23, 2011
 @author: danko
 '''
+from urllib import quote_plus
+
 from datetime import datetime
 from xml.etree import cElementTree as cET
 from reckonersite.domain.answer import Answer
@@ -228,4 +230,8 @@ class Tag(Base):
         return (buildXml(self.tag, 'tag'))
     
     def getXMLString(self):
-        return cET.tostring(self.getXML())            
+        return cET.tostring(self.getXML())        
+    
+    def getURL(self):
+        if (self.tag):
+            return '/reckonings/tag/' + quote_plus(self.tag)

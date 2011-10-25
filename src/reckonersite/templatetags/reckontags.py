@@ -86,3 +86,18 @@ def print_user_name(value):
                                    "</a>"))
     finally:
         return mark_safe(returnString)
+    
+@register.filter
+def print_tag_link(value):
+    '''
+    Accepts an object of type reckonersite.domain.reckoning.Tag and converts it 
+    into a link to the 'display posts tagged by this' screen.
+    '''
+    returnString=""
+    
+    try:
+        returnString= "".join(("<a href=\"", value.getURL(), "\">",
+                                   value.tag,
+                                   "</a>"))
+    finally:
+        return mark_safe(returnString)

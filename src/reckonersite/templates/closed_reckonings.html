@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% load reckontags %}
 
-{% block pagetitle %}The Reckoner! - Open Reckonings!{% endblock %}
+{% block pagetitle %}The Reckoner! - Finished Reckonings!{% endblock %}
 
-{% block fb-title %}"The Reckoner! - Open Reckonings!"{% endblock %}
+{% block fb-title %}"The Reckoner! - Finished Reckonings!"{% endblock %}
 {% block fb-url %}"{{ SITE_ROOT }}{{ page_url }}"{% endblock %}
-{% block fb-description %}"People are in need of help! Catch the latest open Reckonings on the Reckoner and give them a piece of your mind!"{% endblock %}
+{% block fb-description %}"They asked, the world answered! Catch the latest finished Reckonings on The Reckoner to see the awesome power of Democracy!"{% endblock %}
 
-{% block gplus-title %}"The Reckoner! - Open Reckonings!"{% endblock %}
-{% block gplus-description %}"People are in need of help! Catch the latest open Reckonings on the Reckoner and give them a piece of your mind!"{% endblock %}
+{% block gplus-title %}"The Reckoner! - Finished Reckonings!"{% endblock %}
+{% block gplus-description %}"They asked, the world answered! Catch the latest finished Reckonings on The Reckoner to see the awesome power of Democracy!"{% endblock %}
 
 {% block canon-url %}"{{ SITE_ROOT }}{{ page_url }}"{% endblock %}
 
@@ -19,8 +19,8 @@
 {% endblock %}
 
 {% block main %}
-    <div id="open-reckonings-page">
-        <div class=page-header><h1>Open Reckonings</h1></div>
+    <div id="closed-reckonings-page">
+        <div class=page-header><h1>Closed Reckonings</h1></div>
         <div class="reckonings-list-box tab-box">
             <div class="reckoning-tabs">
                 <div class="reckoning-tab reckoning-tab-left {% if tab == "newest" %}reckoning-tab-selected{% endif %}">
@@ -29,8 +29,8 @@
                 <div class="reckoning-tab {% if tab == "popular" %}reckoning-tab-selected{% endif %}">
                     <h3><a href="{{page_url}}?tab=popular">Most Popular!</a></h3>
                 </div>
-                <div class="reckoning-tab {% if tab == "lastcall" %}reckoning-tab-selected{% endif %}">
-                    <h3><a href="{{page_url}}?tab=lastcall">Last Call!</a></h3>
+                <div class="reckoning-tab {% if tab == "leastpopular" %}reckoning-tab-selected{% endif %}">
+                    <h3><a href="{{page_url}}?tab=leastpopular">Least Popular!</a></h3>
                 </div>
                 <div class="reckoning-tab reckoning-tab-right {% if tab == "highlighted" %}reckoning-tab-selected{% endif %}">
                     <h3><a href="{{page_url}}?tab=highlighted">Highlighted!</a></h3>

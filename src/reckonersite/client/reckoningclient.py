@@ -85,7 +85,7 @@ def client_get_reckonings(posted_before=None, posted_after=None, closed_before=N
         url += "sort_by=" + sort_by + "&" 
     if (ascending):
         url += "ascending=true" + "&"
-    if (page):
+    if (page is not None):
         url += "page=" + str(page) + "&" 
     if (size):
         url += "size=" + str(size) + "&" 
@@ -173,7 +173,7 @@ def client_get_closed_reckonings(posted_before=None, posted_after=None, closed_b
         url += "sort_by=" + sort_by + "&" 
     if (ascending):
         url += "ascending=true" + "&"
-    if (page):
+    if (page is not None):
         url += "page=" + str(page) + "&" 
     if (size):
         url += "size=" + str(size) + "&" 

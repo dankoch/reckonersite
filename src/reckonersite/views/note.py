@@ -165,9 +165,7 @@ def post_reckoning_comment_flag(request, id = None):
                 flag = Flag(user_id = request.user.reckoner_id)
                 service_response = client_post_reckoning_comment_flag(flag, 
                                                                       id, 
-                                                                      request.user.session_id)
-
-                print ("Comment Flag: " + site_response.getXMLString())                                
+                                                                      request.user.session_id)                              
                 
                 if (service_response.success):
                     site_response = AjaxServiceResponse(success=True,

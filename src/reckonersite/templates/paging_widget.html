@@ -1,0 +1,63 @@
+<div class="page-select">
+    {% if page < final_page %}
+        <a href="{{ page_url }}?page={{page|add:'1'}}">
+            <div class="next-page">
+                <img src="{{ STATIC_URL }}images/chevron_next.png" alt="Next Page!" class="next-page-img"/>
+                <div class="label">NEXT PAGE!</div>                    
+            </div>
+        </a>
+    {% endif %}
+    {% if page > 1 %}
+        <a href="{{ page_url }}?page={{page|add:'-1'}}">
+            <div class="previous-page">
+                <img src="{{ STATIC_URL }}images/chevron_prev.png" alt="Previous Page!" class="previous-page-img"/>
+                <div class="label">PREVIOUS PAGE!</div>                    
+            </div>
+        </a>
+    {% endif %}
+    <div class="pages">
+        {% if begin_pages %} 
+            {% for page_list in begin_pages %}
+                {% if page_list == page %} <span class="active-page"> {% endif %}
+                [<a href="{{ page_url }}?page={{page_list}}">{{ page_list }}</a>]
+                {% if page_list == page %} </span> {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% if page_spread %} 
+        ...
+            {% for page_list in page_spread %}
+                {% if page_list == page %} <span class="active-page"> {% endif %}
+                [<a href="{{ page_url }}?page={{page_list}}">{{ page_list }}</a>]
+                {% if page_list == page %} </span> {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% if end_pages %} 
+        ...
+            {% for page_list in end_pages %}
+                {% if page_list == page %} <span class="active-page"> {% endif %}
+                [<a href="{{ page_url }}?page={{page_list}}">{{ page_list }}</a>]
+                {% if page_list == page %} </span> {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+<div class="page-size-select">
+    <div class="page-box {% if size == 15 %}page-box-selected{% endif %}">
+        <a href="{{ page_url }}?size=15">
+            <div class="count">15</div>
+            <div class="box-label">Per Page</div>    
+        </a>                
+    </div>
+    <div class="page-box {% if size == 30 %}page-box-selected{% endif %}">
+        <a href="{{ page_url }}?size=30">
+            <div class="count">30</div>
+            <div class="box-label">Per Page</div>    
+        </a>                
+    </div>
+    <div class="page-box {% if size == 50 %}page-box-selected{% endif %}">
+        <a href="{{ page_url }}?size=50">
+            <div class="count">50</div>
+            <div class="box-label">Per Page</div>    
+        </a>                
+    </div>                                  
+</div>

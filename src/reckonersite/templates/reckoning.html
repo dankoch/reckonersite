@@ -84,7 +84,7 @@
                          <div class="label">Tags:</div>
                          <div class="tags">
                              {% for tag in reckoning.tags %}
-                                 {{tag.tag}}{% if not forloop.last %}, {% endif %}
+                                {{tag|print_tag_link}}{{tag.tag}}</a>{% if not forloop.last %}, {% endif %}
                              {% endfor %}
                          </div>
                      </div>

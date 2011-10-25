@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% load reckontags %}
 
-{% block pagetitle %}The Reckoner! - Open Reckonings!{% endblock %}
+{% block pagetitle %}The Reckoner! - Reckonings Tagged With {{inlcude_tags}}!{% endblock %}
 
-{% block fb-title %}"The Reckoner! - Open Reckonings!"{% endblock %}
+{% block fb-title %}"The Reckoner! - Reckonings Tagged With {{inlcude_tags}}!"{% endblock %}
 {% block fb-url %}"{{ SITE_ROOT }}{{ page_url }}"{% endblock %}
-{% block fb-description %}"People are in need of help! Catch the latest open Reckonings on the Reckoner and give them a piece of your mind!"{% endblock %}
+{% block fb-description %}"Check out all of the Reckonings tagged with {{inlcude_tags}} over the years/months/days!  It'll wilt your eyebrows!"{% endblock %}
 
-{% block gplus-title %}"The Reckoner! - Open Reckonings!"{% endblock %}
-{% block gplus-description %}"People are in need of help! Catch the latest open Reckonings on the Reckoner and give them a piece of your mind!"{% endblock %}
+{% block gplus-title %}"The Reckoner! - Reckonings Tagged With {{inlcude_tags}}!"{% endblock %}
+{% block gplus-description %}"Check out all of the Reckonings tagged with {{inlcude_tags}} over the years/months/days!  It'll wilt your eyebrows!"{% endblock %}
 
 {% block canon-url %}"{{ SITE_ROOT }}{{ page_url }}"{% endblock %}
 
@@ -20,17 +20,17 @@
 
 {% block main %}
     <div id="open-reckonings-page">
-        <div class=page-header><h1>Open Reckonings</h1></div>
+        <div class=page-header><h1>Reckonings Tagged With<br>'{{include_tags}}'</h1></div>
         <div class="reckonings-list-box tab-box">
             <div class="reckoning-tabs">
-                <div class="reckoning-tab reckoning-tab-left {% if tab == "newest" %}reckoning-tab-selected{% endif %}">
-                    <h3><a href="{{page_url}}?tab=newest">Newest!</a></h3>
+                <div class="reckoning-tab reckoning-tab-left {% if tab == "open" %}reckoning-tab-selected{% endif %}">
+                    <h3><a href="{{page_url}}?tab=open">Open!</a></h3>
+                </div>
+                <div class="reckoning-tab {% if tab == "closed" %}reckoning-tab-selected{% endif %}">
+                    <h3><a href="{{page_url}}?tab=closed">Closed!</a></h3>
                 </div>
                 <div class="reckoning-tab {% if tab == "popular" %}reckoning-tab-selected{% endif %}">
-                    <h3><a href="{{page_url}}?tab=popular">Most Popular!</a></h3>
-                </div>
-                <div class="reckoning-tab {% if tab == "lastcall" %}reckoning-tab-selected{% endif %}">
-                    <h3><a href="{{page_url}}?tab=lastcall">Last Call!</a></h3>
+                    <h3><a href="{{page_url}}?tab=popular">Popular!</a></h3>
                 </div>
                 <div class="reckoning-tab reckoning-tab-right {% if tab == "highlighted" %}reckoning-tab-selected{% endif %}">
                     <h3><a href="{{page_url}}?tab=highlighted">Highlighted!</a></h3>
@@ -48,8 +48,4 @@
             </div>
         </div>
     </div>        
-{% endblock %}
-
-{% block rightsidebar %}
-    {% include "tag_filter_widget.html" %}
 {% endblock %}

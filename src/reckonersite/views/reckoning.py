@@ -6,6 +6,8 @@ import logging
 import sys
 import traceback
 
+from urllib import unquote_plus
+
 from django import forms
 from django.conf import settings
 from django.contrib import messages
@@ -19,6 +21,7 @@ from reckonersite.client.reckoningclient import client_get_reckoning, \
                                                 client_post_reckoning, \
                                                 client_get_random_open_reckoning, \
                                                 client_get_random_closed_reckoning, \
+                                                client_get_reckonings, \
                                                 client_get_open_reckonings, \
                                                 client_get_closed_reckonings
 
@@ -205,7 +208,7 @@ class CommentReckoningForm(forms.Form):
 ###############################################################################################
 
 
-def get_open_reckonings(request, id = None, title = None):
+def get_open_reckonings(request):
 
     page_url = "/open-reckonings"
 
@@ -267,6 +270,9 @@ def get_open_reckonings(request, id = None, title = None):
                                                                 include_tags=include_tags, exclude_tags=exclude_tags,                                                                
                                                                 session_id=request.user.session_id)
             
+            if not reckoning_response.status.success:
+                logger.error("Open Reckoning Call failed: " + reckoning_response.status.message)
+            
             context = {'reckonings' : reckoning_response.reckonings,
                                          'page' : int(page),
                                          'size' : int(size),
@@ -275,14 +281,194 @@ def get_open_reckonings(request, id = None, title = None):
                                          'exclude_tags' : exclude_tags,
                                          'page_url' : page_url}
             
-            print ("Reckoning View: " + str(context))
-            
             context.update(pageDisplay(page, size, reckoning_response.count))
-            
             c = RequestContext(request, context)
             
             return render_to_response('open_reckonings.html', c)
     except Exception:
-        logger.error("Exception when showing a reckoning:") 
+        logger.error("Exception when showing the Open Reckonings list:") 
         logger.error(traceback.print_exc(8))
         raise Exception         
+    
+    
+###############################################################################################
+# The page responsible for showing a list of current closed reckonings
+###############################################################################################
+
+
+def get_closed_reckonings(request):
+
+    page_url = "/finished-reckonings"
+
+    try:        
+        # Check to see if we're coming here from a GET.  If so, we've got work to do.
+        if request.method == 'GET':
+            
+            # Pull the relevant variables from the request string.
+            include_tags = request.GET.get('include_tags', None)
+            exclude_tags = request.GET.get('exclude_tags', None)
+            page = request.GET.get('page', "1")
+            size = request.GET.get('size', None)
+            tab = request.GET.get('tab', None)
+            
+            # Persist the specified variables in the session for when the user navigates away and back.
+            # Otherwise, pull the information out of the session
+            if (include_tags is not None):
+                request.session['closed-include-tags'] = include_tags
+            else:
+                include_tags = request.session.get('closed-include-tags', None)
+    
+            if (exclude_tags is not None): 
+                request.session['closed-exclude-tags'] = exclude_tags
+            else:
+                exclude_tags = request.session.get('closed-exclude-tags', None)
+                
+            if (size):
+                request.session['closed-size'] = size
+            else:
+                size = request.session.get('closed-size', '15')         
+                
+            if (tab):
+                request.session['closed-tab'] = tab
+            else:
+                tab = request.session.get('closed-tab', 'newest')                         
+
+            # Execute the correct action based on the selected tab and info.  Valid tabs:
+            #  * 'popular', 'leastpopular', 'featured', 'newest' (default)
+            if (tab == "popular"):
+                reckoning_response = client_get_closed_reckonings(sort_by="views",
+                                                                include_tags=include_tags, exclude_tags=exclude_tags,
+                                                                page=(int(page)-1), size=size, 
+                                                                session_id=request.user.session_id)
+                        
+            elif (tab == "leastpopular"):
+                reckoning_response = client_get_closed_reckonings(sort_by="views", ascending=True,
+                                                                include_tags=include_tags, exclude_tags=exclude_tags,
+                                                                page=(int(page)-1), size=size, 
+                                                                session_id=request.user.session_id)
+                
+            elif (tab == "highlighted"):
+                reckoning_response = client_get_closed_reckonings(sort_by="closingDate",
+                                                                highlighted=True,
+                                                                include_tags=include_tags, exclude_tags=exclude_tags,                                                                
+                                                                page=(int(page)-1), size=size, 
+                                                                session_id=request.user.session_id)
+            else:
+                tab = 'newest'
+                reckoning_response = client_get_closed_reckonings(sort_by="closingDate",
+                                                                page=(int(page)-1), size=size, 
+                                                                include_tags=include_tags, exclude_tags=exclude_tags,                                                                
+                                                                session_id=request.user.session_id)
+            
+            if not reckoning_response.status.success:
+                logger.error("Closed Reckoning Call failed: " + reckoning_response.status.message)
+
+            
+            context = {'reckonings' : reckoning_response.reckonings,
+                                         'page' : int(page),
+                                         'size' : int(size),
+                                         'tab' : tab,
+                                         'include_tags' : include_tags,
+                                         'exclude_tags' : exclude_tags,
+                                         'page_url' : page_url}
+            
+            context.update(pageDisplay(page, size, reckoning_response.count))
+            c = RequestContext(request, context)
+            
+            return render_to_response('closed_reckonings.html', c)
+    except Exception:
+        logger.error("Exception when showing the Closed Reckonings list:") 
+        logger.error(traceback.print_exc(8))
+        raise Exception   
+    
+
+###############################################################################################
+# The page responsible for showing all Reckonings associated with a tab.
+###############################################################################################
+
+
+def get_tagged_reckonings(request, tag = None):
+         
+    try:
+        page_url = "/reckonings/tag/" + tag
+        tag = unquote_plus(tag)
+        
+        page = request.GET.get('page', "1")
+        size = request.GET.get('size', None)
+        tab = request.GET.get('tab', None)
+        
+        if (size):
+            request.session['tag-size'] = size
+        else:
+            size = request.session.get('tag-size', '15')         
+            
+        if (tab):
+            request.session['tag-tab'] = tab
+        else:
+            tab = request.session.get('tag-tab', 'newest')     
+        
+        if (tag):
+            if (tab == "popular"):
+                reckoning_response = client_get_reckonings(sort_by="views",
+                                                                include_tags=tag,
+                                                                page=(int(page)-1), size=size, 
+                                                                session_id=request.user.session_id)
+            elif (tab == "highlighted"):
+                reckoning_response = client_get_reckonings(sort_by="closingDate",
+                                                                highlighted=True,
+                                                                include_tags=tag,                                                               
+                                                                page=(int(page)-1), size=size, 
+                                                                session_id=request.user.session_id)
+            elif (tab == "closed"):
+                reckoning_response = client_get_closed_reckonings(sort_by="closingDate",
+                                                                include_tags=tag,
+                                                                page=(int(page)-1), size=size, 
+                                                                session_id=request.user.session_id)
+            else:
+                tab = 'open'
+                reckoning_response = client_get_open_reckonings(sort_by="closingDate",
+                                                                include_tags=tag,
+                                                                page=(int(page)-1), size=size, 
+                                                                session_id=request.user.session_id)
+                
+            if not reckoning_response.status.success:
+                logger.error("Error when retrieving a tagged reckonings: " + reckoning_response.status.message)
+                raise Exception 
+           
+            context = {'reckonings' : reckoning_response.reckonings,
+                                         'page' : int(page),
+                                         'size' : int(size),
+                                         'include_tags' : tag,
+                                         'tab' : tab,
+                                         'page_url' : page_url}
+            
+            context.update(pageDisplay(page, size, reckoning_response.count))
+            c = RequestContext(request, context)
+        
+            return render_to_response('tagged_reckonings.html', c)
+                        
+    except Exception:
+        logger.error("Exception when showing tagged reckonings:") 
+        logger.error(traceback.print_exc(8))
+        raise Exception    
+    
+    
+###############################################################################################
+# The page responsible for showing a list of current closed reckonings
+###############################################################################################
+
+
+def get_random_reckoning(request):     
+    try:
+        service_response = client_get_random_open_reckoning(request.user.session_id)
+        
+        if (service_response.status.success):
+            return HttpResponseRedirect(service_response.reckonings[0].url)
+        else:
+            logger.error("Error when retrieving a random reckoning: " + service_response.status.message)
+            raise Exception 
+                        
+    except Exception:
+        logger.error("Exception when showing a reckoning:") 
+        logger.error(traceback.print_exc(8))
+        raise Exception    
