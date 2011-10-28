@@ -1,0 +1,32 @@
+<div class="comment">
+    <div class="comment-picture-wrapper"><img src="{{comment.user.profile_picture_url}}" class="profile-picture"></div>
+    <div class="comment-data">
+        <div class="comment-header">
+            <span class="profile-name">{{comment.user.first_name}} {{comment.user.last_name}}</span>
+        </div>
+        <div class="comment-text">{{comment.comment|safe}}</div>
+        <div class="comment-footer">
+            <span class="date">Posted {{comment.posting_date}}</span> 
+            -
+            {% if 'FAVORITE' in perms %}
+            <span class="favorite">
+                <form class="comment-favorite-form comment-favorite-form-{{comment.id}} form">
+                         <input type="hidden" name="comment-id" value="{{comment.id}}">
+                         <input class="button favorite-button" type="submit" name="favorite-submit" value="Favorite">
+                </form>
+            </span>                                     
+            -
+            {% endif %}      
+            {% if 'FLAG' in perms %}
+            <span class="flag">
+                <form class="comment-flag-form comment-flag-form-{{comment.id}} form">
+                         <input type="hidden" name="comment-id" value="{{comment.id}}">
+                         <input class="button flag-button" type="submit" name="flag-submit" value="Flag">
+                </form>
+            </span> 
+            {% endif %}
+            <span class="message message-{{comment.id}}"></span>                                                                    
+            <span class="favorite favorites favorite-{{comment.id}} {% if not comment.favorites %}no-favorites{% endif %}">&nbsp;Favorites (<span class="favorite-count-{{comment.id}}">{% if comment.favorites %}{{comment.favorites|length}}{% else %}0{% endif %}</span>)</span>
+        </div>
+    </div>
+</div>

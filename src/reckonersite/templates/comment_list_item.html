@@ -1,0 +1,13 @@
+{% load reckontags %}
+
+<div class="profile-comment">
+    <div class="profile-comment-reckoning">
+        <div class="reckoning-question"><a href="{{reckoning.getURL}}">{{reckoning.question}}</a></div>
+        <div class="reckoning-posting-date">{{reckoning.posting_date}}</div>
+    </div>
+    {% for comment in reckoning.comments %}
+        <hr class="comment-divider">
+        {% include "comment.html" %}
+    {% endfor %}
+    <hr class="comment-reckoning-divider">
+</div>

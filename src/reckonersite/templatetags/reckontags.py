@@ -75,15 +75,15 @@ until_time.is_safe = True
 @register.filter
 def print_user_name(value):
     '''
-    Accepts an object of type reckonersite.domain.reckonuser and uses it to
-    print out the standard user display name.
+    Accepts an object of type reckonersite.domain.reckonuser or reckonersite.domain.sitecustomuser
+    and uses it to print out the standard user display name.
     '''
     returnString=""
     
     try:
         returnString= "".join(("<a href=\"", value.getURL(), "\">",
                                    value.first_name, " ", value.last_name,
-                                   "</a>"))
+                                   "</a>"))    
     finally:
         return mark_safe(returnString)
     

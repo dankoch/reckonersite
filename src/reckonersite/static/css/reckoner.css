@@ -112,8 +112,15 @@ body {
 }
 
 #top-bar .profile-wrapper .profile-info p {
-	font-size: 10px;
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+	font-size: 11px;
 	margin: 0;
+}
+
+#top-bar .profile-wrapper .profile-info .profile-name {
+    font-size: 14px;
+    line-height: 14px;
+    margin: 0;
 }
 
 #content-area {
@@ -308,6 +315,22 @@ body {
     margin: 5px auto;
     text-align: center;	
     width: 100%;
+}
+
+.flag {
+    color: #0d4268;
+}
+
+.favorite {
+    color: #c54913;
+}
+
+.favorite-button {
+    color: #c54913;
+}
+
+.flag-button {
+    color: #0d4268;
 }
 
 .float-clear {
@@ -1187,10 +1210,7 @@ body {
 
 #reckoning-page .comment-section {
 	clear: both;
-	font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
-    font-size: 14px;
 	margin: 0 7px;
-    word-wrap: break-word;
 }
 
 #reckoning-page .comment-section .comment-box {
@@ -1218,102 +1238,6 @@ body {
     height: 0px;
     position: relative;
     left: 252px;
-}
-
-#reckoning-page .comment-section .comment-data {
-    float: right;
-    width: 450px;
-}
-
-#reckoning-page .comment-section .comment {
-	background-color: white;
-    margin: 10px 30px;
-}
-
-#reckoning-page .comment-section .comment p {
-	margin: 5px 0;
-	font-size: 10pt;
-}
-
-#reckoning-page .comment-section .comment ol {
-    margin: 8px 0;
-    word-wrap: break-word;
-}
-
-#reckoning-page .comment-section .comment ul {
-    margin: 8px 0;
-    word-wrap: break-word;
-}
-
-#reckoning-page .comment-section .comment-header {
-    margin: 0 0 5px 0;	
-}
-
-#reckoning-page .comment-section .comment-footer {
-	font-size: 10px;
-    margin: 5px 0 0 0;  
-}
-
-#reckoning-page .comment-section .comment-divider {
-	border-top-width: 0px;
-	border-left-width: 0px;
-	border-right-width: 0px;
-	border-bottom-width: 1px;
-	border-bottom-color: #9d9d9d;
-	clear: both;
-	height: 20px;
-    margin: 20px 20px;
-    text-align: center;
-}
-
-#reckoning-page .flag {
-    color: #0d4268;
-}
-
-#reckoning-page .favorite {
-    color: #c54913;
-}
-
-#reckoning-page .favorite-button {
-    color: #c54913;
-}
-
-#reckoning-page .flag-button {
-    color: #0d4268;
-}
-
-#reckoning-page .comment-section .favorites {
-    float: right;
-}
-
-#reckoning-page .comment-section .comment-footer .message {
-	font-weight: bold;
-	text-align: center;
-}
-
-#reckoning-page .comment-section .comment-footer .form {
-	display: inline;
-}
-
-#reckoning-page .comment-section .comment-footer .button {
-    background: transparent;
-    border: 0;
-    cursor: pointer;
-    display: inline;
-    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
-    font-size: 10px;
-    margin: 0;
-    padding: 0;     
-}
-
-*:first-child+html #reckoning-page .comment-section .comment-footer .button  {  /* hack needed for IE 7 */
-    border-bottom: 0;
-    text-decoration: underline;
-}
-
-* html #reckoning-page .comment-section .comment-footer .button  {  /* hack needed for IE 5/6 */
-    border-bottom: 0;
-    text-decoration: underline;
 }
 
 #reckoning-page .comment-section .comment-form-label {
@@ -1382,10 +1306,113 @@ body {
     width: 300px;
  }
  
- /***************************************************************************************
- * OPEN / CLOSED RECKONINGS
- * Styles used specifically in the Reckoner Administration area.
- ***************************************************************************************/
+/***************************************************************************************
+* COMMENT STYLES
+* Generic styles used specifically to render individual comments.
+***************************************************************************************/
+ 
+ #content-area .comment {
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    word-wrap: break-word;  
+}
+
+#content-area .comment .comment-data {
+    float: right;
+    width: 450px;
+}
+
+#content-area .comment {
+    background-color: white;
+    margin: 10px 30px;
+}
+
+#content-area .comment p {
+    margin: 5px 0;
+    font-size: 10pt;
+}
+
+#content-area .comment ol {
+    margin: 8px 0;
+    word-wrap: break-word;
+}
+
+#content-area .comment ul {
+    margin: 8px 0;
+    word-wrap: break-word;
+}
+
+#content-area .comment .comment-header {
+    margin: 0 0 5px 0;  
+}
+
+#content-area .comment .comment-footer {
+    font-size: 10px;
+    margin: 5px 0 0 0;  
+}
+
+#content-area .comment-divider {
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 1px;
+    border-bottom-color: #9d9d9d;
+    clear: both;
+    height: 20px;
+    margin: 0px 20px 20px 20px;
+    text-align: center;
+}
+
+#content-area .comment .favorites {
+    float: right;
+}
+
+#content-area .comment .no-favorites {
+    display: none;
+}
+
+#content-area .comment .comment-footer .message {
+    font-weight: bold;
+    text-align: center;
+}
+
+#content-area .comment .comment-footer .form {
+    display: inline;
+}
+
+#content-area .comment .comment-footer .button {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    display: inline;
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    margin: 0;
+    padding: 0;     
+}
+
+*:first-child+html #content-area .comment .comment-footer .button  {  /* hack needed for IE 7 */
+    border-bottom: 0;
+    text-decoration: underline;
+}
+
+* html .comment #content-area .comment-footer .button  {  /* hack needed for IE 5/6 */
+    border-bottom: 0;
+    text-decoration: underline;
+}
+
+#content-area .comment .comment-picture-wrapper {
+    border: 1px solid #666666;
+    height: 50px;
+    float: left;
+    margin: 0 8px 0px 0;
+    width: 50px;
+}
+ 
+/***************************************************************************************
+* OPEN / CLOSED RECKONINGS
+* Styles used specifically in the Reckoner Administration area.
+***************************************************************************************/
 
 #content-area .reckonings-list-box {
 	border: 1px solid #9d9d9d;
@@ -1677,6 +1704,157 @@ body {
 
 #tag-filter-form .tag-form-box .save-tags-button {
 	margin: 15px 0;
+}
+
+/***************************************************************************************
+ * PROFILE STYLES
+ * Styles used specifically in the Reckoner Profile area.
+ ***************************************************************************************/
+
+#user-profile-page {
+	
+}
+
+#user-profile-page .profile-info-section {
+	margin: 0 28px;
+}
+
+#user-profile-page .profile-overview {
+    float: left;
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    padding: 4px;
+    text-transform: capitalize;
+    width: 250px;
+}
+
+#user-profile-page .profile-box {
+	background-color: #DEECF6;
+	border: 2px solid #666;
+}
+
+#user-profile-page .profile-info-section .profile-picture-wrapper {
+	border: 1px solid black;
+	float: left;
+    height: 50px;
+    margin: 2px 4px 4px 0px;
+    width: 50px;
+}
+
+#user-profile-page .profile-info-section .profile-picture-wrapper img {
+    height: 50px;
+    width: 50px;
+}
+
+#user-profile-page .profile-info-section .poster-name {
+	font-size: 16px;
+    font-weight: bold;
+}
+
+#user-profile-page .profile-info-section .poster-dates .label {
+	clear: both;
+    text-decoration: underline;
+}
+
+#user-profile-page .profile-info-section .profile-count-box {
+    background-color: #f1fee9;
+    border: 1px solid #666666;
+    display: inline-block;
+    height: 55px;
+    text-align: center;
+    width: 65px;
+}
+
+#user-profile-page .profile-stats {
+	float: right;
+}
+
+#user-profile-page .profile-info-section .profile-count-box .count {
+    font-family: "Futura", "Lucida Sans", "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 20px;
+    line-height: 12px;
+    margin: 14px auto 1px auto;
+}
+
+#user-profile-page .profile-info-section .profile-count-box .box-label {
+    display: inline-block;
+    margin: 0 auto;
+    font-family: "Futura", "Lucida Sans", "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 12px;
+}
+
+#user-profile-page .profile-info-section .profile-count-box .box-label-small {
+    display: inline-block;
+    margin: 0 auto;
+    font-family: "Futura", "Lucida Sans", "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 10px;
+}
+
+#user-profile-page .profile-info-section .profile-bio {
+    clear: both;
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    padding: 15px 0px 35px 0px;
+}
+
+#user-profile-page .profile-info-section .profile-bio h3 {
+    margin: 6px 0;
+}
+
+#user-profile-page .profile-info-section .profile-bio .label {
+    font-weight: bold;
+    margin: 10px 0;
+}
+ 
+.reckoning .vote-boxes {
+	float: left;
+}
+
+.reckoning .vote-boxes .vote-box {
+    border: 1px solid #666666;
+    color: #9d9d9d;
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    margin: 0 0 5px 0;
+    padding: 5px 0;
+    text-align: center;
+    width: 140px;    
+}
+
+.reckoning .vote-boxes .vote-box-selected {
+    background-color: #d7ffbe;  
+    color: black;
+    font-weight: bold; 
+}
+
+.profile-comment .profile-comment-reckoning {
+    margin: 15px 20px 0 20px;
+}
+
+.profile-comment .profile-comment-reckoning .reckoning-question {
+	font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+	font-size: 11pt;
+	font-weight: bold;
+	line-height: 20px;
+	text-transform: capitalize;	
+}
+
+.profile-comment .profile-comment-reckoning .reckoning-posting-date {
+    font-size: 10px;
+}
+
+.profile-comment .comment-reckoning-divider {
+	border-top-width: 0px;
+	border-left-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 2px;
+	border-bottom-color: black;
+	border-bottom-style: solid;
+	clear: both;
+	height: 25px;
+	margin: 5px auto;
+	text-align: center;
+	width: 100%;	
 }
 
 

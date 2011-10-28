@@ -1,26 +1,14 @@
 {% load reckontags %}
 
 <div class="reckoning">
-    <div class="stat-boxes">
-        <div class="stat-box views-stat-box">
-            <div class="count">{{ reckoning.views|condense_int }}</div>
-            <div class="box-label">VIEW{% if reckoning.views != 1 %}S{%endif%}</div>                                 
-        </div>
-        <div class="stat-box votes-stat-box">
-            <div class="count">{{ reckoning.getTotalVotes|condense_int}}</div>
-            <div class="box-label">VOTE{% if reckoning.getTotalVotes != 1 %}S{%endif%}</div>
-        </div>
+    <div class="vote-boxes">
+        <div class="vote-box vote-box-1 {% if reckoning.answers.0.vote_total > '0' %} vote-box-selected {% endif %}">{{ reckoning.answers.0.text }}</div>
+        <div class="vote-box vote-box-2 {% if reckoning.answers.1.vote_total > '0' %} vote-box-selected {% endif %}">{{ reckoning.answers.1.text }}</div>
     </div>
     <div class="content-wrapper">
-        {% if not reckoning.approved %}
-	        <div class="question">
-	            *PENDING APPROVAL*<br>{{ reckoning.question }}
-	        </div>
-        {% else %}
-	        <div class="question">
-	            <a href="{{ reckoning.getURL }}">{{ reckoning.question }}</a>
-	        </div>
-        {% endif %}
+        <div class="question">
+            <a href="{{ reckoning.getURL }}">{{ reckoning.question }}</a>
+        </div>
         <div class="poster-wrapper">
             <div class="profile-picture-wrapper"><img src="{{reckoning.posting_user.profile_picture_url}}" class="profile-picture"></div>
             <div class="profile-info-wrapper">

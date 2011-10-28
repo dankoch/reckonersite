@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load reckontags %}
+
+{% block pagetitle %}The Reckoner! - User Profile: {{profile_user.first_name}} {{profile_user.last_name}}{% endblock %}
+
+{% block fb-title %}"The Reckoner! - User Profile: {{profile_user.first_name}} {{profile_user.last_name}}"{% endblock %}
+{% block fb-url %}"{{ SITE_ROOT }}{{ page_url }}"{% endblock %}
+{% block fb-description %}"Take a look at the Reckoning history of our prized Reckonaut, {{profile_user.first_name}} {{profile_user.last_name}}!"{% endblock %}
+
+{% block gplus-title %}"The Reckoner! - User Profile: {{profile_user.first_name}} {{profile_user.last_name}}"{% endblock %}
+{% block gplus-description %}"Take a look at the Reckoning history of our prized Reckonaut, {{profile_user.first_name}} {{profile_user.last_name}}!"{% endblock %}
+
+{% block canon-url %}"{{ SITE_ROOT }}{{ page_url }}"{% endblock %}
+
+{% block extraheader %}
+      <script src="{{ STATIC_URL }}js/ajax-post.js"></script>
+      <script src="{{ STATIC_URL }}ckeditor/ckeditor.js"></script>
+      <script src="{{ STATIC_URL }}ckeditor/adapters/jquery.js"> </script>
+{% endblock %}
+
+{% block main %}
+    <div id="user-profile-page">
+        {% if profile_user.id == user.reckoner_id %}
+            <div class=page-header><h1>Howdy {{profile_user.first_name}}!</h1></div>
+        {% else %}
+            <div class=page-header><h1>Reckonaut {{profile_user.first_name}} {{profile_user.last_name}}!</h1></div>            
+        {% endif %}
+        <div class="profile-info-section">
+            <div class="profile-overview profile-box">
+	            <div class="profile-picture-wrapper"><img src="{{profile_user.profile_picture_url}}" alt="Reckonaut {{profile_user.first_name}} {{profile_user.last_name}}"></div>
+	            <div class="poster-name">{{profile_user.first_name}} {{profile_user.last_name}}</div>
+	            <div class="poster-links">
+	                <div class="poster-link">(<a href="{{profile_user.profile_url}}">{{profile_user.auth_provider|lower}} Profile</a>)</div>
+	            </div>
+	            <div class="poster-dates">
+	                <div class="label">Joined On:</div>
+	                <div class="date">{{profile_user.first_login}}</div>
+	            </div>           
+            </div>
+	        <div class="profile-stats">
+	            <div class="profile-counts">
+	                <div class="profile-count-box">
+	                    <div class="count">{{ reckoning_count|condense_int }}</div>
+	                    <div class="box-label">POST{% if reckoning_count != 1 %}S{%endif%}</div>
+	                </div>
+	                <div class="profile-count-box">
+	                    <div class="count">{{ vote_count|condense_int }}</div>
+	                    <div class="box-label">VOTE{% if vote_count != 1 %}S{%endif%}</div>
+	                </div>
+	                <div class="profile-count-box">
+	                    <div class="count">{{ comment_count|condense_int }}</div>
+	                    <div class="box-label-small">COMMENT{% if comment_count != 1 %}S{%endif%}</div>
+	                </div>
+	                <div class="profile-count-box">
+	                    <div class="count">{{ tracking_count|condense_int }}</div>
+	                    <div class="box-label-small">TRACKING</div>
+	                </div>
+	            </div>
+	        </div>
+	        <div class="profile-bio bio-box">
+	           <div class="label">
+	               Give us the details on how you became a Reckonaut!  Who'd play you in The Reckoner movie?
+	           </div>
+	           <div class="bio-text">
+	               I was born in a crossfire hurricane, which was later wired for broadband internet.  In lieu of filling out my own profile, Reckonbot has automatically deemed me to be a genial, non-threatening character-actor type best played by either Bonnie Hunt or Bill Paxton.
+	           </div>
+	        </div>
+        </div>
+        <div class="reckonings-list-box tab-box">
+            <div class="reckoning-tabs">
+                <div class="reckoning-tab reckoning-tab-left {% if tab == "reckonings" %}reckoning-tab-selected{% endif %}">
+                    <h3><a href="{{page_url}}?tab=reckonings">Reckonings!</a></h3>
+                </div>
+                <div class="reckoning-tab {% if tab == "votes" %}reckoning-tab-selected{% endif %}">
+                    <h3><a href="{{page_url}}?tab=votes">Votes!</a></h3>
+                </div>
+                <div class="reckoning-tab {% if tab == "comments" %}reckoning-tab-selected{% endif %}">
+                    <h3><a href="{{page_url}}?tab=comments">Comments!</a></h3>
+                </div>
+                <div class="reckoning-tab reckoning-tab-right {% if tab == "tracking" %}reckoning-tab-selected{% endif %}">
+                    <h3><a href="{{page_url}}?tab=tracking">Tracking!</a></h3>
+                </div>      
+                <div class="float-clear"></div>                          
+            </div>
+            <div class="reckonings-content-section">
+                {% if tab == "reckonings" %}
+	                {% for reckoning in reckonings %}
+	                    {% include "reckoning_list_item.html" %}
+	                    <hr class="reckoning-divider">
+	                {% endfor %}
+	            {% else %} {% if tab == "votes" %}
+                    {% for reckoning in reckonings %}
+                        {% include "reckoning_vote_list_item.html" %}
+                        <hr class="reckoning-divider">
+                    {% endfor %}    	            
+	            {% else %} {% if tab == "comments" %}
+                    {% for reckoning in reckonings %}
+                        {% include "comment_list_item.html" %}
+                    {% endfor %}  	            
+	            {% else %} {% if tab == "tracking" %}                
+                    {% for reckoning in reckonings %}
+                        {% include "reckoning_list_item.html" %}
+                        <hr class="reckoning-divider">
+                    {% endfor %}	            
+                {% endif %} {% endif %} {% endif %} {% endif %}
+            </div>
+            <div class="paging-section">
+                {% include "paging_widget.html" %}
+            </div>
+        </div>
+    </div>        
+{% endblock %}
+
+{% block javascript %}
+  {{ block.super }}
+  {% include "flag-favorite-ajax.html" %}
+{% endblock %}
+

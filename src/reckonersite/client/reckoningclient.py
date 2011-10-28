@@ -239,4 +239,34 @@ def client_get_random_closed_reckoning(session_id):
     content = response.read()
     reckoningList = ReckoningServiceList(xml_string = content)
 
-    return reckoningList      
+    return reckoningList     
+
+def client_get_user_reckonings(user_id, page=None, size=None, session_id=None):
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/user/" + user_id + "?"
+    if (page is not None):
+        url += "page=" + str(page) + "&" 
+    if (size):
+        url += "size=" + str(size) + "&" 
+    if (session_id):
+        url += "session_id=" + session_id + "&"
+    
+    response = urllib2.urlopen(url)
+    content = response.read()
+    reckoningList = ReckoningServiceList(xml_string = content)
+
+    return reckoningList  
+
+def client_get_favorited_reckonings(user_id, page=None, size=None, session_id=None):
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/notes/reckoning/favorite/user/" + user_id + "?"
+    if (page is not None):
+        url += "page=" + str(page) + "&" 
+    if (size):
+        url += "size=" + str(size) + "&" 
+    if (session_id):
+        url += "session_id=" + session_id + "&"
+    
+    response = urllib2.urlopen(url)
+    content = response.read()
+    reckoningList = ReckoningServiceList(xml_string = content)
+
+    return reckoningList   

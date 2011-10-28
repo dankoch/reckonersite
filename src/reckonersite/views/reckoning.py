@@ -156,6 +156,7 @@ def get_reckoning(request, id = None, title = None):
         # If the Reckoning list is empty, there's no Reckoning by that ID.  Straight to the 404 page!
         # If the passed title doesn't match the slugified question matching the ID, redirect so that it does.
         if (not service_response.status.success):
+            logger.warning("Error when retrieving reckoning: " + service_response.status.message)
             raise BaseException() 
         elif (not service_response.reckonings):
             raise Http404

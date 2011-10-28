@@ -3,6 +3,8 @@ Created on Sep 5, 2011
 @author: danko
 '''
 
+from reckonersite.util.validation import slugifyTitle
+
 class SiteCustomUser(object):
     '''
     Represents the user model used throughout Reckonersite.  Most of the information
@@ -80,4 +82,10 @@ class SiteCustomUser(object):
         if (self.groups):
             return group in self.groups
         else:
-            return False        
+            return False     
+        
+    def getURL(self):
+        if (self.reckoner_id and self.first_name):
+            return '/user/' + self.reckoner_id + "/" + slugifyTitle(self.first_name + " " + self.last_name)
+        
+        return None   
