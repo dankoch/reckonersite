@@ -391,8 +391,15 @@ body {
     font-size: 12px;
     margin: 5px 0;
     position: relative;
-    right: 40px;
+    right: 200px;
+    text-align: right;
     top: -45px;
+}
+
+#login-bad-google-page h5 {
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+	font-size: 12px;
+	text-align: center;
 }
 
 /***************************************************************************************

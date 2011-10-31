@@ -47,7 +47,7 @@ GOOGLE_API_URL=""
 GOOGLE_API_OAUTH_URL="https://accounts.google.com/o/oauth2/auth"
 GOOGLE_API_TOKEN_URL="https://accounts.google.com/o/oauth2/token"
 
-GOOGLE_SCOPE = "https://www.googleapis.com/auth/buzz.readonly"
+GOOGLE_SCOPE = "https://www.googleapis.com/auth/plus.me"
 
 # Connect to MongoDB.  The database is only used for session persistence.
 connect ('session')

@@ -3,5 +3,15 @@
 {% block title %}Login!{% endblock %}
 
 {% block main %}
-<h1>Sorry!  Only Google Plus-enabled accounts can log into the Reckoner!</h1>
+    <div id="login-bad-google-page" class="static-page">
+	    <h1>Google has one more step for you!</h1>
+	    <p>Only Google Plus-enabled Google accounts can log into the Reckoner. <b>But that's no problem, because registering your Google account for Google Plus is a snap!</b></p>
+	    <h3>Just sidle on over to <a href="http://plus.google.com">plus.google.com</a>!</h3>
+	    <h5>
+	       <a href="http://plus.google.com"><img src="{{STATIC_URL}}images/gplus-icon-web.png" alt="Google Plus!"></a>
+	    </h5>
+        <p>The good folks at Google will get you registered and ready to go!  Then hop on back here, log back in, and you'll never see this annoying screen again! That is, unless you want to, in which case I can mail you a signed copy.</p>	    
+	    <p>See you in a few minutes!</p>
+	    {% include "signature.html" %}
+    </div>
 {% endblock %}

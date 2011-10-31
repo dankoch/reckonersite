@@ -10,9 +10,6 @@
         <p>If Reckonbot turns it down, we'll shoot a message to your Facebook or Google+ account letting you know what happened.</p>
         <p>In the meantime, check out the other Reckonings back at the site!</p>
         <h3>Thanks again, and good luck!</h3>
-        <div class="signature-block">
-            <img src="{{ STATIC_URL }}images/dan_koch_with_signature.jpg" alt="Yours Truly, Dan Koch"/>
-            <h4>Dan Koch</h4>
-        </div>
+        {% include "signature.html" %}
     </div>
 {% endblock %}
