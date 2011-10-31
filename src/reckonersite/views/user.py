@@ -9,16 +9,20 @@ import traceback
 from django.conf import settings
 from django.contrib import messages
 from django.http import Http404
+from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from reckonersite.client.authclient import client_get_user_by_id
+from reckonersite.client.authclient import client_get_user_by_id, client_update_user
 from reckonersite.client.commentclient import client_get_user_comments, client_get_favorited_comments
 from reckonersite.client.reckoningclient import client_get_user_reckonings, client_get_favorited_reckonings
 from reckonersite.client.voteclient import client_get_user_reckoning_votes
 
-from reckonersite.util.validation import purgeHtml, sanitizeDescriptionHtml, sanitizeCommentHtml
+from reckonersite.domain.ajaxserviceresponse import AjaxServiceResponse
+from reckonersite.domain.reckoneruser import ReckonerUser
+
+from reckonersite.util.validation import purgeHtml, sanitizeDescriptionHtml, sanitizeCommentHtml, sanitizeBioHtml
 from reckonersite.util.pagination import pageDisplay
 
 logger = logging.getLogger(settings.STANDARD_LOGGER)
@@ -105,4 +109,40 @@ def get_user_profile(request, id = None, name = None):
         logger.error("Exception when showing a user profile:") 
         logger.error(traceback.print_exc(8))
         raise Exception         
+
+
+###############################################################################################
+#  The endpoint responsible for updating a user's bio upon submission.
+#  (as used primarily for AJAX calls)
+###############################################################################################
+
+def update_reckoning_bio(request, id = None):
+    site_response = AjaxServiceResponse(success=False,
+                                        message="whoops", 
+                                        message_description='No go. Try again later.')
     
+    if (request.user.has_perm('UPDATE_PROFILE_INFO') or id == request.user.reckoner_id):
+        try:
+            if request.method == 'POST':
+                bio = sanitizeBioHtml(request.POST.get("user-bio", ""))
+                
+                if (len(bio) > 1000):
+                    site_response = AjaxServiceResponse(success=False,
+                                                        message="too_long",
+                                                        message_description="Maximum Length is 1000 Characters (minus markup)")
+                else: 
+                    userUpdate = ReckonerUser(id=id, bio=bio)
+                    service_response = client_update_user(userUpdate,
+                                                          request.user.session_id)                              
+                    
+                    if (service_response.status.success):
+                        site_response = AjaxServiceResponse(success=True,
+                                                            message="success",
+                                                            message_description="Updated!")
+                
+        except Exception:
+            logger.error("Exception when flagging a reckoning:") 
+            logger.error(traceback.print_exc(8))    
+
+    
+    return HttpResponse(site_response.getXMLString())

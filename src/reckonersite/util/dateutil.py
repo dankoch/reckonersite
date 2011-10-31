@@ -19,7 +19,7 @@ def timeDeltaFormatter(timeDelta):
         remainingTime['days'] = timeDelta.days
         remainingTime['hours'], remainder = divmod(timeDelta.seconds, 3600)
         remainingTime['minutes'], remainingTime['seconds'] = divmod(remainder, 60)
-                
+        
         if (remainingTime['days']):
             returnString += str(remainingTime['days'])
             if (remainingTime['days'] > 1):

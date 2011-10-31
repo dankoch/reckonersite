@@ -2,7 +2,7 @@
     <div class="comment-picture-wrapper"><img src="{{comment.user.profile_picture_url}}" class="profile-picture"></div>
     <div class="comment-data">
         <div class="comment-header">
-            <span class="profile-name">{{comment.user.first_name}} {{comment.user.last_name}}</span>
+            <span class="profile-name"><a href="{{comment.user.getURL}}">{{comment.user.first_name}} {{comment.user.last_name}}</a></span>
         </div>
         <div class="comment-text">{{comment.comment|safe}}</div>
         <div class="comment-footer">

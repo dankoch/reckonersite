@@ -103,6 +103,24 @@ def client_update_user_permissions (permissionPost):
 
     return servResponse  
 
+def client_update_user (userPost, session_id):
+    '''
+    Updates the modifiable parts of the Reckoner user, as based on the received User object.
+    
+    Returns a UserServiceResponse object.
+    '''
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/user/update"
+
+    req = urllib2.Request(url = url,
+                          data = userPost.getPostingXMLString(session_id),
+                          headers = {'Content-Type': 'text/xml'})
+    
+    response = urllib2.urlopen(req)
+    content = response.read()
+    servResponse = UserServiceResponse(xml_string = content)
+
+    return servResponse  
+
 
 def client_get_permission_list ():
     '''

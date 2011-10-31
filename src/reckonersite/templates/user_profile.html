@@ -60,10 +60,20 @@
 	        <div class="profile-bio bio-box">
 	           <div class="label">
 	               Give us the details on how you became a Reckonaut!  Who'd play you in The Reckoner movie?
-	           </div>
+	           </div> 
+	           <hr class="bio-divider">
 	           <div class="bio-text">
-	               I was born in a crossfire hurricane, which was later wired for broadband internet.  In lieu of filling out my own profile, Reckonbot has automatically deemed me to be a genial, non-threatening character-actor type best played by either Bonnie Hunt or Bill Paxton.
+                   {{profile_user.bio|safe}}
 	           </div>
+               {% if profile_user.id == user.reckoner_id or 'UPDATE_PROFILE_INFO' in perms %}
+                   <form id="bio-edit-form" style="display: none">{% csrf_token %}
+	                   <input type="hidden" name="user-id" value="{{profile_user.id}}">                        
+	                   <textarea maxlength=1000 id="id_user-bio" name="user-bio" class="user-bio-edit-field">{% if profile_user.bio %}{{profile_user.bio}}{% endif %}</textarea>
+	                   <input type="submit" name="save" value="Save" class="button save-button"/>
+                   </form>        
+                   <div class="profile-bio-edit-message"></div>           
+                   <div class="profile-bio-edit-button">Edit this bio!</div>
+               {% endif %}   	           
 	        </div>
         </div>
         <div class="reckonings-list-box tab-box">
@@ -112,7 +122,52 @@
 {% endblock %}
 
 {% block javascript %}
-  {{ block.super }}
-  {% include "flag-favorite-ajax.html" %}
+{{ block.super }}
+{% include "flag-favorite-ajax.html" %}
+  
+<script type="text/javascript">
+
+     $(function(){ 
+        $(".profile-bio-edit-button").click(function(e) {
+            e.preventDefault();
+            
+            $(".profile-bio-edit-button").hide();
+            $(".bio-text").hide();
+            $("#bio-edit-form").show();
+            		  
+               $(".user-bio-edit-field").ckeditor(
+                       function () { /* Callback code */}, {
+                           forcePasteAsPlainText: true,
+                           skin: 'v2',
+                           toolbar: 'Basic' 
+                       }             
+                 );   
+        }); 
+      });     
+     
+      $(function(){ 
+          $("#bio-edit-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  userId = $form.find("input[name=user-id]").val(),
+                  bio = $form.find("textarea[name=user-bio]"); 
+              
+              $.post("/user/bio/" + userId, bio.serialize(),
+                     function(data) {                 
+                        var message = $( data ).find( 'message_description' ),
+                            success = $( data ).find( 'success' ).text();                   
+                        $(".profile-bio-edit-message").empty().append(message);
+                        
+                        if (success.toLowerCase() === 'true') {
+                            $(".bio-text").html(bio.val());
+                            $(".bio-text").show();                            
+                            $(".profile-bio-edit-button").show();  
+                            $("#bio-edit-form").hide();                            
+                        }
+                     } 
+                     , "xml")
+          }); 
+       });   
+</script>
 {% endblock %}
 

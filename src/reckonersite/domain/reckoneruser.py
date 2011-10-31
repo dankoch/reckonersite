@@ -14,7 +14,8 @@ class ReckonerUser(Base):
     def __init__(self, id=None, username=None, first_name=None, last_name=None, email=None,
                  auth_provider=None, auth_provider_id=None, first_login=None, last_login=None, 
                  profile_picture_url=None, profile_url=None, groups=None, permissions=None,
-                 active=True, xml_string=None, xml_element=None):
+                 bio=None, active=True, 
+                 xml_string=None, xml_element=None):
         
         # Note: Since we're building the XML nodes off of the names of the attributes,
         # these names need to be kept aligned with the API definition.
@@ -32,6 +33,7 @@ class ReckonerUser(Base):
         self.groups = groups
         self.permissions = permissions
         self.active = active
+        self.bio = bio
         
         if not xml_string is None:
             self.buildFromXMLString(xml_string)
@@ -44,6 +46,18 @@ class ReckonerUser(Base):
     
     def getXMLString(self):
         return cET.tostring(self.getXML())
+    
+    def getPostingXML(self, session_id):
+        posting = cET.Element('user_post')
+        posting.append(self.getXML())
+        
+        token = cET.SubElement(posting, 'session_id')
+        token.text = session_id
+        
+        return posting
+    
+    def getPostingXMLString(self, session_id):
+        return cET.tostring(self.getPostingXML(session_id))
     
     def buildFromXMLString(self, xml):
         xml_root = cET.XML(xml)
@@ -90,6 +104,8 @@ class ReckonerUser(Base):
               
         if (not xml_root.find('active') is None):
             self.active = (xml_root.find('active').text == 'true')    
+        if (not xml_root.find('bio') is None):
+            self.bio = xml_root.find('bio').text
             
     def getURL(self):
         if (self.id and self.first_name):

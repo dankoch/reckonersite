@@ -48,7 +48,7 @@ def post_reckoning_vote(request):
                                     " " + request.user.reckoner_id + " " + str(request.META.get('REMOTE_ADDR', None)) +
                                     " " + vote_service_response.message)
                     else:
-                        errors["vote_error" : False]
+                        errors['vote_error'] = False
 
     except Exception:
         logger.error("Exception when showing a reckoning:") 

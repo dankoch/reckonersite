@@ -749,6 +749,7 @@ body {
 
 #main-page .reckoning .reckoning-data .time-remaining {
 	color: #900000;
+	text-transform: capitalize;
 }
 
 #main-page .reckoning .reckoning-stats {
@@ -1797,13 +1798,49 @@ body {
     padding: 15px 0px 35px 0px;
 }
 
+#content-area .bio-divider {
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 1px;
+    border-bottom-color: #9d9d9d;
+    border-bottom-style: dotted;
+    clear: both;
+    margin: 0px 10px 10px 10px;
+    text-align: center;
+}
+
 #user-profile-page .profile-info-section .profile-bio h3 {
     margin: 6px 0;
+}
+
+#user-profile-page .profile-info-section .profile-bio p {
+    margin: 6px 0;
+    font-size: 14px;
 }
 
 #user-profile-page .profile-info-section .profile-bio .label {
     font-weight: bold;
     margin: 10px 0;
+}
+
+#user-profile-page .profile-info-section .profile-bio .profile-bio-edit-button {
+    color: #c54913;
+	cursor: pointer;
+	margin: 7px 0;
+}
+
+#user-profile-page .profile-info-section .profile-bio .profile-bio-edit-message {
+    color: #cc0000;
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    float: right;
+}
+
+#user-profile-page .profile-info-section .save-button {
+	margin: 6px 0 0 0;
+	width: 50px;
 }
  
 .reckoning .vote-boxes {

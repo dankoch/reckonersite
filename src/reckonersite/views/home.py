@@ -53,7 +53,7 @@ def home_page(request):
                                                         page="0", size="4", 
                                                         session_id=request.user.session_id)
         
-        recent_finished_response = client_get_closed_reckonings(sort_by="closingDate", ascending=True,
+        recent_finished_response = client_get_closed_reckonings(sort_by="closingDate", ascending=False,
                                                                 page="0", size="4", 
                                                                 session_id=request.user.session_id)
         
