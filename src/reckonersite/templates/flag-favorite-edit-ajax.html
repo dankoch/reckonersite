@@ -1,0 +1,142 @@
+<script type="text/javascript">
+      $(function(){
+         $(".comment-favorite-form").submit(function(e) {
+             e.preventDefault();
+             var $form = $( this ),
+                 commentId = $form.find("input[name=comment-id]").val();
+             
+             $.post("/notes/reckoning/comment/favorite/" + commentId, null,
+                    function(data) {                 
+                       var message = $( data ).find( 'message_description' ),
+                           success = $( data ).find( 'success' ).text();                   
+                       $("#comment-favorite-form-" + commentId).empty().append(message);
+                       
+                       if (success.toLowerCase() === 'true') {
+                           var favCount = parseInt($(".favorite-count-" + commentId).html()) + 1;
+                           $("#favorite-count-" + commentId).empty().append(favCount);
+                           $("#favorite-" + commentId).removeClass("no-favorites");
+                       }
+                    } 
+                    , "xml")
+         }); 
+      });
+      
+      $(function(){
+          $(".comment-flag-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  commentId = $form.find("input[name=comment-id]").val();
+              
+              $.post("/notes/reckoning/comment/flag/" + commentId, null,
+                     function(data) {                 
+                        var message = $( data ).find( 'message_description' ),
+                            success = $( data ).find( 'success' ).text();                   
+                        $("#comment-flag-form-" + commentId).empty().append(message);
+                     } 
+                     , "xml")
+          }); 
+       });
+      
+      $(function(){
+          $(".comment-edit-initialize-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  commentId = $form.find("input[name=comment-id]").val();
+              
+              $("#comment-text-" + commentId).hide();
+              $("#comment-edit-form-" + commentId).show();
+                        
+              $("#user-comment-edit-field-" + commentId).ckeditor(
+                      function () { /* Callback code */}, {
+                          forcePasteAsPlainText: true,
+                          skin: 'v2',
+                          toolbar: 'Basic' 
+                      }             
+                );   
+          }); 
+       });
+      
+      $(function(){
+          $(".comment-edit-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  commentId = $form.find("input[name=comment-id]").val();
+                  comment = $form.find("textarea[name=comment]")
+                        
+              $.post("/comment/reckoning/update", $form.serialize(),
+                      function(data) {                 
+                         var message = $( data ).find( 'message_description' ),
+                             success = $( data ).find( 'success' ).text();                   
+                         $(".message-" + commentId).empty().append(message);
+                         
+                         if (success.toLowerCase() === 'true') {
+                             $("#comment-text-" + commentId).html(comment.val());
+                             $("#comment-text-" + commentId).show();
+                             $("#comment-edit-form-" + commentId).hide();                       
+                         }
+                      } 
+                      , "xml")
+          }); 
+       });
+      
+      $(function(){
+          $(".comment-delete-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  commentId = $form.find("input[name=comment-id]").val();
+                  
+              var accepted = confirm('Delete comment ' + commentId + '?\n\n');
+                        
+              if (accepted) {        
+	              $.post("/comment/reckoning/delete", $form.serialize(),
+	                      function(data) {                 
+	                         var message = $( data ).find( 'message_description' ),
+	                             success = $( data ).find( 'success' ).text();                   
+	                         $(".message-" + commentId).empty().append(message);
+	                         
+	                         if (success.toLowerCase() === 'true') {
+	                             $("#comment-" + commentId).html("<b>Deleted!<b>");                   
+	                         }
+	                      } 
+	                      , "xml")
+              }
+          }); 
+       });
+    
+      $(function(){
+          $(".reckoning-favorite-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  reckoningId = $form.find("input[name=reckoning-id]").val();
+              
+              $.post("/notes/reckoning/favorite/" + reckoningId, null,
+                     function(data) {                 
+                        var message = $( data ).find( 'message_description' ),
+                            success = $( data ).find( 'success' ).text();                   
+                        $("#reckoning-favorite-form-" + reckoningId).empty().append(message);
+                        
+                        if (success.toLowerCase() === 'true') {
+                            var favCount = parseInt($(".favorite-count-" + reckoningId).html()) + 1;
+                            $("#favorite-count-" + reckoningId).empty().append(favCount);
+                        }
+                     } 
+                     , "xml")
+          }); 
+       });
+      
+      $(function(){
+          $(".reckoning-flag-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  reckoningId = $form.find("input[name=reckoning-id]").val();
+              
+              $.post("/notes/reckoning/flag/" + reckoningId, null,
+                     function(data) {                 
+                        var message = $( data ).find( 'message_description' ),
+                            success = $( data ).find( 'success' ).text();                   
+                        $("#reckoning-flag-form-" + reckoningId).empty().append(message);
+                     } 
+                     , "xml")
+          }); 
+       });
+</script>

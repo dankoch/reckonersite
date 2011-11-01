@@ -1,32 +1,59 @@
-<div class="comment">
+<div id="comment-{{comment.id}}" class="comment">
     <div class="comment-picture-wrapper"><img src="{{comment.user.profile_picture_url}}" class="profile-picture"></div>
     <div class="comment-data">
         <div class="comment-header">
-            <span class="profile-name"><a href="{{comment.user.getURL}}">{{comment.user.first_name}} {{comment.user.last_name}}</a></span>
+            <span id="profile-name-{{comment.id}}" class="profile-name"><a href="{{comment.user.getURL}}">{{comment.user.first_name}} {{comment.user.last_name}}</a></span>
         </div>
-        <div class="comment-text">{{comment.comment|safe}}</div>
+        <div id="comment-text-{{comment.id}}" class="comment-text">{{comment.comment|safe}}</div>
+        {% if 'UPDATE_ALL_COMMENTS' in perms %}
+        <form id="comment-edit-form-{{comment.id}}" class="comment-edit-form" style="display: none">{% csrf_token %}
+	        <input type="hidden" name="comment-id" value="{{comment.id}}">                        
+	        <textarea maxlength=5000 id="user-comment-edit-field-{{comment.id}}" name="comment" class="user-comment-edit-field">{{comment.comment|safe}}</textarea>
+	        <input type="submit" name="edit-comment-save" value="Save" class="button save-button"/>
+        </form>
+        {% endif %}
         <div class="comment-footer">
             <span class="date">Posted {{comment.posting_date}}</span> 
-            -
+            <span class="anchor">[<a href="#comment-{{comment.id}}">#</a>]</span>
             {% if 'FAVORITE' in perms %}
+            &middot;
             <span class="favorite">
-                <form class="comment-favorite-form comment-favorite-form-{{comment.id}} form">
+                <form id="comment-favorite-form-{{comment.id}}" class="comment-favorite-form form">
                          <input type="hidden" name="comment-id" value="{{comment.id}}">
                          <input class="button favorite-button" type="submit" name="favorite-submit" value="Favorite">
                 </form>
             </span>                                     
-            -
             {% endif %}      
             {% if 'FLAG' in perms %}
+            &middot;
             <span class="flag">
-                <form class="comment-flag-form comment-flag-form-{{comment.id}} form">
+                <form id="comment-flag-form-{{comment.id}}" class="comment-flag-form form">
                          <input type="hidden" name="comment-id" value="{{comment.id}}">
                          <input class="button flag-button" type="submit" name="flag-submit" value="Flag">
                 </form>
             </span> 
             {% endif %}
-            <span class="message message-{{comment.id}}"></span>                                                                    
-            <span class="favorite favorites favorite-{{comment.id}} {% if not comment.favorites %}no-favorites{% endif %}">&nbsp;Favorites (<span class="favorite-count-{{comment.id}}">{% if comment.favorites %}{{comment.favorites|length}}{% else %}0{% endif %}</span>)</span>
+            {% if 'UPDATE_ALL_COMMENTS' in perms %}
+            &middot;
+            <span class="edit">
+                <form id="comment-edit-initialize-form-{{comment.id}}" class="comment-edit-initialize-form form">
+                         <input type="hidden" name="comment-id" value="{{comment.id}}">
+                         <input class="button edit-button" type="submit" name="edit-submit" value="Edit">
+                </form>
+            </span> 
+            &middot;
+            <span class="delete">
+                <form action="" id="comment-delete-form-{{comment.id}}" class="comment-delete-form form")">
+                         <input type="hidden" name="comment-id" value="{{comment.id}}">
+                         <input class="button delete-button" type="submit" name="delete-submit" value="Delete">
+                </form>
+            </span> 
+            {% endif %}
+            <span id="message-{{comment.id}}" class="message"></span>
+            <span id="favorite-{{comment.id}}" class="favorite favorites {% if not comment.favorites %}no-favorites{% endif %}">&nbsp;Favorites (<span id="favorite-count-{{comment.id}}">{% if comment.favorites %}{{comment.favorites|length}}{% else %}0{% endif %}</span>)</span>
+            {% if 'UPDATE_ALL_COMMENTS' in perms %}
+            <span id="flag-{{comment.id}}" class="flag flags {% if not comment.flags %}no-flags{% endif %}">&nbsp;Flags (<span id="flag-count-{{comment.id}}">{% if comment.flags %}{{comment.flags|length}}{% else %}0{% endif %}</span>) &middot; </span>            
+            {% endif %}                                                                    
         </div>
     </div>
 </div>

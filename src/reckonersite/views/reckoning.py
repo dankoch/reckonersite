@@ -12,11 +12,14 @@ from django import forms
 from django.conf import settings
 from django.contrib import messages
 from django.http import Http404
+from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from reckonersite.client.commentclient import client_post_reckoning_comment
+from reckonersite.client.commentclient import client_post_reckoning_comment, \
+                                              client_update_reckoning_comment, \
+                                              client_delete_reckoning_comment
 from reckonersite.client.reckoningclient import client_get_reckoning, \
                                                 client_post_reckoning, \
                                                 client_get_random_open_reckoning, \
@@ -25,6 +28,7 @@ from reckonersite.client.reckoningclient import client_get_reckoning, \
                                                 client_get_open_reckonings, \
                                                 client_get_closed_reckonings
 
+from reckonersite.domain.ajaxserviceresponse import AjaxServiceResponse
 from reckonersite.domain.answer import Answer
 from reckonersite.domain.comment import Comment
 from reckonersite.domain.reckoning import Reckoning
@@ -473,3 +477,72 @@ def get_random_reckoning(request):
         logger.error("Exception when showing a reckoning:") 
         logger.error(traceback.print_exc(8))
         raise Exception    
+    
+    
+###############################################################################################
+#  The endpoint responsible for deleting a reckoning comment.
+#  (as used primarily for AJAX calls)
+###############################################################################################
+
+def delete_reckoning_comment(request, id = None):
+    site_response = AjaxServiceResponse(success=False,
+                                        message="whoops", 
+                                        message_description='No go. Try again later.')
+    
+    if (request.user.has_perm('UPDATE_ALL_COMMENTS')):
+        try:
+            if request.method == 'POST':
+                commentId = request.POST.get("comment-id", None)
+                
+                if (commentId):
+                    service_response = client_delete_reckoning_comment(commentId, request.user.session_id)                          
+                    
+                    if (service_response.success):
+                        site_response = AjaxServiceResponse(success=True,
+                                                            message="success",
+                                                            message_description="Deleted!")
+                
+        except Exception:
+            logger.error("Exception when flagging a reckoning:") 
+            logger.error(traceback.print_exc(8))    
+
+    
+    return HttpResponse(site_response.getXMLString())
+
+
+###############################################################################################
+#  The endpoint responsible for deleting a reckoning comment.
+#  (as used primarily for AJAX calls)
+###############################################################################################
+
+def update_reckoning_comment(request, id = None):
+    site_response = AjaxServiceResponse(success=False,
+                                        message="whoops", 
+                                        message_description='No go. Try again later.')
+    
+    if (request.user.has_perm('UPDATE_ALL_COMMENTS')):
+        try:
+            if request.method == 'POST':
+                comment = sanitizeCommentHtml(request.POST.get("comment", ""))
+                comment_id = request.POST.get("comment-id", None)
+                
+                if (len(comment) > 5000):
+                    site_response = AjaxServiceResponse(success=False,
+                                                        message="too_long",
+                                                        message_description="Maximum Length is 5000 Characters (minus markup)")  
+                elif (comment_id): 
+                    commentUpdate = Comment(comment_id=comment_id, comment=comment)
+                    service_response = client_update_reckoning_comment(commentUpdate,
+                                                          request.user.session_id)                    
+                    
+                    if (service_response.success):
+                        site_response = AjaxServiceResponse(success=True,
+                                                            message="success",
+                                                            message_description="Updated!")
+                
+        except Exception:
+            logger.error("Exception when flagging a reckoning:") 
+            logger.error(traceback.print_exc(8))    
+
+    
+    return HttpResponse(site_response.getXMLString())

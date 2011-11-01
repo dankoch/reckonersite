@@ -1336,7 +1336,7 @@ body {
 }
 
 #content-area .comment p {
-    margin: 5px 0;
+    margin: 0 0 10px 0;
     font-size: 10pt;
 }
 
@@ -1375,11 +1375,21 @@ body {
     float: right;
 }
 
+#content-area .comment .flags {
+	font-weight: bold;
+    float: right;
+}
+
 #content-area .comment .no-favorites {
     display: none;
 }
 
+#content-area .comment .no-flags {
+    display: none;
+}
+
 #content-area .comment .comment-footer .message {
+	color: #cc0000;
     font-weight: bold;
     text-align: center;
 }

@@ -47,13 +47,13 @@
                         <div class="box-label-small">COMMENT{% if reckoning.comments|length != 1 %}S{%endif%}</div> 
                      </div>   
                      <div class="stat-box favorites-stat-box">
-                        <div class="count favorite-count-{{reckoning.id}}">{{ reckoning.favorites|length|condense_int }}</div>
+                        <div id="favorite-count-{{reckoning.id}}" class="count">{{ reckoning.favorites|length|condense_int }}</div>
                         <div class="box-label-small">TRACKING</div> 
                      </div>
 	                 <div class="favorite-flag">
 	                     {% if 'FAVORITE' in perms %}
 	                     <span class="favorite">
-	                         <form class="reckoning-favorite-form reckoning-favorite-form-{{reckoning.id}} form">
+	                         <form id="reckoning-favorite-form-{{reckoning.id}}" class="reckoning-favorite-form form">
 	                                  <input type="hidden" name="reckoning-id" value="{{reckoning.id}}">
 	                                  <input class="button favorite-button" type="submit" name="favorite-submit" value="Track">
 	                         </form> 
@@ -62,7 +62,7 @@
 	                     {% endif %}      
 	                     {% if 'FLAG' in perms %}
 	                     <span class="flag">
-	                         <form class="reckoning-flag-form reckoning-flag-form-{{reckoning.id}} form">
+	                         <form id="reckoning-flag-form-{{reckoning.id}}" class="reckoning-flag-form form">
 	                                  <input type="hidden" name="reckoning-id" value="{{reckoning.id}}">
 	                                  <input class="button flag-button" type="submit" name="flag-submit" value="Flag">
 	                         </form> 
@@ -241,5 +241,5 @@
 	  });
 	  </script>
 	  
-	  {% include "flag-favorite-ajax.html" %}
+	  {% include "flag-favorite-edit-ajax.html" %}
 {% endblock %}
