@@ -109,17 +109,19 @@
      <div class="vote-box vote-box-open">
         <div class="button-area">
              <div class="reckonbutton-wrapper reckonbutton-wrapper-1">
-                 <form action="" method="post"> {% csrf_token %}
+                 <form action="/vote/reckoning" method="post"> {% csrf_token %}
                      <button class="reckonbutton reckonbutton-live button-1" type="submit" name="postvote"><span class="button-text">{{ reckoning.answers.0.text }}</span></button>
                      <input type="hidden" name="answer" value="0">
                      <input type="hidden" name="id" value="{{reckoning.id}}">
+                     <input type="hidden" name="redirect" value="{{reckoning.getURL}}?redirect=true">
                  </form>
              </div> 
              <div class="reckonbutton-wrapper reckonbutton-wrapper-2">
-                 <form action="" method="post"> {% csrf_token %}
+                 <form action="/vote/reckoning" method="post"> {% csrf_token %}
                      <button class="reckonbutton reckonbutton-live button-2" type="submit" name="postvote"><span class="button-text">{{ reckoning.answers.1.text }}</span></button>
                      <input type="hidden" name="answer" value="1">
                      <input type="hidden" name="id" value="{{reckoning.id}}">
+                     <input type="hidden" name="redirect" value="{{reckoning.getURL}}?redirect=true">
                  </form>
              </div>
         </div>

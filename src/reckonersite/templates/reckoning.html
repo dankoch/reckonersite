@@ -138,13 +138,15 @@
             {% endif %}
         </div>
         <hr class="section-divider">
-        <div class="comment-section">
+        <div id="comment-main" class="comment-section">
              <div class="comment-label"><img src="{{ STATIC_URL }}images/reckoning-comment-label.png" alt="Reckoning Comments!"></div>
              <div class="comment-box">
                 <div class="inner-comment-box">
 	                {% if reckoning.comments %}
 	                    {% for comment in reckoning.comments %}
+	                       {% if forloop.last %} <div id="comment-last"> {% endif %}
                            {% include "comment.html" %}
+                           {% if forloop.last %} </div> {% endif %}
 	                       <hr class="comment-divider">
 	                    {% endfor %}
 	                {% else %}
@@ -161,13 +163,15 @@
                     <div class="comment">
 	                    <div class="profile-picture-wrapper"><img src="{{ user.profile_picture_url }}" alt="You!" class="profile-picture"></div>
 	                    <div class="comment-data">
-                            <form action="" method="post">{% csrf_token %}	                    
+                            <form id="comment-form" action="/comment/reckoning/post" method="post">{% csrf_token %}	                    
 		                        <div class="comment-header">
                                    {{errors.comment}}		                        
 			                       <div class="profile-name">{{user.first_name}} {{user.last_name}}</div>
 			                    </div>
                                 <div class="comment-field">
                                      <label for="id_commentform-comment" class="comment-form-label"><h5>Comment!</h5></label>
+                                     <input type="hidden" name="redirect" value="{{ reckoning.getURL}}?redirect=true#comment-last"/>
+                                     <input type="hidden" name="reckoning-id" value="{{ reckoning.id }}"/>
                                      <textarea maxlength=5000 id="id_commentform-comment" name="commentform-comment" class="comment-edit-field"></textarea>
                                      <div class="field-notation">(5000 Character Max)<noscript> Allowed Tags: &lt;p&gt; &lt;i&gt; &lt;strong&gt; &lt;b&gt; &lt;u&gt; &lt;a&gt; &lt;pre&gt; &lt;br&gt; &lt;img&gt; &lt;ul&gt; &lt;li&gt;</noscript></div>
                                 </div>
@@ -239,6 +243,14 @@
 	              }             
 	            );
 	  });
+	
+	  // This disables the submit button on the comment form to block double-submits
+      $(function(){ 
+          $("#comment-form").submit(function(e) {
+        	  $('input[type=submit]', this).attr('disabled', 'disabled');
+          }); 
+       });   
+	  
 	  </script>
 	  
 	  {% include "flag-favorite-edit-ajax.html" %}

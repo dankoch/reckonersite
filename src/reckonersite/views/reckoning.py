@@ -124,35 +124,15 @@ def post_reckoning_thanks(request):
 
 def get_reckoning(request, id = None, title = None):
     commentFormPrefix="commentform"
-    errors={}
-    
+    redirect = False
+        
     try:
-        # Check to see if we're coming here from a POST.  If so, we've got work to do.
-        if request.method == 'POST':
-            if 'postcomment' in request.POST:
-                if (request.user.has_perm('COMMENT')):
-                    commentForm = CommentReckoningForm(request.POST, prefix=commentFormPrefix)
-                    if (commentForm.is_valid()):
-                        comment = Comment(comment = sanitizeCommentHtml(commentForm.cleaned_data.get('comment')),
-                                          poster_id = request.user.reckoner_id)
-                        comment_service_response = client_post_reckoning_comment(comment, id, request.user.session_id)
-                        if not comment_service_response.success:
-                            logger.error("Failed to post comment to ID: " + id)
-                            messages.error(request, "Sorry!  Reckonbot choked on that last comment!  I'm looking into it, ASAP.  - DK")
-                    else:
-                        for attr, value in commentForm.errors.iteritems():
-                            logger.info("Invalid comment submitted: " + str(attr) + ": " + str(value))
-                            errors[attr] = value
-                            
-                service_response = client_get_reckoning(id, request.user.session_id)
-                                                  
-            elif 'postvote' in request.POST:
-                if (request.user.has_perm('VOTE')):
-                    if ('answer' in request.POST):
-                        errors.update(post_reckoning_vote(request))
-        
-                service_response = client_get_reckoning(id, request.user.session_id)        
-        
+        if request.method == 'GET':
+            if (request.GET.get('redirect', "false") == "true"):
+                redirect = True          
+            
+        if (redirect):
+            service_response = client_get_reckoning(id, request.user.session_id)        
         else:
             service_response = client_get_reckoning(id, request.user.session_id, page_visit=True)
         
@@ -189,6 +169,9 @@ def get_reckoning(request, id = None, title = None):
             if (prev_reck_response.reckonings):
                 prev_reck = prev_reck_response.reckonings[0]
 
+            errors = request.session.get('errors', {})
+            request.session['errors'] = None
+
             c = RequestContext(request, {'reckoning' : reckoning,
                                          'user_vote' : user_vote,
                                          'next_reck' : next_reck,
@@ -203,10 +186,83 @@ def get_reckoning(request, id = None, title = None):
         logger.error("Exception when showing a reckoning:") 
         logger.error(traceback.print_exc(8))
         raise Exception     
+
+###############################################################################################
+# The page responsible for processing a POST of a page comment.
+#
+# Receives:
+#    The ID of the Reckoning to post the comment to
+#    The Posted comment form
+#    The URL to redirect to once finished.
+###############################################################################################
+
+def post_reckoning_comment(request):
+    commentFormPrefix="commentform"
+    redirect = "/"
+    errors={}
     
-    
-class CommentReckoningForm(forms.Form):  
+    try:
+        # Check to see if we're coming here from a POST.  If so, we've got work to do.
+        if request.method == 'POST':
+            if 'postcomment' in request.POST:
+                redirect = request.POST.get('redirect', '/')   
+                id = request.POST.get('reckoning-id', '/')   
+                
+                if (request.user.has_perm('COMMENT')):
+                    commentForm = CommentReckoningForm(request.POST, prefix=commentFormPrefix)
+                    if (commentForm.is_valid()):
+                        comment = Comment(comment = sanitizeCommentHtml(commentForm.cleaned_data.get('comment')),
+                                          poster_id = request.user.reckoner_id)
+                        comment_service_response = client_post_reckoning_comment(comment, id, request.user.session_id)
+                        if not comment_service_response.success:
+                            logger.error("Failed to post comment to ID: " + id)
+                            messages.error(request, "Sorry!  Reckonbot choked on that last comment!  I'm looking into it, ASAP.  - DK")
+                    else:
+                        for attr, value in commentForm.errors.iteritems():
+                            logger.info("Invalid comment submitted: " + str(attr) + ": " + str(value))
+                            errors[attr] = value
+                            
+        request.session['errors'] = errors 
+        return HttpResponseRedirect(redirect)               
+         
+    except Exception:
+        logger.error("Exception when showing a reckoning:") 
+        logger.error(traceback.print_exc(8))
+        raise Exception        
+   
+class CommentReckoningForm(forms.Form):
     comment = forms.CharField(max_length=5000, label="Comment", required=True, widget=forms.Textarea)  
+    
+###############################################################################################
+# The page responsible for processing a POST of a reckoning vote.
+#
+# Receives:
+#    The ID of the Reckoning to post the vote to
+#    The posted vote
+#    The URL to redirect to once finished.
+###############################################################################################
+
+def vote_reckoning(request):
+    redirect = "/"
+    errors={}
+    
+    #try:
+        # Check to see if we're coming here from a POST.  If so, we've got work to do.
+    if request.method == 'POST':
+        redirect = request.POST.get('redirect', '/')
+        
+        if 'postvote' in request.POST:
+            if (request.user.has_perm('VOTE')):
+                if ('answer' in request.POST):
+                    errors.update(post_reckoning_vote(request))
+                        
+    request.session['errors'] = errors   
+    return HttpResponseRedirect(redirect)              
+         
+    #except Exception:
+    #    logger.error("Exception when voting for a reckoning:") 
+    #    logger.error(traceback.print_exc(8))
+    #    raise Exception       
     
 ###############################################################################################
 # The page responsible for showing a list of current open reckonings

@@ -55,8 +55,7 @@ def post_reckoning_vote(request):
         logger.error(traceback.print_exc(8))
         raise Exception  
     
-    finally:
-        return errors
+    return errors
     
     
 def get_user_reckoning_vote(request, id=None):
