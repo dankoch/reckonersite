@@ -148,12 +148,17 @@ def reckoning_approval_page(request):
                     approveReckoningForm = ApproveReckoningForm(request.POST, prefix=approveReckoningFormPrefix)
                     
                     if (approveReckoningForm.is_valid()):
-                        commentary = approveReckoningForm.cleaned_data['commentary'].strip()
-                        if (commentary and (len(commentary) > 0)):
-                            commentary = sanitizeDescriptionHtml(commentary)
+                        if (approveReckoningForm.cleaned_data['edit_commentary']):
+                            commentary = sanitizeDescriptionHtml(approveReckoningForm.cleaned_data['commentary'].strip())
                             commentary_user_id = request.user.reckoner_id
                         else:
-                            commentary_user_id = None
+                            commentary = "null"
+                            commentary_user_id = "null"
+                            
+                        if (approveReckoningForm.cleaned_data['description']):
+                            description = sanitizeDescriptionHtml(approveReckoningForm.cleaned_data['description'])
+                        else:
+                            description = "null"
                             
                         answers = [Answer(index=0), Answer(index=1)]
                         for key, attr in approveReckoningForm.cleaned_data.iteritems():
@@ -166,7 +171,7 @@ def reckoning_approval_page(request):
 
                         savedReckoning=Reckoning(id=request.session["admin_approve_reckoning"],
                                                  question=purgeHtml(approveReckoningForm.cleaned_data['question']),
-                                                 description=sanitizeDescriptionHtml(approveReckoningForm.cleaned_data['description']),
+                                                 description=description,
                                                  answers=answers,
                                                  interval=approveReckoningForm.cleaned_data['interval'],
                                                  highlighted=approveReckoningForm.cleaned_data['highlighted'],
@@ -268,8 +273,8 @@ class ApproveReckoningForm(forms.Form):
         self.fields["interval"] = forms.DecimalField(max_digits=6, decimal_places=0, label="Interval (in minutes)", initial=reckoning.interval, required=True)
         self.fields["tags"] = forms.CharField(max_length=100, label="Tags", initial=reckoning.getTagCSV(), required=False)
         self.fields["highlighted"] = forms.BooleanField(label="Highlighted", initial=reckoning.highlighted, required=False)
+        self.fields["edit_commentary"] = forms.BooleanField(label="Edit Commentary", initial=False, required=False)
         self.fields["commentary"] = forms.CharField(max_length=3000, label="Admin Commentary", initial=reckoning.commentary, required=False, widget=forms.Textarea)
-
                 
             
             

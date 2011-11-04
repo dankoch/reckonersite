@@ -57,9 +57,10 @@ SESSION_ENGINE = 'mongoengine.django.sessions'
 FILE_LOG_LOCATION = '/Users/danko/Documents/development/logs'
 STANDARD_LOGGER = 'reckonersite.standard'
 
-# Key used to store session information
+# Keys used to store session information
 RECKONER_API_SESSION_ID = 'rcktk'
 LAST_SITE_TOKEN_ID = 'lastsite'
+
 
 #==========================END CUSTOM SETTINGS==================================
 

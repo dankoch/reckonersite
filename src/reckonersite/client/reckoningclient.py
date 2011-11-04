@@ -47,7 +47,7 @@ def client_get_reckoning(id, session_id, include_unaccepted=False, page_visit=Fa
         url += "include_unaccepted=true" + "&"
     if (page_visit):
         url += "page_visit=true" + "&"
-        
+
     response = urllib2.urlopen(url)    
     content = response.read()
     reckoningList = ReckoningServiceList(xml_string = content)

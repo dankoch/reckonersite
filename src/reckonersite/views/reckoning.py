@@ -204,23 +204,22 @@ def post_reckoning_comment(request):
     try:
         # Check to see if we're coming here from a POST.  If so, we've got work to do.
         if request.method == 'POST':
-            if 'postcomment' in request.POST:
-                redirect = request.POST.get('redirect', '/')   
-                id = request.POST.get('reckoning-id', '/')   
-                
-                if (request.user.has_perm('COMMENT')):
-                    commentForm = CommentReckoningForm(request.POST, prefix=commentFormPrefix)
-                    if (commentForm.is_valid()):
-                        comment = Comment(comment = sanitizeCommentHtml(commentForm.cleaned_data.get('comment')),
-                                          poster_id = request.user.reckoner_id)
-                        comment_service_response = client_post_reckoning_comment(comment, id, request.user.session_id)
-                        if not comment_service_response.success:
-                            logger.error("Failed to post comment to ID: " + id)
-                            messages.error(request, "Sorry!  Reckonbot choked on that last comment!  I'm looking into it, ASAP.  - DK")
-                    else:
-                        for attr, value in commentForm.errors.iteritems():
-                            logger.info("Invalid comment submitted: " + str(attr) + ": " + str(value))
-                            errors[attr] = value
+            redirect = request.POST.get('redirect', '/')   
+            id = request.POST.get('reckoning-id', '/')   
+            
+            if (request.user.has_perm('COMMENT')):
+                commentForm = CommentReckoningForm(request.POST, prefix=commentFormPrefix)
+                if (commentForm.is_valid()):
+                    comment = Comment(comment = sanitizeCommentHtml(commentForm.cleaned_data.get('comment')),
+                                      poster_id = request.user.reckoner_id)
+                    comment_service_response = client_post_reckoning_comment(comment, id, request.user.session_id)
+                    if not comment_service_response.success:
+                        logger.error("Failed to post comment to ID: " + id)
+                        messages.error(request, "Sorry!  Reckonbot choked on that last comment!  I'm looking into it, ASAP.  - DK")
+                else:
+                    for attr, value in commentForm.errors.iteritems():
+                        logger.info("Invalid comment submitted: " + str(attr) + ": " + str(value))
+                        errors[attr] = value
                             
         request.session['errors'] = errors 
         return HttpResponseRedirect(redirect)               
@@ -540,7 +539,7 @@ def get_random_reckoning(request):
 #  (as used primarily for AJAX calls)
 ###############################################################################################
 
-def delete_reckoning_comment(request, id = None):
+def delete_reckoning_comment(request):
     site_response = AjaxServiceResponse(success=False,
                                         message="whoops", 
                                         message_description='No go. Try again later.')

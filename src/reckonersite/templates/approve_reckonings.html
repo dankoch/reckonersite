@@ -44,7 +44,7 @@
 			        {% if postingUser %}
 			        <li><span class="label">Submitter:</span>
 			           <ul>
-			           <li><a href="{{postingUser.profile_url}}">{{postingUser.first_name}} {{postingUser.last_name}}</a></li>
+			           <li><a href="{{postingUser.getURL}}">{{postingUser.first_name}} {{postingUser.last_name}}</a></li>
 			           <li>Reckoner ID: {{postingUser.reckoner_id}}</li>
 			           </ul>
 			        </li>
@@ -146,9 +146,9 @@
                          <p><label for="id_reckapp-highlighted"><h5>Highlighted!</h5></label></p>
                          <p>{{ approveReckoningForm.highlighted }}</p>
                     </div><div class="field-wrapper">
-                         {{errors.commentary}}                          
-                         <p><label for="id_reckapp-commentary"><h5>Commentary!</h5></label></p>
-                         <p><textarea maxlength=3000 id="id_reckapp-commentary" name="reckapp-commentary" class="commentary-edit-field">{% if approveReckoningForm.commentary.value %}{{approveReckoningForm.commentary.value}}{% endif %}</textarea></p>
+                         {{errors.commentary}}         
+                         <p><label for="id_reckapp-edit_commentary"><h5>Leave Commentary?</h5></label><input type="checkbox" id="id_reckapp-edit_commentary" name="reckapp-edit_commentary" value="edit_commentary" {% if approveReckoningForm.commentary.value and approveReckoningForm.commentary.value|length == 0 %}checked="checked"{% endif %}/></p>              
+                         <p><textarea maxlength=3000 id="id_reckapp-commentary" name="reckapp-commentary" class="commentary-edit-field" {% if not approveReckoningForm.commentary.value or approveReckoningForm.commentary.value|length == 0 %}disabled="disabled"{% endif %}>{% if approveReckoningForm.commentary.value %}{{approveReckoningForm.commentary.value}}{% endif %}</textarea></p>
                     </div>	        
 			        
 			        <div class="form-buttons">
@@ -177,6 +177,26 @@
 			  toolbar: 'Basic'
 		  }		  		
 		);
+		
+		// Set the initial state for the commentary boxes
+		var commentary = $('#id_reckapp-commentary').text()
+		if (commentary.length > 0) {
+            $("#id_reckapp-edit_commentary").attr('checked', true);			
+            $("#id_reckapp-commentary").attr('disabled', false);			
+		} else {
+            $("#id_reckapp-edit_commentary").attr('checked', false);         
+            $("#id_reckapp-commentary").attr('disabled', true);    			
+		}
+   });
+	
+   $(function() {
+	  $("#id_reckapp-edit_commentary").change( function() {
+		if (this.checked) {
+			$("#id_reckapp-commentary").attr('disabled', false);
+		} else {
+            $("#id_reckapp-commentary").attr('disabled', true);			
+		}
+	  })
    });
   </script>
 {% endblock %}
