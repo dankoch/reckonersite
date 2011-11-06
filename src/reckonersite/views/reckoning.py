@@ -22,9 +22,11 @@ from reckonersite.client.commentclient import client_post_reckoning_comment, \
                                               client_delete_reckoning_comment
 from reckonersite.client.reckoningclient import client_get_reckoning, \
                                                 client_post_reckoning, \
+                                                client_update_reckoning, \
                                                 client_get_random_open_reckoning, \
                                                 client_get_random_closed_reckoning, \
                                                 client_get_reckonings, \
+                                                client_reject_reckoning, \
                                                 client_get_open_reckonings, \
                                                 client_get_closed_reckonings
 
@@ -34,6 +36,7 @@ from reckonersite.domain.comment import Comment
 from reckonersite.domain.reckoning import Reckoning
 from reckonersite.domain.vote import Vote
 from reckonersite.views.vote import post_reckoning_vote, get_user_reckoning_vote
+from reckonersite.util.dateutil import convertFormToDateTime
 from reckonersite.util.math import computeReckoningAnswerPercentages
 from reckonersite.util.validation import purgeHtml, sanitizeDescriptionHtml, sanitizeCommentHtml
 from reckonersite.util.pagination import pageDisplay
@@ -101,7 +104,7 @@ class PostReckoningForm(forms.Form):
     answer_2 = forms.CharField(max_length=25, label="Answer 2", required=True)
     subtitle_2 = forms.CharField(max_length=25, label="Subtitle 2", required=False)
 
-    tags = forms.CharField(max_length=100, label="Tags", required=False)
+    tags = forms.CharField(max_length=200, label="Tags", required=False)
 
 
 ###############################################################################################
@@ -594,6 +597,128 @@ def update_reckoning_comment(request, id = None):
                         site_response = AjaxServiceResponse(success=True,
                                                             message="success",
                                                             message_description="Updated!")
+                
+        except Exception:
+            logger.error("Exception when flagging a reckoning:") 
+            logger.error(traceback.print_exc(8))    
+
+    
+    return HttpResponse(site_response.getXMLString())
+
+###############################################################################################
+#  The endpoint responsible for updating a reckoning
+#  (as used primarily for AJAX calls)
+###############################################################################################
+
+def update_reckoning_ajax(request):
+    site_response = AjaxServiceResponse(success=False,
+                                        message="whoops", 
+                                        message_description='No go. Try again later.')
+    
+    if (request.user.has_perm('UPDATE_ALL_RECKONINGS')):
+        try:
+            if request.method == 'POST':
+                reckoning_id = (request.POST.get('reckoning-id', None))
+                
+                commentary = sanitizeDescriptionHtml(request.POST.get('commentary', None))
+                if (commentary):
+                    commentary_user_id = request.user.reckoner_id
+                else:
+                    commentary_user_id = None                  
+                
+                question = purgeHtml(request.POST.get('question', None))
+                description = sanitizeDescriptionHtml(request.POST.get('description', None))
+                tag_csv = purgeHtml(request.POST.get('tags', None))
+                closing_date = convertFormToDateTime(request.POST.get('time', None))
+                
+                if (request.POST.get('highlighted', None) is not None):
+                    highlighted = (request.POST.get('highlighted', "false") == "true")
+                else:
+                    highlighted = None
+                
+                if ((commentary and len(commentary) > 3000) or (question and len(question) > 150) or 
+                    (description and len(description) > 5000) or (tag_csv and len(tag_csv) > 200)):
+                    site_response = AjaxServiceResponse(success=False,
+                                                        message="too_long",
+                                                        message_description="Saved field is too long.")  
+                    
+                elif (reckoning_id): 
+                    reckoningUpdate = Reckoning(id=reckoning_id, commentary=commentary, commentary_user_id=commentary_user_id,
+                                                question=question, description=description, tag_csv=tag_csv, closing_date=closing_date,
+                                                highlighted=highlighted)
+                    
+                    service_response = client_update_reckoning(reckoningUpdate,
+                                                          request.user.session_id)                    
+                    
+                    if (service_response.success):
+                        site_response = AjaxServiceResponse(success=True,
+                                                            message="success",
+                                                            message_description="Updated!")
+                
+        except Exception:
+            logger.error("Exception when flagging a reckoning:") 
+            logger.error(traceback.print_exc(8))    
+
+    
+    return HttpResponse(site_response.getXMLString())
+
+###############################################################################################
+#  The endpoint responsible for adding/overriding a Reckoning commentary piece.
+#  (as used primarily for AJAX calls)
+###############################################################################################
+
+def delete_reckoning_commentary(request):
+    site_response = AjaxServiceResponse(success=False,
+                                        message="whoops", 
+                                        message_description='No go. Try again later.')
+    
+    if (request.user.has_perm('UPDATE_ALL_RECKONINGS')):
+        try:
+            if request.method == 'POST':
+                reckoning_id = (request.POST.get('reckoning-id', None))
+                 
+                if (reckoning_id): 
+                    reckoningUpdate = Reckoning(id=reckoning_id, commentary="", 
+                                                commentary_user_id="")
+                    
+                    service_response = client_update_reckoning(reckoningUpdate,
+                                                          request.user.session_id)                    
+                    
+                    if (service_response.success):
+                        site_response = AjaxServiceResponse(success=True,
+                                                            message="success",
+                                                            message_description="Deleted!")
+                
+        except Exception:
+            logger.error("Exception when flagging a reckoning:") 
+            logger.error(traceback.print_exc(8))    
+
+    
+    return HttpResponse(site_response.getXMLString())
+
+###############################################################################################
+#  The endpoint used to reject an already posted Reckoning.
+#  (as used primarily for AJAX calls)
+###############################################################################################
+
+def reject_reckoning_ajax(request):
+    site_response = AjaxServiceResponse(success=False,
+                                        message="whoops", 
+                                        message_description='No go. Try again later.')
+    
+    if (request.user.has_perm('APPROVAL')):
+        try:
+            if request.method == 'POST':
+                reckoning_id = (request.POST.get('reckoning-id', None))
+                 
+                if (reckoning_id): 
+                    service_response = client_reject_reckoning(reckoning_id,
+                                                          request.user.session_id)                    
+                    
+                    if (service_response.success):
+                        site_response = AjaxServiceResponse(success=True,
+                                                            message="success",
+                                                            message_description="Deleted! You're looking at a ghost!")
                 
         except Exception:
             logger.error("Exception when flagging a reckoning:") 

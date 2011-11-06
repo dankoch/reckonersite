@@ -15,21 +15,68 @@
 {% block extraheader %}
       <script src="{{ STATIC_URL }}js/ajax-post.js"></script>
       <script src="{{ STATIC_URL }}ckeditor/ckeditor.js"></script>
-      <script src="{{ STATIC_URL }}ckeditor/adapters/jquery.js"> </script>
+      <script src="{{ STATIC_URL }}ckeditor/adapters/jquery.js"></script>
+      {% if 'UPDATE_ALL_RECKONINGS' in perms %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+        <script src="{{ STATIC_URL }}js/jquery-ui-timepicker-addon.js"></script>
+        <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/blitzer/jquery-ui.css">        
+      {% endif %}  
 {% endblock %}
 
 {% block main %}
     <div id="reckoning-page">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                 <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if 'UPDATE_ALL_RECKONINGS' in perms %}
+        <div class="edit-commentary-section">
+            <form id="commentary-edit-form" class="reckoning-edit-form" style="display: none">{% csrf_token %}        
+                <textarea maxlength=3000 id="commentary-edit-field" class="text-edit-field" name="commentary">{% if reckoning.commentary %}{{reckoning.commentary}}{% endif%}</textarea>
+                <input type="hidden" name="reckoning-id" value="{{reckoning.id}}">
+                <input type="submit" name="save" value="Save" class="button save-button"/>                
+            </form>
+            <div id="commentary-edit-form-message" class="ajax-message"></div>
+            {% if reckoning.commentary and reckoning.commentary|length > 0 %}
+                <span id="commentary-edit-button" class="reckon-edit-button show-hide-button" data-hide=".commentary-section" data-show="#commentary-edit-form">Update!&nbsp;&nbsp;</span><span class="reckon-edit-button" id="commentary-delete-button">Delete! &middot; </span>
+            {% else %}
+                <div id="commentary-add-button" class="reckon-edit-button commentary-add-button show-hide-button" data-hide=".commentary-section" data-show="#commentary-edit-form" >Add Commentary!</div>
+            {% endif %}
+        </div>
+        {% endif %}   
         {% if reckoning.commentary and reckoning.commentary|length > 0 %}
         <div class="commentary-section">
-            <div class="profile-picture-wrapper"><img src="{{reckoning.commentary_user.profile_picture_url}}" class="profile-picture"></div>
+            <div id="commentary-profile-picture" class="profile-picture-wrapper"><img src="{{reckoning.commentary_user.profile_picture_url}}" class="profile-picture"></div>
             <div class="profile-name"><a href="{{reckoning.commentary_user.getURL}}">{{reckoning.commentary_user.first_name}} {{reckoning.commentary_user.last_name}}</a></div>
             <div class="commentary-text">{{reckoning.commentary}}</div>
-        </div>
+        </div>      
         {% endif %}
         
         <div class="question-section">
+            {% if 'UPDATE_ALL_RECKONINGS' in perms %}
+            <div class="edit-question-section">
+                <form id="question-edit-form" class="question-edit-form" style="display: none">{% csrf_token %}        
+                    <textarea maxlength=150 id="question-edit-field" class="text-edit-field" name="question">{{reckoning.question}}</textarea>
+                    <input type="hidden" name="reckoning-id" value="{{reckoning.id}}">
+                    <input type="submit" name="save" value="Save" class="button save-button"/>                
+                </form>
+                <span id="question-edit-button" class="reckon-edit-button show-hide-button" data-hide=".question-wrapper" data-show="#question-edit-form">Edit!</span> <span id="question-edit-form-message" class="ajax-message"></span>
+            </div>
+            {% endif %}  
             <div class="question-wrapper"><h2>{{reckoning.question}}</h2></div> 
+            {% if 'UPDATE_ALL_RECKONINGS' in perms %}
+            <div class="edit-description-section">
+                <form id="description-edit-form" class="description-edit-form" style="display: none">{% csrf_token %}        
+                    <textarea maxlength=150 id="description-edit-field" class="text-edit-field ckedit-field" name="description">{{reckoning.description|safe}}</textarea>
+                    <input type="hidden" name="reckoning-id" value="{{reckoning.id}}">
+                    <input type="submit" name="save" value="Save" class="button save-button"/>                
+                </form>
+                <span id="description-edit-button" class="reckon-edit-button show-hide-button" data-hide=".description-wrapper" data-show="#description-edit-form">Edit!</span> <span id="description-edit-form-message" class="ajax-message"></span>
+            </div>
+            {% endif %}  
             <div class="description-wrapper"><p>{{reckoning.description|safe}}</p></div>           
         </div>
         <div class="voting-section">
@@ -80,8 +127,18 @@
             </div>
 			<div class="row-wrapper row-wrapper-2">
                 <div class="spec-wrapper">
-                     <div class="tags-wrapper">
-                         <div class="label">Tags:</div>
+                     <div class="tags-wrapper"> 
+                         <span class="label">Tags:</span>
+                         {% if 'UPDATE_ALL_RECKONINGS' in perms %}
+                            <span id="tag-edit-button" class="reckon-edit-button show-hide-button" data-hide=".tags" data-show="#tag-edit-form">Edit!</span> <span id="tag-edit-form-message" class="ajax-message"></span>
+                            <div class="edit-tag-section">
+                                <form id="tag-edit-form" class="tag-edit-form" style="display: none">{% csrf_token %}        
+                                    <input type="text" maxlength=150 id="tag-edit-field" class="input-edit-field" name="tags" value="{{reckoning.getTagCSV}}">
+                                    <input type="hidden" name="reckoning-id" value="{{reckoning.id}}">
+                                    <input type="submit" name="save" value="Save" class="button save-button"/>                
+                                </form>
+                            </div>
+                         {% endif %} 
                          <div class="tags">
                              {% for tag in reckoning.tags %}
                                 {{tag|print_tag_link}}{% if not forloop.last %}, {% endif %}
@@ -89,6 +146,9 @@
                          </div>
                      </div>
                      <div class="time-wrapper">
+                         {% if 'UPDATE_ALL_RECKONINGS' in perms %}
+                            <span id="time-edit-button" class="reckon-edit-button show-hide-button" data-hide=".time" data-show="#time-edit-form">Edit!</span> <span id="time-edit-form-message" class="ajax-message"></span>
+                         {% endif %}  
                          {% if reckoning.open %}
                              <div class="label">Remaining Time:</div>
                              <div class="time">
@@ -100,6 +160,15 @@
                                  {{reckoning.closing_date}}
                              </div>
                          {% endif %}
+                         {% if 'UPDATE_ALL_RECKONINGS' in perms %}
+                            <div class="edit-time-section">
+                                <form id="time-edit-form" class="time-edit-form" style="display: none">{% csrf_token %}        
+                                    <input type="text" maxlength=150 id="time-edit-field" class="input-edit-field" name="time" value="{{reckoning.closing_date|form_time}}">
+                                    <input type="hidden" name="reckoning-id" value="{{reckoning.id}}">
+                                    <input type="submit" name="save" value="Save" class="button save-button"/>                
+                                </form>
+                             </div>
+                         {% endif %}  
                      </div>
                 </div>
 			     <div class="social-options">
@@ -114,7 +183,22 @@
 			        </div>
 			     </div>
 			</div>
-            <div class="bottom-wrapper"></div>
+            <div class="bottom-wrapper">
+                 {% if 'UPDATE_ALL_RECKONINGS' in perms %}
+                    <div class="highlight-reckoning-section">
+                        {% if reckoning.highlighted %} <div id="highlighted-button" class="reckon-edit-button" data-state="highlighted">De-Highlight!</div>{% endif %}
+                        {% if not reckoning.highlighted %} <div id="highlighted-button" class="reckon-edit-button" data-state="de-highlighted">Highlight!</div>{% endif %}
+                        <div id="highlight-reckoning-message" class="ajax-message"></div>
+                    </div>
+                    <div class="reject-reckoning-section">
+                        <form id="reject-reckoning-form">{% csrf_token %}        
+                            <input type="hidden" name="reckoning-id" value="{{reckoning.id}}">
+                            <input type="submit" name="reject" value="Reject Reckoning!" class="button save-button"/>                
+                        </form>
+                        <div id="reject-reckoning-form-message" class="ajax-message"></div>
+                    </div>
+                 {% endif %}  
+            </div>
         </div>
         <hr class="section-divider">
         <div class="prev-next-section">
@@ -242,7 +326,230 @@
 	                  toolbar: 'Basic'
 	              }             
 	            );
+	      
+          // Creates a jQuery Calendar
+          $("#time-edit-field").datetimepicker();
 	  });
+	  
+      $(function(){ 
+         $(".show-hide-button").click(function(e) {
+             e.preventDefault();
+             
+             var hideElement = $(this).attr("data-hide")
+             var showElement = $(this).attr("data-show")
+             
+             $(this).hide();
+             $(hideElement).hide();
+             $(showElement).show();
+                       
+             $(".ckedit-field").ckeditor(
+                     function () { /* Callback code */}, {
+                         forcePasteAsPlainText: true,
+                         skin: 'v2',
+                         toolbar: 'Basic' 
+                     }             
+               );   
+         }); 
+       });  
+      
+      $(function(){ 
+          $("#commentary-edit-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  reckoningId = $form.find("input[name=reckoning-id]").val(),
+                  commentary = $form.find("textarea[name=commentary]").val(); 
+              
+              $.post("/reckoning/update", $form.serialize(),
+                     function(data) {                 
+                        var message = $( data ).find( 'message_description' ),
+                            success = $( data ).find( 'success' ).text();                   
+                        $("#commentary-edit-form-message").empty().append(message);
+                        
+                        if (success.toLowerCase() === 'true') {
+                        	$('.commentary-text').html(commentary);
+                        	
+                        	$.get("/user/ajax/{{user.reckoner_id}}", null, 
+                        		function(data) {
+	                                var user_message = $( data ).find( 'message_description' ),
+	                                user_success = $( data ).find( 'success' ).text();
+	                                
+	                                $("#commentary-edit-form-message").empty().append(message);
+	                                if (user_success.toLowerCase() === 'true') {
+	                                    location.reload();
+	                                }	                                
+                        		}
+                        	, "xml")
+
+                            $(".commentary-section").show();  
+                        	$(".show-hide-button").show();
+                            $("#commentary-edit-form").hide();                           
+                        }
+                     } 
+                     , "xml")
+          }); 
+       });   
+      
+      $(function(){
+          $("#commentary-delete-button").click(function(e) {
+              e.preventDefault();
+              reckoningId = "{{reckoning.id}}";
+                  
+              var accepted = confirm('Delete commentary for this reckoning?');
+                        
+              if (accepted) {        
+                  $.post("/reckoning/commentary/delete", "reckoning-id=" + reckoningId,
+                       function(data) {                 
+                          var message = $( data ).find( 'message_description' ),
+                              success = $( data ).find( 'success' ).text();                   
+                          $("#commentary-edit-form-message").empty().append(message);
+                          
+                          if (success.toLowerCase() === 'true') {
+                              location.reload();
+                          }
+                       } 
+                       , "xml")
+              }
+          }); 
+       });
+      
+      $(function(){ 
+          $("#question-edit-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  reckoningId = $form.find("input[name=reckoning-id]").val(),
+                  question = $form.find("textarea[name=question]").val(); 
+              
+              $.post("/reckoning/update", $form.serialize(),
+                     function(data) {                 
+                        var message = $( data ).find( 'message_description' ),
+                            success = $( data ).find( 'success' ).text();                   
+                        $("#question-edit-form-message").empty().append(message);
+                        
+                        if (success.toLowerCase() === 'true') {
+                            $('.question-wrapper').html('<h2>' + question + '</h2>');
+                            $('.question-wrapper').show();  
+                            $('#question-edit-form').hide();
+                            $(".show-hide-button").show();
+                        }
+                     } 
+                     , "xml")
+          }); 
+       }); 
+      
+      $(function(){ 
+          $("#description-edit-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  reckoningId = $form.find("input[name=reckoning-id]").val(),
+                  description = $form.find("textarea[name=description]").val(); 
+              
+              $.post("/reckoning/update", $form.serialize(),
+                     function(data) {                 
+                        var message = $( data ).find( 'message_description' ),
+                            success = $( data ).find( 'success' ).text();                   
+                        $("#description-edit-form-message").empty().append(message);
+                        
+                        if (success.toLowerCase() === 'true') {
+                            $('.description-wrapper').html(description);
+                            $('.description-wrapper').show();  
+                            $('#description-edit-form').hide();
+                            $(".show-hide-button").show();
+                        }
+                     } 
+                     , "xml")
+          }); 
+       });
+      
+       $(function(){ 
+          $("#tag-edit-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  reckoningId = $form.find("input[name=reckoning-id]").val(),
+                  tags = $form.find("input[name=tags]").val(); 
+              
+              $.post("/reckoning/update", $form.serialize(),
+                     function(data) {                 
+                        var message = $( data ).find( 'message_description' ),
+                            success = $( data ).find( 'success' ).text();                   
+                        $("#tag-edit-form-message").empty().append(message);
+                        
+                        if (success.toLowerCase() === 'true') {
+                            $('.tags').html(tags);
+                            $('.tags').show();  
+                            $('#tag-edit-form').hide();
+                            $(".show-hide-button").show();
+                        }
+                     } 
+                     , "xml")
+          }); 
+       }); 
+      
+      $(function(){ 
+          $("#time-edit-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  reckoningId = $form.find("input[name=reckoning-id]").val(),
+                  time = $form.find("input[name=time]").val(); 
+              
+              $.post("/reckoning/update", $form.serialize(),
+                     function(data) {                 
+                        var message = $( data ).find( 'message_description' ),
+                            success = $( data ).find( 'success' ).text();                   
+                        $("#time-edit-form-message").empty().append(message);
+                        
+                        if (success.toLowerCase() === 'true') {
+                            $('.time').html(time);
+                            $('.time').show();  
+                            $('#time-edit-form').hide();
+                            $(".show-hide-button").show();
+                        }
+                     } 
+                     , "xml")
+          }); 
+       }); 
+
+      $(function(){ 
+          $("#highlighted-button").click(function(e) {
+              e.preventDefault();
+              var status = $(this).attr("data-state");
+              var newState = false;
+              
+              if (status === 'de-highlighted') { newState = true; }
+              
+              $.post("/reckoning/update", "reckoning-id={{reckoning.id}}&highlighted=" 
+            		  + newState.toString(),
+                     function(data) {                 
+                        var message = $( data ).find( 'message_description' ),
+                            success = $( data ).find( 'success' ).text();                   
+                        $("#highlight-reckoning-message").empty().append(message);
+                        
+                        if (newState) { $("#highlighted-button").html("De-Highlight!") }
+                        else { $("#highlighted-button").html("Highlight!") }
+                     } 
+                     , "xml")
+          }); 
+       }); 
+      
+      $(function(){ 
+          $("#reject-reckoning-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  reckoningId = $form.find("input[name=reckoning-id]").val(); 
+
+              var accepted = confirm('Reject this Reckoning?');
+              
+              if (accepted) {
+	              $.post("/reckoning/reject", $form.serialize(),
+	                     function(data) {                 
+	                        var message = $( data ).find( 'message_description' ),
+	                            success = $( data ).find( 'success' ).text();                   
+	                        $("#reject-reckoning-form-message").empty().append(message);
+	                        
+	                     } 
+	                     , "xml")
+              }
+          }); 
+       }); 
 	
 	  // This disables the submit button on the comment form to block double-submits
       $(function(){ 

@@ -33,8 +33,9 @@ def buildXml(object, root):
         pass
     elif (isinstance(object, dict)):
         for attr, value in object.iteritems():
-            node = buildXml(value, attr)
-            root_node.append(node)
+            if (value is not None):
+                node = buildXml(value, attr)
+                root_node.append(node)
     elif (isinstance(object, list) or isinstance(object, tuple)):
         for item in object:
             node = buildXml(item, root)

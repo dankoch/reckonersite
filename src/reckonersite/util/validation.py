@@ -14,22 +14,31 @@ from urlparse import urljoin
 logger = logging.getLogger(settings.STANDARD_LOGGER)
 
 def purgeHtml(value):
-    return sanitizeHtml(value, "")
+    if (value is not None):
+        return sanitizeHtml(value, "")
+    
+    return None
 
 def sanitizeBioHtml(value):
-    document = sanitizeHtml(value, 'p i em strong b u a pre br ol ul li')
-    document = tidyTextInput(document)
-    return document
+    if (value is not None):
+        document = sanitizeHtml(value, 'p i em strong b u a pre br ol ul li')
+        document = tidyTextInput(document)
+        return document
+    return None
 
 def sanitizeCommentHtml(value):
-    document = sanitizeHtml(value, 'p i em strong b u a pre br ol ul li')
-    document = tidyTextInput(document)
-    return document
+    if (value is not None):
+        document = sanitizeHtml(value, 'p i em strong b u a pre br ol ul li')
+        document = tidyTextInput(document)
+        return document
+    return None
 
 def sanitizeDescriptionHtml(value):
-    document = sanitizeHtml(value, 'p i em strong b u a pre br ol ul li img')
-    document = tidyTextInput(document)
-    return document
+    if (value is not None):
+        document = sanitizeHtml(value, 'p i em strong b u a pre br ol ul li img')
+        document = tidyTextInput(document)
+        return document
+    return None
 
 def sanitizeHtml(value, valid_tags, base_url=None):
     rjs = r'[\s]*(&#x.{1,7})?'.join(list('javascript:'))

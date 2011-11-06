@@ -337,6 +337,22 @@ body {
 	clear: both;
 }
 
+#content-area .messages .error {
+	color: #cc0000;
+    font-family: Futura, "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
+    margin: 7px auto;	
+    text-align: center;
+    text-transform: uppercase;
+    width: 500px;
+}
+
+/* css for timepicker */
+.ui-timepicker-div .ui-widget-header{ margin-bottom: 8px; }
+.ui-timepicker-div dl{ text-align: left; }
+.ui-timepicker-div dl dt{ height: 25px; }
+.ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
+.ui-timepicker-div td { font-size: 90%; }
+
 /***************************************************************************************
  * STATIC PAGE STYLES
  * Styles used for static pages heavy on the HTML content
@@ -794,6 +810,29 @@ body {
 	
 }
 
+#reckoning-page .ajax-message {
+    color: #cc0000;
+    float: right;
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    margin: 3px 3px;
+}
+
+#reckoning-page .reckon-edit-button {
+    cursor: pointer;
+	float: right;
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    margin: 3px 0;
+}
+
+#reckoning-page .commentary-add-button {
+    clear: both;
+    float: none;
+    text-align: center;
+}
+
 #reckoning-page .section-divider {
     border-top-width: 0px;
     border-left-width: 0px;
@@ -831,6 +870,20 @@ body {
 #reckoning-page .commentary-section .commentary-text {
 	font-size: 14px;
 	margin: 0 8px;
+}
+
+#reckoning-page .edit-commentary-section {
+    margin: 0px 7px;
+}
+
+#reckoning-page .text-edit-field {
+    display: block;
+    height: 50px;
+    width: 606px;
+}
+
+#reckoning-page .input-edit-field {
+    width: 100%;
 }
 
 #reckoning-page .question-section {

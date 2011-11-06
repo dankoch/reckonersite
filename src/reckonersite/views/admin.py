@@ -31,6 +31,23 @@ logger = logging.getLogger(settings.STANDARD_LOGGER)
 # Reserved for ADMINs w/ the 'CHANGE_PERMISSIONS' permission.
 ###############################################################################################
 
+def admin_page(request):
+    if request.user.has_group('ADMIN') or request.user.has_group('SUPER_ADMIN'):
+        try:
+            c = RequestContext(request, {})
+            return render_to_response("admin_home.html", c)  
+        except Exception:      
+            logger.error("Exception when rending admin screen:") 
+            logger.error(traceback.print_exc(8))
+            raise Exception
+    else:
+        return HttpResponseRedirect('/')      
+
+###############################################################################################
+# The page responsible for updating/removing user permissions.  
+# Reserved for ADMINs w/ the 'CHANGE_PERMISSIONS' permission.
+###############################################################################################
+
 def user_permissions_page(request):
     if request.user.has_perm('UPDATE_PERMS'):
         try:
@@ -152,13 +169,13 @@ def reckoning_approval_page(request):
                             commentary = sanitizeDescriptionHtml(approveReckoningForm.cleaned_data['commentary'].strip())
                             commentary_user_id = request.user.reckoner_id
                         else:
-                            commentary = "null"
-                            commentary_user_id = "null"
+                            commentary = settings.RECKONING_UPDATE_DELETE_SENTINEL
+                            commentary_user_id = settings.RECKONING_UPDATE_DELETE_SENTINEL
                             
                         if (approveReckoningForm.cleaned_data['description']):
                             description = sanitizeDescriptionHtml(approveReckoningForm.cleaned_data['description'])
                         else:
-                            description = "null"
+                            description = settings.RECKONING_UPDATE_DELETE_SENTINEL
                             
                         answers = [Answer(index=0), Answer(index=1)]
                         for key, attr in approveReckoningForm.cleaned_data.iteritems():
@@ -271,7 +288,7 @@ class ApproveReckoningForm(forms.Form):
             self.fields["subtitle_" + str(int(answer.index)+1)] = forms.CharField(max_length=25, label="Subtitle " + str(answer.index), initial=answer.subtitle, required=False)
 
         self.fields["interval"] = forms.DecimalField(max_digits=6, decimal_places=0, label="Interval (in minutes)", initial=reckoning.interval, required=True)
-        self.fields["tags"] = forms.CharField(max_length=100, label="Tags", initial=reckoning.getTagCSV(), required=False)
+        self.fields["tags"] = forms.CharField(max_length=200, label="Tags", initial=reckoning.getTagCSV(), required=False)
         self.fields["highlighted"] = forms.BooleanField(label="Highlighted", initial=reckoning.highlighted, required=False)
         self.fields["edit_commentary"] = forms.BooleanField(label="Edit Commentary", initial=False, required=False)
         self.fields["commentary"] = forms.CharField(max_length=3000, label="Admin Commentary", initial=reckoning.commentary, required=False, widget=forms.Textarea)

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block pagetitle %}The Reckoner! - Post A Reckoning!{% endblock %}
+
+{% block main %}
+    <div id="admin-home-page" class="static-page">
+        <div class="page-header"><h1>RECKONER ADMINISTRATION!</h1></div>
+        <ul>
+            {% if 'UPDATE_PERMS' in perms %}
+            <li><a href="/admin/user-permissions">Change User Permissions!</a></li>
+            {% endif %}
+            {% if 'APPROVAL' in perms %}
+            <li><a href="/admin/approval">Approve Reckonings!</a></li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}

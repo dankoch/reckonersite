@@ -61,6 +61,9 @@ STANDARD_LOGGER = 'reckonersite.standard'
 RECKONER_API_SESSION_ID = 'rcktk'
 LAST_SITE_TOKEN_ID = 'lastsite'
 
+# Miscellaneous Settings
+## Sentinel used to mark fields as deleted for Reckoning update calls
+RECKONING_UPDATE_DELETE_SENTINEL = "null"
 
 #==========================END CUSTOM SETTINGS==================================
 

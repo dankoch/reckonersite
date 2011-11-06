@@ -18,11 +18,11 @@ class Reckoning(Base):
     '''Object definition of a basic reckoning.  Maintained to be synchronized with the Reckoner API'''
 
     def __init__(self, id=None, question=None, description=None, answers=None,
-                 submitter_id=None, approver_id=None, approved=False, rejected=False,
-                 open=False, anonymous_requested=False, anonymous=False, submission_date=None,
+                 submitter_id=None, approver_id=None, approved=None, rejected=None,
+                 open=None, anonymous_requested=None, anonymous=None, submission_date=None,
                  posting_date=None, closing_date=None, interval=None, comments=None, comment_index=None,
                  commentary=None, commentary_user_id=None, commentary_user=None, posting_user=None,
-                 flags=None, favorites=None, tags=None, highlighted=False, views=None, 
+                 flags=None, favorites=None, tags=None, highlighted=None, views=None, 
                  tag_csv=None,
                  xml_string=None, xml_element=None):
         

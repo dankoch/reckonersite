@@ -21,6 +21,7 @@ from reckonersite.client.voteclient import client_get_user_reckoning_votes
 
 from reckonersite.domain.ajaxserviceresponse import AjaxServiceResponse
 from reckonersite.domain.reckoneruser import ReckonerUser
+from reckonersite.domain.userajaxresponse import UserAjaxResponse
 
 from reckonersite.util.validation import purgeHtml, sanitizeDescriptionHtml, sanitizeCommentHtml, sanitizeBioHtml
 from reckonersite.util.pagination import pageDisplay
@@ -145,4 +146,40 @@ def update_reckoning_bio(request, id = None):
             logger.error(traceback.print_exc(8))    
 
     
+    return HttpResponse(site_response.getXMLString())
+
+
+###############################################################################################
+#  The endpoint responsible for getting user info
+#  (as used primarily for AJAX calls)
+###############################################################################################
+
+def get_user_info_ajax(request, id = None):
+    site_response = AjaxServiceResponse(success=False,
+                                        message="whoops", 
+                                        message_description='No go. Try again later.')
+    
+    if (request.user.has_perm('VIEW_PROFILE') or id == request.user.reckoner_id):
+        try:
+            if request.method == 'GET':
+                service_response = client_get_user_by_id(id, request.user.session_id)
+                
+                if (not service_response.status.success):
+                    logger.warning("Error when retrieving user profile: " + service_response.status.message)
+                elif (not service_response.reckoner_user):
+                    site_response = AjaxServiceResponse(success=False,
+                        message="not found", 
+                        message_description='No user by that ID.')
+                else:
+                    site_response = UserAjaxResponse(success=True,
+                        message="Success.", 
+                        message_description='Success!',
+                        reckoner_user=service_response.reckoner_user)
+                    
+            print site_response.getXMLString()
+                
+        except Exception:
+            logger.error("Exception when getting a user:") 
+            logger.error(traceback.print_exc(8))    
+
     return HttpResponse(site_response.getXMLString())

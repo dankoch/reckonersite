@@ -2,13 +2,27 @@
 Created on Oct 1, 2011
 @author: danko
 '''
-import datetime
+from datetime import datetime
+
+def convertFormToDateTime(string_val):
+    if (string_val):
+        time = datetime.strptime(string_val[0:16], "%m/%d/%Y %H:%M")
+        return time
+    
+    return None
+
+def convertDateTimeToForm(date_val):
+    if (date_val):
+        string = date_val.strftime("%m/%d/%Y %H:%M")
+        return string
+    
+    return None
 
 def getTimeDelta(startDate, endDate):
     return (endDate - startDate)
 
 def getCurrentDateTime():
-    return datetime.datetime.now()
+    return datetime.now()
 
 def timeDeltaFormatter(timeDelta):
     returnString = ""

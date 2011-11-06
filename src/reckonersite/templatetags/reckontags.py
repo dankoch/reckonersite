@@ -8,7 +8,7 @@ import datetime
 from django import template
 from django.utils.safestring import mark_safe
 
-from reckonersite.util.dateutil import getTimeDelta, getCurrentDateTime, timeDeltaFormatter
+from reckonersite.util.dateutil import getTimeDelta, getCurrentDateTime, timeDeltaFormatter, convertDateTimeToForm
 
 register = template.Library()
 
@@ -71,6 +71,20 @@ def until_time(value):
         
     return ""
 until_time.is_safe = True
+
+@register.filter
+def form_time(value):
+    '''
+    Creates a display string to show a date used in a form.
+    '''
+    print "FORM TIME: " + str(value)
+    
+    if (isinstance(value, datetime.datetime)):
+        print "MADE IT"
+        return convertDateTimeToForm(value)
+
+    return ""
+form_time.is_safe = True
 
 @register.filter
 def print_user_name(value):
