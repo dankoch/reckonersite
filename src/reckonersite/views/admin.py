@@ -7,6 +7,8 @@ import logging
 import sys
 import traceback
 
+from datetime import date, timedelta
+
 from django import forms
 from django.conf import settings
 from django.contrib import messages
@@ -15,6 +17,8 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 from reckonersite.auth import reckonerauthbackend
+from reckonersite.client.noteclient import client_get_flagged_reckonings, \
+                                           client_get_flagged_reckoning_comments
 from reckonersite.client.reckoningclient import client_get_reckoning_approval_queue, \
                                                 client_get_reckoning, \
                                                 client_update_reckoning, \
@@ -22,7 +26,9 @@ from reckonersite.client.reckoningclient import client_get_reckoning_approval_qu
                                                 client_reject_reckoning
 from reckonersite.domain.answer import Answer
 from reckonersite.domain.reckoning import Reckoning
+from reckonersite.util.dateutil import getCurrentDateTime
 from reckonersite.util.validation import purgeHtml, sanitizeDescriptionHtml
+from reckonersite.util.pagination import pageDisplay
 
 logger = logging.getLogger(settings.STANDARD_LOGGER)
 
@@ -293,5 +299,65 @@ class ApproveReckoningForm(forms.Form):
         self.fields["edit_commentary"] = forms.BooleanField(label="Edit Commentary", initial=False, required=False)
         self.fields["commentary"] = forms.CharField(max_length=3000, label="Admin Commentary", initial=reckoning.commentary, required=False, widget=forms.Textarea)
                 
+
+###############################################################################################
+# The page responsible for showing Reckonings and Comments that have been flagged recently
+###############################################################################################
+
+def flag_summary_page(request):
+
+    page_url = "/admin/flagged"
+
+    try:        
+        # Check to see if we're coming here from a GET.  If so, we've got work to do.
+        if request.method == 'GET':
             
+            # Pull the relevant variables from the request string.
+            length = request.GET.get('length', None)
+            tab = request.GET.get('tab', None)
+            
+            # Persist the specified variables in the session for when the user navigates away and back.
+            # Otherwise, pull the information out of the session
+            if (length):
+                request.session['flag-length'] = length
+            else:
+                length = request.session.get('length', '1')         
+                
+            if (tab):
+                request.session['flag-tab'] = tab
+            else:
+                tab = request.session.get('flag-tab', 'reckoning')                         
+
+            # Execute the correct action based on the selected tab and info.  Valid tabs:
+            #  * 'comment', 'reckoning' (default)
+            if (tab == "comment"):
+                flaggedAfter = getCurrentDateTime() - timedelta(days=int(length))
+                
+                reckoning_response = client_get_flagged_reckoning_comments(flagged_after=flaggedAfter,
+                                                                page=None, size=None, 
+                                                                session_id=request.user.session_id)
+            else:
+                tab = 'reckoning'
+                flaggedAfter = getCurrentDateTime() - timedelta(days=int(length))
+                
+                reckoning_response = client_get_flagged_reckonings(flagged_after=flaggedAfter,
+                                                                page=None, size=None, 
+                                                                session_id=request.user.session_id)
+            
+            if not reckoning_response.status.success:
+                logger.error("Flag called failed: " + reckoning_response.status.message)
+
+            
+            context = {'reckonings' : reckoning_response.reckonings,
+                                         'length' : int(length),
+                                         'tab' : tab,
+                                         'page_url' : page_url}
+            
+            c = RequestContext(request, context)
+            
+            return render_to_response('flag_summary.html', c)
+    except Exception:
+        logger.error("Exception when showing the Closed Reckonings list:") 
+        logger.error(traceback.print_exc(8))
+        raise Exception   
             

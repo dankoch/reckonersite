@@ -2018,4 +2018,12 @@ body {
 .reckoning-admin-info ul li .label {
     font-weight: bold;
 }
+
+#flag-summary-page .flag-total {
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 16px;	
+    font-weight: bold;
+    text-align: center;
+}
+
  

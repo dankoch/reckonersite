@@ -12,7 +12,7 @@
                        $("#comment-favorite-form-" + commentId).empty().append(message);
                        
                        if (success.toLowerCase() === 'true') {
-                           var favCount = parseInt($(".favorite-count-" + commentId).html()) + 1;
+                           var favCount = parseInt($("#favorite-count-" + commentId).html()) + 1;
                            $("#favorite-count-" + commentId).empty().append(favCount);
                            $("#favorite-" + commentId).removeClass("no-favorites");
                        }
@@ -116,7 +116,7 @@
                         $("#reckoning-favorite-form-" + reckoningId).empty().append(message);
                         
                         if (success.toLowerCase() === 'true') {
-                            var favCount = parseInt($(".favorite-count-" + reckoningId).html()) + 1;
+                            var favCount = parseInt($("#favorite-count-" + reckoningId).html()) + 1;
                             $("#favorite-count-" + reckoningId).empty().append(favCount);
                         }
                      } 

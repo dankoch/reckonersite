@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load reckontags %}
+
+{% block pagetitle %}The Reckoner! - Flag Summary{% endblock %}
+
+{% block fb-title %}"The Reckoner! - Flag Summary"{% endblock %}
+{% block fb-url %}"{{ SITE_ROOT }}{{ page_url }}"{% endblock %}
+{% block fb-description %}"Admin: Flags"{% endblock %}
+
+{% block gplus-title %}"The Reckoner! - Flag Summary"{% endblock %}
+{% block gplus-description %}"Admin: Flags"{% endblock %}
+
+{% block canon-url %}"{{ SITE_ROOT }}{{ page_url }}"{% endblock %}
+
+{% block extraheader %}
+      <script src="{{ STATIC_URL }}js/ajax-post.js"></script>
+      <script src="{{ STATIC_URL }}ckeditor/ckeditor.js"></script>
+      <script src="{{ STATIC_URL }}ckeditor/adapters/jquery.js"> </script>
+{% endblock %}
+
+{% block main %}
+    <div id="flag-summary-page">
+        <div class=page-header><h1>FLAG SUMMARY PAGE!</h1></div>    
+        <div class="reckonings-list-box tab-box">
+            <div class="reckoning-tabs">
+                <div class="reckoning-tab reckoning-tab-left {% if tab == "reckoning" %}reckoning-tab-selected{% endif %}">
+                    <h3><a href="{{page_url}}?tab=reckoning">Reckonings!</a></h3>
+                </div>
+                <div class="reckoning-tab reckoning-tab-right {% if tab == "comment" %}reckoning-tab-selected{% endif %}">
+                    <h3><a href="{{page_url}}?tab=comment">Comments!</a></h3>
+                </div>      
+                <div class="float-clear"></div>                          
+            </div>
+            <div class="paging-section">
+		        <div class="page-size-select">
+		            <div class="page-box {% if length == 1 %}page-box-selected{% endif %}">
+		                <a href="{{ page_url }}?length=1">
+		                    <div class="count">1</div>
+		                    <div class="box-label">Days</div>    
+		                </a>                
+		            </div>
+		            <div class="page-box {% if length == 7 %}page-box-selected{% endif %}">
+		                <a href="{{ page_url }}?length=7">
+		                    <div class="count">7</div>
+		                    <div class="box-label">Days</div>    
+		                </a>                
+		            </div>
+		            <div class="page-box {% if length == 30 %}page-box-selected{% endif %}">
+		                <a href="{{ page_url }}?length=30">
+		                    <div class="count">30</div>
+		                    <div class="box-label">Days</div>    
+		                </a>                
+		            </div>                                  
+		        </div>  
+            </div>	        
+            <div class="reckonings-content-section">
+                {% if tab == "reckoning" %}
+	                {% for reckoning in reckonings %}
+	                    {% include "reckoning_list_item.html" %}
+	                    <div class="flag-total flag">Total Flags: {{reckoning.flags|length}}</div>
+	                    <hr class="reckoning-divider">
+	                {% endfor %}
+	            {% else %} {% if tab == "comment" %}
+                    {% for reckoning in reckonings %}
+                        {% include "comment_list_item.html" %}
+                    {% endfor %}    	            	            
+                {% endif %} {% endif %}
+            </div>
+        </div>
+    </div>        
+{% endblock %}
+
+{% block javascript %}
+{{ block.super }}
+{% include "flag-favorite-edit-ajax.html" %}
+  
+<script type="text/javascript">
+{% endblock %}
+

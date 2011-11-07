@@ -77,10 +77,8 @@ def form_time(value):
     '''
     Creates a display string to show a date used in a form.
     '''
-    print "FORM TIME: " + str(value)
     
     if (isinstance(value, datetime.datetime)):
-        print "MADE IT"
         return convertDateTimeToForm(value)
 
     return ""

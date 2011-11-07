@@ -28,8 +28,6 @@ def client_post_reckoning(reckoning, session_id):
 def client_update_reckoning(reckoning, session_id):
     url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/update"
     
-    print "Data: " + reckoning.getPostingXMLString(session_id)
-    
     req = urllib2.Request(url = url,
                           data = reckoning.getPostingXMLString(session_id),
                           headers = {'Content-Type': 'text/xml'})

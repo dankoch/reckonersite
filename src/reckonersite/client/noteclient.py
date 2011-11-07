@@ -6,6 +6,7 @@ import urllib2
 import datetime
 
 from django.conf import settings
+from reckonersite.domain.reckoningservicelist import ReckoningServiceList
 from reckonersite.domain.serviceresponse import ServiceResponse
         
 def client_post_reckoning_favorite(favorite, reckoning_id, session_id):
@@ -67,3 +68,37 @@ def client_post_reckoning_comment_flag(flag, comment_id, session_id):
     servResponse = ServiceResponse(xml_string = content)
     
     return servResponse 
+
+def client_get_flagged_reckonings(flagged_after=None, page=None, size=None, session_id=None):
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/notes/reckoning/flag?"
+    if (flagged_after):
+        url += "flagged_after=" + flagged_after.isoformat() + "&"  
+    if (page is not None):
+        url += "page=" + str(page) + "&" 
+    if (size):
+        url += "size=" + str(size) + "&" 
+    if (session_id):
+        url += "session_id=" + session_id + "&"
+
+    response = urllib2.urlopen(url)    
+    content = response.read()
+    reckoningList = ReckoningServiceList(xml_string = content)
+    
+    return reckoningList 
+
+def client_get_flagged_reckoning_comments(flagged_after=None, page=None, size=None, session_id=None):
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/notes/reckoning/comment/flag?"
+    if (flagged_after):
+        url += "flagged_after=" + flagged_after.isoformat() + "&"  
+    if (page is not None):
+        url += "page=" + str(page) + "&" 
+    if (size):
+        url += "size=" + str(size) + "&" 
+    if (session_id):
+        url += "session_id=" + session_id + "&"
+
+    response = urllib2.urlopen(url)    
+    content = response.read()
+    reckoningList = ReckoningServiceList(xml_string = content)
+    
+    return reckoningList 

@@ -327,8 +327,10 @@
 	              }             
 	            );
 	      
-          // Creates a jQuery Calendar
+	      {% if 'UPDATE_ALL_RECKONINGS' in perms %}
+          // Creates a jQuery Calendar for the Closing Date (if the user can edit it)
           $("#time-edit-field").datetimepicker();
+          {% endif %}
 	  });
 	  
       $(function(){ 
@@ -351,6 +353,8 @@
                );   
          }); 
        });  
+      
+      {% if 'UPDATE_ALL_RECKONINGS' in perms %}
       
       $(function(){ 
           $("#commentary-edit-form").submit(function(e) {
@@ -550,6 +554,8 @@
               }
           }); 
        }); 
+      
+      {% endif %}
 	
 	  // This disables the submit button on the comment form to block double-submits
       $(function(){ 
