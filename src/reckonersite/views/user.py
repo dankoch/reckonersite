@@ -77,18 +77,17 @@ def get_user_profile(request, id = None, name = None):
                 # Execute the correct action based on the selected tab and info.  Valid tabs:
                 #  * tracking, comments, votes, reckonings
                 if (tab == "tracking"):
-                    total_count = tracking_response.count
+                    reckoning_count = tracking_response.count
                     reckonings = tracking_response.reckonings
                 elif (tab == "comments"):
-                    total_count = comments_response.count                    
+                    reckoning_count = comments_response.count                    
                     reckonings = comments_response.reckonings
                 elif (tab == "votes"):
-                    total_count = votes_response.count                    
+                    reckoning_count = votes_response.count                    
                     reckonings = votes_response.reckonings
-                    
                 else:
                     tab = 'reckonings'
-                    total_count = reckonings_response.count
+                    reckoning_count = reckonings_response.count
                     reckonings = reckonings_response.reckonings
                             
                 context = {'profile_user' : service_response.reckoner_user,
@@ -98,11 +97,13 @@ def get_user_profile(request, id = None, name = None):
                            'tab'  : tab,
                            'page_url' : page_url,
                            'reckoning_count' : reckonings_response.count,
-                           'comment_count' : comments_response.count,
+                           'comment_count' : comments_response.comment_count,
                            'vote_count' : votes_response.count,
                            'tracking_count' : tracking_response.count}
                 
-                context.update(pageDisplay(page, size, total_count))
+                print "Context: " + str(reckoning_count) + " " + str(context)
+                
+                context.update(pageDisplay(page, size, reckoning_count))
                 c = RequestContext(request, context)
             
                 return render_to_response('user_profile.html', c)
