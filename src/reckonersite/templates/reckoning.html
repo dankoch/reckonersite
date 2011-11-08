@@ -363,7 +363,7 @@
                   reckoningId = $form.find("input[name=reckoning-id]").val(),
                   commentary = $form.find("textarea[name=commentary]").val(); 
               
-              $.post("/reckoning/update", $form.serialize(),
+              $.post("/ajax/reckoning/update", $form.serialize(),
                      function(data) {                 
                         var message = $( data ).find( 'message_description' ),
                             success = $( data ).find( 'success' ).text();                   
@@ -372,7 +372,7 @@
                         if (success.toLowerCase() === 'true') {
                         	$('.commentary-text').html(commentary);
                         	
-                        	$.get("/user/ajax/{{user.reckoner_id}}", null, 
+                        	$.get("/ajax/user/{{user.reckoner_id}}", null, 
                         		function(data) {
 	                                var user_message = $( data ).find( 'message_description' ),
 	                                user_success = $( data ).find( 'success' ).text();
@@ -401,7 +401,7 @@
               var accepted = confirm('Delete commentary for this reckoning?');
                         
               if (accepted) {        
-                  $.post("/reckoning/commentary/delete", "reckoning-id=" + reckoningId,
+                  $.post("/ajax/reckoning/commentary/delete", "reckoning-id=" + reckoningId,
                        function(data) {                 
                           var message = $( data ).find( 'message_description' ),
                               success = $( data ).find( 'success' ).text();                   
@@ -423,7 +423,7 @@
                   reckoningId = $form.find("input[name=reckoning-id]").val(),
                   question = $form.find("textarea[name=question]").val(); 
               
-              $.post("/reckoning/update", $form.serialize(),
+              $.post("/ajax/reckoning/update", $form.serialize(),
                      function(data) {                 
                         var message = $( data ).find( 'message_description' ),
                             success = $( data ).find( 'success' ).text();                   
@@ -447,7 +447,7 @@
                   reckoningId = $form.find("input[name=reckoning-id]").val(),
                   description = $form.find("textarea[name=description]").val(); 
               
-              $.post("/reckoning/update", $form.serialize(),
+              $.post("/ajax/reckoning/update", $form.serialize(),
                      function(data) {                 
                         var message = $( data ).find( 'message_description' ),
                             success = $( data ).find( 'success' ).text();                   
@@ -471,7 +471,7 @@
                   reckoningId = $form.find("input[name=reckoning-id]").val(),
                   tags = $form.find("input[name=tags]").val(); 
               
-              $.post("/reckoning/update", $form.serialize(),
+              $.post("/ajax/reckoning/update", $form.serialize(),
                      function(data) {                 
                         var message = $( data ).find( 'message_description' ),
                             success = $( data ).find( 'success' ).text();                   
@@ -495,7 +495,7 @@
                   reckoningId = $form.find("input[name=reckoning-id]").val(),
                   time = $form.find("input[name=time]").val(); 
               
-              $.post("/reckoning/update", $form.serialize(),
+              $.post("/ajax/reckoning/update", $form.serialize(),
                      function(data) {                 
                         var message = $( data ).find( 'message_description' ),
                             success = $( data ).find( 'success' ).text();                   
@@ -520,7 +520,7 @@
               
               if (status === 'de-highlighted') { newState = true; }
               
-              $.post("/reckoning/update", "reckoning-id={{reckoning.id}}&highlighted=" 
+              $.post("/ajax/reckoning/update", "reckoning-id={{reckoning.id}}&highlighted=" 
             		  + newState.toString(),
                      function(data) {                 
                         var message = $( data ).find( 'message_description' ),
@@ -543,7 +543,7 @@
               var accepted = confirm('Reject this Reckoning?');
               
               if (accepted) {
-	              $.post("/reckoning/reject", $form.serialize(),
+	              $.post("/ajax/reckoning/reject", $form.serialize(),
 	                     function(data) {                 
 	                        var message = $( data ).find( 'message_description' ),
 	                            success = $( data ).find( 'success' ).text();                   

@@ -5,7 +5,7 @@
              var $form = $( this ),
                  commentId = $form.find("input[name=comment-id]").val();
              
-             $.post("/notes/reckoning/comment/favorite/" + commentId, null,
+             $.post("/ajax/notes/reckoning/comment/favorite/" + commentId, null,
                     function(data) {                 
                        var message = $( data ).find( 'message_description' ),
                            success = $( data ).find( 'success' ).text();                   
@@ -27,7 +27,7 @@
               var $form = $( this ),
                   commentId = $form.find("input[name=comment-id]").val();
               
-              $.post("/notes/reckoning/comment/flag/" + commentId, null,
+              $.post("/ajax/notes/reckoning/comment/flag/" + commentId, null,
                      function(data) {                 
                         var message = $( data ).find( 'message_description' ),
                             success = $( data ).find( 'success' ).text();                   
@@ -63,7 +63,7 @@
                   commentId = $form.find("input[name=comment-id]").val();
                   comment = $form.find("textarea[name=comment]")
                         
-              $.post("/comment/reckoning/update", $form.serialize(),
+              $.post("/ajax/comment/reckoning/update", $form.serialize(),
                       function(data) {                 
                          var message = $( data ).find( 'message_description' ),
                              success = $( data ).find( 'success' ).text();                   
@@ -88,7 +88,7 @@
               var accepted = confirm('Delete comment ' + commentId + '?\n\n');
                         
               if (accepted) {        
-	              $.post("/comment/reckoning/delete", $form.serialize(),
+	              $.post("/ajax/comment/reckoning/delete", $form.serialize(),
 	                      function(data) {                 
 	                         var message = $( data ).find( 'message_description' ),
 	                             success = $( data ).find( 'success' ).text();                   
@@ -109,7 +109,7 @@
               var $form = $( this ),
                   reckoningId = $form.find("input[name=reckoning-id]").val();
               
-              $.post("/notes/reckoning/favorite/" + reckoningId, null,
+              $.post("/ajax/notes/reckoning/favorite/" + reckoningId, null,
                      function(data) {                 
                         var message = $( data ).find( 'message_description' ),
                             success = $( data ).find( 'success' ).text();                   
@@ -130,7 +130,7 @@
               var $form = $( this ),
                   reckoningId = $form.find("input[name=reckoning-id]").val();
               
-              $.post("/notes/reckoning/flag/" + reckoningId, null,
+              $.post("/ajax/notes/reckoning/flag/" + reckoningId, null,
                      function(data) {                 
                         var message = $( data ).find( 'message_description' ),
                             success = $( data ).find( 'success' ).text();                   

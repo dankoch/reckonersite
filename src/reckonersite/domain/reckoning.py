@@ -197,7 +197,8 @@ class Reckoning(Base):
         if (self.answers):
             totalVotes = 0
             for answer in self.answers:
-                totalVotes += int(answer.vote_total)
+                if (answer.vote_total):
+                    totalVotes += int(answer.vote_total)
     
             return totalVotes
         return None

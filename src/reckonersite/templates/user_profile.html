@@ -152,7 +152,7 @@
                   userId = $form.find("input[name=user-id]").val(),
                   bio = $form.find("textarea[name=user-bio]"); 
               
-              $.post("/user/bio/" + userId, bio.serialize(),
+              $.post("/ajax/user/bio/" + userId, bio.serialize(),
                      function(data) {                 
                         var message = $( data ).find( 'message_description' ),
                             success = $( data ).find( 'success' ).text();                   

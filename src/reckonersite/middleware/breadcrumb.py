@@ -19,7 +19,7 @@ class BreadcrumbMiddleware(object):
         and other activities where the user should be redirected back to a previously viewed
         site.  Sites that should NOT be breadcrumbed are noted in 'EXEMPT_URLS'
         '''
-        EXEMPT_URLS = ('/login', '/static', '/favicon', )
+        EXEMPT_URLS = ('/login', '/static', '/favicon', '/ajax',)
         
         currentBreadcrumb = request.session.get(settings.LAST_SITE_TOKEN_ID, None)
 

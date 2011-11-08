@@ -1,7 +1,7 @@
   <script type="text/javascript">
       function getTopReckonings(type) {
           
-          $.get("/reckoning/top", "type=" + type, 
+          $.get("/ajax/reckoning/top", "type=" + type, 
                   function(data) {
                       var message = $( data ).find( 'message_description' ),
                       success = $( data ).find( 'success' ).text();
