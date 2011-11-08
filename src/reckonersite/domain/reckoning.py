@@ -63,6 +63,7 @@ class Reckoning(Base):
             self.buildFromXMLElement(xml_element)
             
         self.url = self.getURL()
+        self.total_votes = self.getTotalVotes()
         
     def getXML(self):
         return (buildXml(self.__dict__, 'reckoning'))
@@ -193,11 +194,13 @@ class Reckoning(Base):
         return tagList
     
     def getTotalVotes(self):
-        totalVotes = 0
-        for answer in self.answers:
-            totalVotes += int(answer.vote_total)
-
-        return totalVotes
+        if (self.answers):
+            totalVotes = 0
+            for answer in self.answers:
+                totalVotes += int(answer.vote_total)
+    
+            return totalVotes
+        return None
     
     def getURL(self):
         if (self.id and self.question):

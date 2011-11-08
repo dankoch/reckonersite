@@ -26,7 +26,7 @@ class UserAjaxResponse(AjaxServiceResponse):
         self.buildFromXMLElement(xml_root)
     
     def buildFromXMLElement(self, xml_root):
-        super( UserAjaxResponse, self ).__init__()
+        super( UserAjaxResponse, self ).buildFromXMLElement(self, xml_root)
         
         userElement = xml_root.find('user')
         if (not userElement is None):

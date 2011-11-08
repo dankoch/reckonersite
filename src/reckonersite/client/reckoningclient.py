@@ -56,7 +56,7 @@ def client_get_reckoning(id, session_id, include_unaccepted=False, page_visit=Fa
 
 def client_get_reckonings(posted_before=None, posted_after=None, closed_before=None, closed_after=None,
                           include_tags=None, exclude_tags=None, highlighted=None,
-                          sort_by=None, ascending=False, page=None, size=None,
+                          sort_by=None, ascending=False, page=None, size=None, randomize=None,
                           session_id=None):
     url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning" + "?"
     if (posted_before):
@@ -84,11 +84,13 @@ def client_get_reckonings(posted_before=None, posted_after=None, closed_before=N
     if (sort_by):
         url += "sort_by=" + sort_by + "&" 
     if (ascending):
-        url += "ascending=true" + "&"
+        url += "ascending=true&"
     if (page is not None):
         url += "page=" + str(page) + "&" 
     if (size):
         url += "size=" + str(size) + "&" 
+    if (randomize):
+        url += "randomize=true&"
     if (session_id):
         url += "session_id=" + session_id + "&"
     
@@ -100,7 +102,7 @@ def client_get_reckonings(posted_before=None, posted_after=None, closed_before=N
 
 def client_get_open_reckonings(posted_before=None, posted_after=None, closed_before=None, closed_after=None,
                           include_tags=None, exclude_tags=None, highlighted=None,
-                          sort_by=None, ascending=False, page=None, size=None,
+                          sort_by=None, ascending=False, page=None, size=None, randomize=None,
                           session_id=None):
     url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/open" + "?"
     if (posted_before):
@@ -133,6 +135,8 @@ def client_get_open_reckonings(posted_before=None, posted_after=None, closed_bef
         url += "page=" + str(page) + "&" 
     if (size):
         url += "size=" + str(size) + "&" 
+    if (randomize):
+        url += "randomize=true&"
     if (session_id):
         url += "session_id=" + session_id + "&"
     
@@ -144,7 +148,7 @@ def client_get_open_reckonings(posted_before=None, posted_after=None, closed_bef
 
 def client_get_closed_reckonings(posted_before=None, posted_after=None, closed_before=None, closed_after=None,
                           include_tags=None, exclude_tags=None, highlighted=None,
-                          sort_by=None, ascending=False, page=None, size=None,
+                          sort_by=None, ascending=False, page=None, size=None, randomize=None,
                           session_id=None):
     url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/closed" + "?"
     if (posted_before):
@@ -177,6 +181,8 @@ def client_get_closed_reckonings(posted_before=None, posted_after=None, closed_b
         url += "page=" + str(page) + "&" 
     if (size):
         url += "size=" + str(size) + "&" 
+    if (randomize):
+        url += "randomize=true&"
     if (session_id):
         url += "session_id=" + session_id + "&"
     
@@ -218,7 +224,7 @@ def client_reject_reckoning(reckoning_id, session_id):
     servResponse = ServiceResponse(xml_string = content)
     
     return servResponse      
-    
+
 def client_get_random_open_reckoning(session_id):
     url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/random/open"
     if (session_id):
@@ -234,6 +240,32 @@ def client_get_random_closed_reckoning(session_id):
     url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/random/closed"
     if (session_id):
         url += "?session_id=" + session_id
+    
+    response = urllib2.urlopen(url)
+    content = response.read()
+    reckoningList = ReckoningServiceList(xml_string = content)
+
+    return reckoningList  
+   
+def client_get_related_open_reckonings(reckoning_id, size, session_id):
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/related/" + reckoning_id + "/open?"
+    if (size is not None):
+        url += "size=" + str(size) + "&"  
+    if (session_id):
+        url += "session_id=" + session_id + "&"
+    
+    response = urllib2.urlopen(url)
+    content = response.read()
+    reckoningList = ReckoningServiceList(xml_string = content)
+
+    return reckoningList     
+
+def client_get_related_closed_reckonings(reckoning_id, size, session_id):
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning/related/" + reckoning_id + "/closed?"
+    if (size is not None):
+        url += "size=" + str(size) + "&"
+    if (session_id):
+        url += "session_id=" + session_id + "&"
     
     response = urllib2.urlopen(url)
     content = response.read()

@@ -23,6 +23,8 @@ from reckonersite.client.commentclient import client_post_reckoning_comment, \
 from reckonersite.client.reckoningclient import client_get_reckoning, \
                                                 client_post_reckoning, \
                                                 client_update_reckoning, \
+                                                client_get_related_open_reckonings, \
+                                                client_get_related_closed_reckonings, \
                                                 client_get_random_open_reckoning, \
                                                 client_get_random_closed_reckoning, \
                                                 client_get_reckonings, \
@@ -34,6 +36,7 @@ from reckonersite.domain.ajaxserviceresponse import AjaxServiceResponse
 from reckonersite.domain.answer import Answer
 from reckonersite.domain.comment import Comment
 from reckonersite.domain.reckoning import Reckoning
+from reckonersite.domain.reckoningajaxresponse import ReckoningAjaxResponse
 from reckonersite.domain.vote import Vote
 from reckonersite.views.vote import post_reckoning_vote, get_user_reckoning_vote
 from reckonersite.util.dateutil import convertFormToDateTime
@@ -517,7 +520,7 @@ def get_tagged_reckonings(request, tag = None):
     
     
 ###############################################################################################
-# The page responsible for showing a list of current closed reckonings
+# The page responsible for getting a random reckoning.
 ###############################################################################################
 
 
@@ -536,6 +539,80 @@ def get_random_reckoning(request):
         logger.error(traceback.print_exc(8))
         raise Exception    
     
+   
+###############################################################################################
+# The endpoint responsible for getting the 'Top Reckonings' as used for the Top Reckonings widget
+# (used for AJAX calls)
+###############################################################################################
+
+def get_top_reckonings(request):     
+    site_response = AjaxServiceResponse(success=False,
+                                        message="whoops", 
+                                        message_description='No go. Try again later.')
+    
+    if (request.user.has_perm('VIEW_RECKONING')):
+        try:
+            if (request.method == 'GET'):
+                type = request.GET.get('type', 'open')
+                
+                if (type == 'closed'):
+                    service_response = client_get_closed_reckonings(highlighted=True,
+                                                                    randomize=True,
+                                                                    size=4,
+                                                                    session_id=request.user.session_id)
+                else:
+                    service_response = client_get_open_reckonings(highlighted=True,
+                                                                    sort_by="closingDate",
+                                                                    ascending=True,
+                                                                    size=4,
+                                                                    session_id=request.user.session_id)
+                    
+                if (service_response.status.success):
+                    site_response = ReckoningAjaxResponse(reckonings=service_response.reckonings,
+                                                          success=service_response.status.success)
+                else:
+                    logger.error("Error when retrieving top reckonings: " + service_response.status.message)
+                            
+        except Exception:
+            logger.error("Exception when getting top reckonings:") 
+            logger.error(traceback.print_exc(8))
+            raise Exception    
+    
+    return HttpResponse(site_response.getXMLString())
+
+
+###############################################################################################
+# The endpoint responsible for getting related reckonings as used for the related reckonings widget
+# (used for AJAX calls)
+###############################################################################################
+
+def get_related_reckonings(request, id = None):     
+    site_response = AjaxServiceResponse(success=False,
+                                        message="whoops", 
+                                        message_description='No go. Try again later.')
+    
+    if (request.user.has_perm('VIEW_RECKONING')):
+        try:
+            if (request.method == 'GET' and id):
+                type = request.GET.get('type', 'open')
+                
+                if (type == 'closed'):
+                    service_response = client_get_related_closed_reckonings(id, 4, request.user.session_id)
+                else:
+                    service_response = client_get_related_open_reckonings(id, 4, request.user.session_id)
+                                        
+                if (service_response.status.success):
+                    site_response = ReckoningAjaxResponse(reckonings=service_response.reckonings,
+                                                          success=service_response.status.success)
+                else:
+                    logger.error("Error when retrieving related reckonings: " + service_response.status.message)
+                            
+        except Exception:
+            logger.error("Exception when getting related reckonings:") 
+            logger.error(traceback.print_exc(8))
+            raise Exception    
+    
+    return HttpResponse(site_response.getXMLString())
     
 ###############################################################################################
 #  The endpoint responsible for deleting a reckoning comment.

@@ -1,0 +1,43 @@
+  <script type="text/javascript">
+      function getTopReckonings(type) {
+          
+          $.get("/reckoning/top", "type=" + type, 
+                  function(data) {
+                      var message = $( data ).find( 'message_description' ),
+                      success = $( data ).find( 'success' ).text();
+                      
+                      if (success.toLowerCase() === 'true') {
+                          $('#top-reckonings-content').empty();
+                          $( data ).find('reckoning').each(function() {
+                              var $reckoning = $(this);
+                              var question = $(this).find('question').text();
+                              var url = $(this).find('url').text();
+                              var views = $(this).find('views').text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                              var votes = $(this).find('total_votes').text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                              
+                              var html = '<div class="reckoning-list-item">';
+                              html += '<div class="reckoning-question">' + '<a href="' + url + '">' + question + '</a></div>';
+                              html += '<div class="reckoning-data">' + views + ' Views &middot; ' + votes + ' Votes</div>';
+                              html += '</div>';
+                              
+                              $('#top-reckonings-content').append(html);
+                          })
+                      } else {
+                          $("#top-reckonings-message").empty().append(message);
+                      }                             
+                  }
+              , "xml")        
+      }
+      
+      $(document).ready(function(){ 
+          getTopReckonings("open");
+      });
+      
+      $('#top-reckonings-open-tab').click (function(){
+          getTopReckonings("open");       
+      });
+      
+      $('#top-reckonings-closed-tab').click (function(){
+          getTopReckonings("closed");       
+      });
+   </script>

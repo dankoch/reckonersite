@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load reckontags %}
+
+{% block rightsidebar %}
+    <div id="standard-sidebar" class="sidebar-content">
+       {% include "top-reckonings.html" %}
+       {% include "related-reckonings.html" %}
+    </div>
+{% endblock %}
+
+{% block javascript %}
+  {{ block.super }}
+  {% include "top-reckonings-ajax.html" %}
+  {% include "related-reckonings-ajax.html" %} 
+{% endblock %}

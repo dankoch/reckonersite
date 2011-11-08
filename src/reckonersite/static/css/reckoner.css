@@ -1778,6 +1778,118 @@ body {
 }
 
 /***************************************************************************************
+* SIDEBAR STYLES
+* Styles used specifically for sidebar content.
+***************************************************************************************/
+
+#content-area .sidebar-tab-box {
+    background-color: #F6F6F6;
+    border: 1px solid #9d9d9d;
+    margin: 3px 0;
+}
+
+#content-area #top-reckonings-section .sidebar-tab-box {
+    min-height: 250px;
+}
+
+#content-area .sidebar-tab-box .reckoning-tab {
+    background-color: #cc0000;
+    border-left: 1px solid #555555;
+    border-bottom: 1px solid #555555;
+    color: white;
+    float: left;
+    margin: 0px;
+    text-align: center;
+    width: 150px;
+}
+
+#content-area .sidebar-tab-box .reckoning-tab {
+    background-color: #cc0000;
+    border-left: 1px solid #555555;
+    border-bottom: 1px solid #555555;
+    color: white;
+    cursor: pointer;
+    float: left;
+    margin: 0px;
+    text-align: center;
+    width: 150px;
+}
+
+#content-area .sidebar-tab-box .reckoning-tab:hover {
+    text-decoration: underline;
+}
+
+#content-area .sidebar-tab-box .reckoning-tab-left {
+    border-left: 0px;
+    width: 151px;
+}
+
+#content-area .sidebar-tab-box .reckoning-tab-right {
+    width: 152px;
+}
+
+#content-area .sidebar-tab-box .reckoning-tab-selected {
+    background-color: #F6F6F6;
+    border-bottom: 0px;
+    color: black;
+}
+
+#content-area .sidebar-tab-box .reckoning-tabs h3 {
+    font-size: 16px;
+    margin: 2px 0;
+}
+
+#content-area .sidebar-tab-box .reckoning-tabs a {
+    color: white;
+    text-decoration: none;
+}
+
+#content-area .sidebar-tab-box .reckoning-tab-selected a {
+    color: black;
+    text-decoration: none;
+}
+
+#content-area .sidebar-tab-box .reckoning-tabs a:hover {
+    text-decoration: underline;
+}
+
+#content-area .sidebar-tab-box .reckoning-tab {
+    display: inline-block;
+}
+
+#content-area .sidebar-tab-box .reckonings-content-section {
+    clear: both;
+    font-size: 12px;
+    margin: 14px 7px;
+    text-transform: capitalize;
+}
+
+#content-area .sidebar-tab-box .reckoning-list-item {
+    margin: 12px 2px;
+}
+
+#content-area .sidebar-tab-box .reckoning-question a {
+    color: #000066;
+    margin: 3px 0;
+    text-decoration: none;
+}
+
+#content-area .sidebar-tab-box .reckoning-question a:hover {
+    text-decoration: underline;
+}
+
+#content-area .sidebar-tab-box .reckoning-data {
+	color: #333333;
+	font-size: 10px;
+	font-weight: bold;
+    text-align: right;
+}
+
+#content-area .sidebar-tab-box .reckoning-divider {
+    margin: 0 auto;
+}
+
+/***************************************************************************************
  * PROFILE STYLES
  * Styles used specifically in the Reckoner Profile area.
  ***************************************************************************************/

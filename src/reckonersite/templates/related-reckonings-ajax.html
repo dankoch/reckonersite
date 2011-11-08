@@ -1,0 +1,44 @@
+<script>  
+      function getRelatedReckonings(type) {
+          
+          $.get("/reckoning/related/{{reckoning.id}}", "type=" + type, 
+                  function(data) {
+                      var message = $( data ).find( 'message_description' ),
+                      success = $( data ).find( 'success' ).text();
+                      
+                      if (success.toLowerCase() === 'true') {
+                          $('#related-reckonings-content').empty();
+                          $( data ).find('reckoning').each(function() {
+                              var $reckoning = $(this);
+                              var question = $(this).find('question').text();
+                              var url = $(this).find('url').text();
+                              var views = $(this).find('views').text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                              var votes = $(this).find('total_votes').text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                              
+                              var html = '<div class="reckoning-list-item">';
+                              html += '<div class="reckoning-question">' + '<a href="' + url + '">' + question + '</a></div>';
+                              html += '<div class="reckoning-data">' + views + ' Views &middot; ' + votes + ' Votes</div>';
+                              html += '</div>';
+                              //html += '<hr class="reckoning-divider">';
+                              
+                              $('#related-reckonings-content').append(html);
+                          })
+                      } else {
+                          $("#related-reckonings-message").empty().append(message);
+                      }                             
+                  }
+              , "xml")        
+      }
+      
+      $(document).ready(function(){ 
+          getRelatedReckonings("open");
+      });
+      
+      $('#related-reckonings-open-tab').click (function(){
+          getRelatedReckonings("open");       
+      });
+      
+      $('#related-reckonings-closed-tab').click (function(){
+          getRelatedReckonings("closed");       
+      });
+</script>
