@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block pagetitle %}The Reckoner! - Post Content!{% endblock %}
+
+{% block extraheader %}
+      <script src="{{ STATIC_URL }}ckeditor/ckeditor.js"></script>
+      <script src="{{ STATIC_URL }}ckeditor/adapters/jquery.js"> </script>
+{% endblock %}
+
+{% block main %}
+    <div id="post-content-page">
+        <div class="page-header"><h1>POST CONTENT!</h1><br></div>
+        {% if 'POST_CONTENT' in perms %}
+
+		    {% if messages %}
+		        <ul class="messages">
+			        {% for message in messages %}
+			        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			        {% endfor %}
+		        </ul>
+		    {% endif %}
+		    
+            <div id="post-content-form" class="form-wrapper edit-content-form">
+                <form action="" method="post">{% csrf_token %}
+                    <div class="field-wrapper">
+                         {{form.content_type.errors}}                     
+                         <p><label for="id_content_type"><h5>Content Type!</h5></label></p>
+                         <p>{{form.content_type}}</p>
+                    </div><div class="field-wrapper">
+                         {{form.title.errors}} 
+                         <p><label for="id_title"><h5>Title!</h5></label></p>
+                         <p><textarea maxlength=300 id="id_title" name="title" class="title-edit-field"></textarea></p>
+                         <div class="field-notation">(300 Character Max)</div>
+                    </div><div class="field-wrapper">
+                         {{form.body.errors}}                    
+                         <p><label for="id_body"><h5>Body!</h5></label></p> 
+                         <p><textarea maxlength=50000 id="id_body" name="body" class="body-edit-field"></textarea></p>
+                         <div class="field-notation">(50000 Character Max)</div>
+                    </div><div class="field-wrapper">
+                         {{form.summary.errors}}                     
+                         <p><label for="id_summary"><h5>Summary!</h5></label></p>
+                         <p><textarea maxlength=500 id="id_summary" name="summary" class="summary-edit-field"></textarea></p>
+                         <div class="field-notation">(500 Character Max)</div>
+                    </div><div class="field-wrapper">                
+                         {{form.tags.errors}}                          
+                         <p><label for="id_tags"><h5>Tags!</h5></label></p>
+                         <p><input type="text" maxlength=200 id="id_tags" name="tags" class="tags-edit-field"></input></p>
+                         <div class="field-notation">(Separated by commas - e.g. 'Relationships, Video Games, Television, Jobs', etc.)</div>                                      
+                    </div>         
+                    
+                    <div class="form-buttons">
+                        <input type="submit" name="submit" value="Submit" class="button save-button"/>
+                    </div>
+                </form>
+            </div>
+		{% else %}
+	        <div class="sign-up-box">
+	            <h4>Want to post a reckoning?</h4>
+	            <h2>Sign up or log in!</h2>
+	            <h3>It's easy!</h3>
+	            <div class="login-buttons">
+	                 <div class="login-button login-button-1">    
+	                     <a href="{{ FACEBOOK_OAUTH_URL }}?client_id={{ FACEBOOK_APP_ID }}&redirect_uri={{ FACEBOOK_REDIRECT_URL }}&scope={{ FACEBOOK_SCOPE }}">
+	                     <img src="{{ STATIC_URL }}images/big-facebook-login-button.png" alt="Login with Facebook!">
+	                     </a>     
+	                 </div>
+	                 <div class="login-button login-button-2">
+	                     <a href="{{ GOOGLE_API_OAUTH_URL }}?client_id={{ GOOGLE_APP_ID }}&redirect_uri={{ GOOGLE_REDIRECT_URL }}&scope={{ GOOGLE_SCOPE }}&response_type=code">
+	                     <img src="{{ STATIC_URL }}images/big-google-login-button.png">     
+	                     </a>
+	                 </div>                
+	            </div>
+	        </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script>    
+    $(".body-edit-field").ckeditor(
+            function () { /* Callback code */}, {
+                forcePasteAsPlainText: true,
+                skin: 'v2',
+                toolbar: 'Full'
+            }             
+    );
+  </script>
+{% endblock %}

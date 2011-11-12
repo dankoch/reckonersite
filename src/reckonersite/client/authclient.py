@@ -121,7 +121,6 @@ def client_update_user (userPost, session_id):
 
     return servResponse  
 
-
 def client_get_permission_list ():
     '''
     Receives the list of permissions the Reckoner currently uses.
@@ -133,7 +132,6 @@ def client_get_permission_list ():
     servResponse = DataServiceList(xml_string = content)
 
     return servResponse     
-
 
 def client_get_group_list ():
     '''

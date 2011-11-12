@@ -10,7 +10,6 @@ body {
 
 #site-column {
     margin: 0 auto;
-    background-color: #ffffff;
     border-left: 1px dotted black;
     border-right: 1px dotted black;
     width: 960px;
@@ -482,27 +481,27 @@ body {
 
 
 /***************************************************************************************
- * EDIT RECKONING STYLES
- * Styles used for the reckoning edit screens.
+ * EDIT RECKONING & CONTENT STYLES
+ * Styles used for the reckoning and content edit screens.
  ***************************************************************************************/
 
-.edit-reckoning-form textarea {
+.edit-content-form textarea {
 	font-family: Verdana, Tahoma, sans-serif;
 	font-size: 11px;
 }
 
-.edit-reckoning-form .field-wrapper
+.edit-content-form .field-wrapper
  {
     clear: both;
     padding: 8px 0;
  }
  
-.edit-reckoning-form .reckoning-form-option .field-wrapper
+.edit-content-form .reckoning-form-option .field-wrapper
  {
     padding: 0;
  }
  
-.edit-reckoning-form h5
+.edit-content-form h5
  {
     margin: 0;
     -webkit-margin-before: 0px;
@@ -511,7 +510,7 @@ body {
     -webkit-margin-end: 0px;
  }
  
-.edit-reckoning-form h6
+.edit-content-form h6
  {
      margin: 0;
     -webkit-margin-before: 0px;
@@ -520,29 +519,29 @@ body {
     -webkit-margin-end: 0px;
  }
  
-.edit-reckoning-form p
+.edit-content-form p
  {
     margin: 4px 0 0 0;
  }
  
-.edit-reckoning-form .field-notation
+.edit-content-form .field-notation
  {
     margin: 0;
     font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
     font-size: 8px;    
  }
  
- .edit-reckoning-form .field-notation .free-text
+ .edit-content-form .field-notation .free-text
  {
     margin: 3px 0 0 0;   
  }
  
-.edit-reckoning-form .errorlist
+.edit-content-form .errorlist
  {
     margin: 0;
  }
  
-.edit-reckoning-form .errorlist li
+.edit-content-form .errorlist li
  {
     color: red;
     display: inline;
@@ -556,24 +555,24 @@ body {
     width: 300px;
  }
  
-.edit-reckoning-form .reckoning-form-options .errorlist li
+.edit-content-form .reckoning-form-options .errorlist li
  {
     margin: 0;
     width: 100px;
  }
  
-.edit-reckoning-form .reckoning-form-option-2 .errorlist li
+.edit-content-form .reckoning-form-option-2 .errorlist li
 {
    margin: 0;
    color: #900000;
 }
 
-.edit-reckoning-form .tooltip-icon
+.edit-content-form .tooltip-icon
 {
 	float: right;
 }
 
-.edit-reckoning-form .tooltip
+.edit-content-form .tooltip
 {
 	background-color: #fdfed5;
 	border: 2px solid black;
@@ -584,27 +583,27 @@ body {
     width: 300px;
 }
 
-#content-area .edit-reckoning-form .tooltip p
+#content-area .edit-content-form .tooltip p
 {
     font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
     font-size: 12px;
 }
  
-.edit-reckoning-form .question-edit-field
+.edit-content-form .question-edit-field
  {
     height: 2.5em;
     padding: 5px;
     width: 600px;
  }
  
-.edit-reckoning-form .description-edit-field
+.edit-content-form .description-edit-field
  {
     height: 12.5em;
     padding: 5px;
     width: 600px;
  }
  
-.edit-reckoning-form .answer-edit-field
+.edit-content-form .answer-edit-field
  {
     float: left;
     height: 1.2em;
@@ -612,7 +611,7 @@ body {
     width: 185px;
  }
  
-.edit-reckoning-form .subtitle-edit-field
+.edit-content-form .subtitle-edit-field
  {
     float: left;
     height: 1.2em;
@@ -620,50 +619,71 @@ body {
     width: 185px;
  }
  
-.edit-reckoning-form .tags-edit-field
+.edit-content-form .tags-edit-field
  {
     height: 1.2em;
     padding: 5px;
     width: 600px;
  }
  
-.edit-reckoning-form .interval-edit-field
+.edit-content-form .interval-edit-field
  {
     height: 1.2em;
     padding: 5px;
     width: 200px;
  }
 
-.edit-reckoning-form .commentary-edit-field
+.edit-content-form .commentary-edit-field
  {
     height: 12.5em;
     padding: 5px;
     width: 600px;
  }
  
-.edit-reckoning-form .reckoning-form-options {
+.edit-content-form .reckoning-form-options {
     margin: 15px 0;
  }
  
-.edit-reckoning-form .reckoning-form-option {
+.edit-content-form .reckoning-form-option {
     border: 1px solid black;
     height: 104px;
     padding: 15px;
  }
  
-.edit-reckoning-form .reckoning-form-option-1 {
+.edit-content-form .reckoning-form-option-1 {
     background-color: #d2e8c5;
     float: left;
     width: 225px;
  }
  
-.edit-reckoning-form .reckoning-form-option-2 {
+.edit-content-form .reckoning-form-option-2 {
     background-color: #e37878;
     float: right;
     width: 225px;
  }
  
-.edit-reckoning-form .versus {
+.edit-content-form .title-edit-field
+ {
+    height: 2.5em;
+    padding: 5px;
+    width: 600px;
+ }
+ 
+.edit-content-form .body-edit-field
+ {
+    height: 12.5em;
+    padding: 5px;
+    width: 600px;
+ }
+ 
+ .edit-content-form .summary-edit-field
+ {
+    height: 5.5em;
+    padding: 5px;
+    width: 600px;
+ } 
+ 
+.edit-content-form .versus {
     font-family: Haettenschweiler, Impact, "Franklin Gothic Bold", Charcoal, "Helvetica Inserat", "Bitstream Vera Sans Bold", "Arial Black", sans serif;
     font-size: 48px;
     line-height: 135px;
@@ -672,13 +692,13 @@ body {
     width: 50px;
 } 
  
-.edit-reckoning-form .form-buttons
+.edit-content-form .form-buttons
  {
     margin: 30px 0;
     text-align: center;
  }
  
-.edit-reckoning-form .button
+.edit-content-form .button
  {
     width: 100px;
  }
@@ -686,7 +706,7 @@ body {
 
 /***************************************************************************************
  * POST RECKONING STYLES
- * Styles used specifically in the Reckoner Administration area.
+ * Styles used specifically in the Post Reckoning Page
  ***************************************************************************************/
 
 #post-reckoning-page
@@ -806,11 +826,11 @@ body {
  * Styles used specifically to show an individual reckoning
  ***************************************************************************************/
 
-#reckoning-page {
+#individual-entry {
 	
 }
 
-#reckoning-page .ajax-message {
+#individual-entry .ajax-message {
     color: #cc0000;
     float: right;
     font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
@@ -819,7 +839,7 @@ body {
     margin: 3px 3px;
 }
 
-#reckoning-page .reckon-edit-button {
+#individual-entry .reckon-edit-button {
     cursor: pointer;
 	float: right;
     font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
@@ -827,13 +847,13 @@ body {
     margin: 3px 0;
 }
 
-#reckoning-page .commentary-add-button {
+#individual-entry .commentary-add-button {
     clear: both;
     float: none;
     text-align: center;
 }
 
-#reckoning-page .section-divider {
+#individual-entry .section-divider {
     border-top-width: 0px;
     border-left-width: 0px;
     border-right-width: 0px;
@@ -845,7 +865,7 @@ body {
     text-align: center;
 }
 
-#reckoning-page .commentary-section {
+#individual-entry .commentary-section {
 	background-color: #fdfed5;
 	border: 3px double black;
     font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
@@ -855,7 +875,7 @@ body {
 	width: 594px;
 }
 
-#reckoning-page .profile-picture-wrapper {
+#individual-entry .profile-picture-wrapper {
     border: 1px solid #666666;
     height: 50px;
     float: left;
@@ -863,120 +883,144 @@ body {
     width: 50px;
 }
 
-#reckoning-page .profile-name {
+#individual-entry .profile-name {
     font-size: 14px;	
 }
 
-#reckoning-page .commentary-section .commentary-text {
+#individual-entry .commentary-section .commentary-text {
 	font-size: 14px;
 	margin: 0 8px;
 }
 
-#reckoning-page .edit-commentary-section {
+#individual-entry .edit-commentary-section {
     margin: 0px 7px;
 }
 
-#reckoning-page .text-edit-field {
+#individual-entry .text-edit-field {
     display: block;
     height: 50px;
     width: 606px;
 }
 
-#reckoning-page .input-edit-field {
+#individual-entry .input-edit-field {
     width: 100%;
 }
 
-#reckoning-page .question-section {
+#individual-entry .question-section {
 	margin: 7px;
 }
 
-#reckoning-page .question-section h2 {
+#individual-entry .question-section h2 {
     margin: .3em 0 .8em 0;
 }
 
-#reckoning-page .question-section p {
+#individual-entry .question-section p {
     margin: .5em 0;
 }
 
-#reckoning-page .voting-section {
+#individual-entry .title-section {
+    margin: 7px;
+}
+
+#individual-entry .title-section h2 {
+    font-family: Perpetua, Baskerville, "Big Caslon", "Palatino Linotype", Palatino, "URW Palladio L", "Nimbus Roman No9 L", serif;
+    font-size: 32px;
+    line-height: 28px;
+    margin: .3em 0 .8em 0;
+}
+
+#individual-entry .title-section p {
+    margin: .5em 0;
+}
+
+#individual-entry .body-wrapper {
+	margin: 0 0 3em 0;
+}
+
+#individual-entry .body-wrapper p {
+    font-family: Cambria, Georgia, "New Century Schoolbook", "Century Schoolbook L", "Times New Roman", serif;
+    font-size: 13pt;
+}
+
+#individual-entry .voting-section {
 	margin: 30px 7px 10px 7px;
 }
 
-#reckoning-page .voting-section .vote-box {
+#individual-entry .voting-section .vote-box {
     border: 1px solid #9d9d9d;
 	margin: 54px 0 0 0;
     padding: 54px 6px 12px 6px;
     width: 598px;
 }
 
-#reckoning-page .voting-section .vote-box-open {
+#individual-entry .voting-section .vote-box-open {
 	background-color: #f6f6f6;
 }
 
-#reckoning-page .voting-section .vote-box-winner-1 {
+#individual-entry .voting-section .vote-box-winner-1 {
     background-image: url(../images/reckoning-winner-1-background.png);
     background-repeat: repeat-y;
 }
 
-#reckoning-page .voting-section .vote-box-winner-2 {
+#individual-entry .voting-section .vote-box-winner-2 {
     background-image: url(../images/reckoning-winner-2-background.png);
     background-repeat: repeat-y;
 }
 
-#reckoning-page .voting-section .vote-box-tie {
+#individual-entry .voting-section .vote-box-tie {
     background-color: #deecf6;
 }
 
-#reckoning-page .voting-section .vote-label {
+#individual-entry .voting-section .vote-label {
 	height: 0px;
 	position: relative;
 	left: 252px;
 }
 
-#reckoning-page .voting-section .vote-box .top-note-area .winner-text {
+#individual-entry .voting-section .vote-box .top-note-area .winner-text {
 	text-align: center;
     width: 214px;
 }
 
-#reckoning-page .voting-section .vote-box-winner-1 .top-note-area .winner-text {
+#individual-entry .voting-section .vote-box-winner-1 .top-note-area .winner-text {
 	position: relative;
 	left: 40px;
 }
 
-#reckoning-page .voting-section .vote-box-winner-2 .top-note-area .winner-text {
+#individual-entry .voting-section .vote-box-winner-2 .top-note-area .winner-text {
     position: relative;
     left: 350px;
 }
 
-#reckoning-page .voting-section .vote-box-tie .top-note-area .winner-text {
+#individual-entry .voting-section .vote-box-tie .top-note-area .winner-text {
     position: relative;
     left: 195px;
 }
 
-#reckoning-page .voting-section .top-note-area .winner-text {
+#individual-entry .voting-section .top-note-area .winner-text {
     font-family: Futura, "Century Gothic", Futura, "Tw Cen MT", "URW Gothic L", Tahoma, sans-serif;
     font-size: 30px;
 }
 
-#reckoning-page .top-note-area .your-vote-wrapper {
+#individual-entry .top-note-area .your-vote-wrapper {
     bottom: 25px;
 	height: 0px;
 	position: relative;
 }
 
-#reckoning-page .top-note-area .your-vote-wrapper-1 {
+#individual-entry .top-note-area .your-vote-wrapper-1 {
 	left: 220px;
 }
 
-#reckoning-page .top-note-area .your-vote-wrapper-2 {
+#individual-entry .top-note-area .your-vote-wrapper-2 {
     left: 530px;
 }
 
-#reckoning-page .voting-section .button-area {
+#individual-entry .voting-section .button-area {
 	margin: 0 40px;
 }
 
-#reckoning-page .voting-section .button-area .reckonbutton {
+#individual-entry .voting-section .button-area .reckonbutton {
     border: 0px;
     display: block;
     margin: 0px 0px 6px 0px;
@@ -987,23 +1031,23 @@ body {
     width: 214px;
 }
 
-#reckoning-page .voting-section .button-area .reckonbutton-live {
+#individual-entry .voting-section .button-area .reckonbutton-live {
     cursor: pointer;
 }
 
-#reckoning-page .voting-section .button-area .button-1 {
+#individual-entry .voting-section .button-area .button-1 {
 	float: left;
 	width: 214px;
 }
 
-#reckoning-page .voting-section .button-area .button-2 {
+#individual-entry .voting-section .button-area .button-2 {
     float: right;
     width: 214px;
 }
 
 /* Setting this up as a table cell to allow for the text to be centered.  IE6 and 7
    will show uncentered text, and the world will continue to spin.            */
-#reckoning-page .voting-section .button-area .reckonbutton span {
+#individual-entry .voting-section .button-area .reckonbutton span {
     color: #000000;
     display: table-cell;
     font: 24px "Calibri", "Futura", "Tw Cen MT", "Century Gothic", sans-serif;
@@ -1016,70 +1060,70 @@ body {
     word-wrap: break-word;
 }
 
-#reckoning-page .voting-section .button-area .button-1 {
+#individual-entry .voting-section .button-area .button-1 {
     background: transparent url('../images/reckon-button-red_02.png') no-repeat scroll bottom;
 }
 
-#reckoning-page .voting-section .button-area .button-1 span {
+#individual-entry .voting-section .button-area .button-1 span {
     background: transparent url('../images/reckon-button-red_01.png') no-repeat center top;
 }
 
-#reckoning-page .voting-section .button-area .button-2 {
+#individual-entry .voting-section .button-area .button-2 {
     background: transparent url('../images/reckon-button-green_02.png') no-repeat scroll bottom;
 }
 
-#reckoning-page .voting-section .button-area .button-2 span {
+#individual-entry .voting-section .button-area .button-2 span {
     background: transparent url('../images/reckon-button-green_01.png') no-repeat center top;
 }
 
-#reckoning-page .voting-section .subtitle-area {
+#individual-entry .voting-section .subtitle-area {
 	clear: both;
 }
 
-#reckoning-page .voting-section .subtitle-area .subtitle-wrapper {
+#individual-entry .voting-section .subtitle-area .subtitle-wrapper {
 	font-size: 12px;
 	text-align: center;
 }
 
-#reckoning-page .voting-section .subtitle-area .subtitle-wrapper-1 {
+#individual-entry .voting-section .subtitle-area .subtitle-wrapper-1 {
     float: left;
     margin: 0 40px;
     width: 214px;
 }
 
-#reckoning-page .voting-section .subtitle-area .subtitle-wrapper-2 {
+#individual-entry .voting-section .subtitle-area .subtitle-wrapper-2 {
     float: right;
     margin: 0 40px;
     width: 214px;
 }
 
-#reckoning-page .voting-section .stat-area {
+#individual-entry .voting-section .stat-area {
 	clear: both;
 	text-align: center;
 }
 
-#reckoning-page .voting-section .stat-area .stats-1 {
+#individual-entry .voting-section .stat-area .stats-1 {
     float: left;
     margin: 0 40px;
     width: 208px;	
 }
 
-#reckoning-page .voting-section .stat-area .stats-2 {
+#individual-entry .voting-section .stat-area .stats-2 {
     float: right;
     margin: 0 40px;
     width: 208px;   
 }
 
-#reckoning-page .voting-section .stat-area .percentage {
+#individual-entry .voting-section .stat-area .percentage {
     font-size: 36px;
 }
 
-#reckoning-page .voting-section .bottom-area {
+#individual-entry .voting-section .bottom-area {
 	clear: both;
 	padding: 10px 0 0 0;
 }
 
-#reckoning-page .voting-section .error-box {
+#individual-entry .voting-section .error-box {
     background-color: #fefde5;
     border: 1px solid #9d9d9d;
     font-family: Futura, "Century Gothic", Futura, "Tw Cen MT", "URW Gothic L", Tahoma, sans-serif;
@@ -1089,45 +1133,45 @@ body {
     width: 578px;
 }
 
-#reckoning-page .voting-section .error-box .error {
+#individual-entry .voting-section .error-box .error {
     font-size: 16px;
     font-weight: bold;
     margin: 5px 20px;
 }
 
-#reckoning-page .voting-section .error-box .description {
+#individual-entry .voting-section .error-box .description {
     font-size: 12px;
     margin: 5px 20px;
 }
 
-#reckoning-page .metadata-section {
+#individual-entry .metadata-section {
     font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
 	margin: 0px 7px;
 	width: 612px;
 }
 
-#reckoning-page .metadata-section .label {
+#individual-entry .metadata-section .label {
     font-weight: bold;
     line-height: 14px;
 }
 
-#reckoning-page .metadata-section .spec-wrapper {
+#individual-entry .metadata-section .spec-wrapper {
 	float: left;
     font-size: 14px;
     position: relative;
     top: -4px;
 }
 
-#reckoning-page .metadata-section .tags-wrapper {
+#individual-entry .metadata-section .tags-wrapper {
     margin: 0px 0px 6px 0;
     width: 250px;
 }
 
-#reckoning-page .metadata-section .tags {
+#individual-entry .metadata-section .tags {
     text-transform: capitalize;
 }
 
-#reckoning-page .metadata-section .poster-wrapper {
+#individual-entry .metadata-section .poster-wrapper {
     background-color: #deecf6;	
 	border: 2px solid black;
 	float: right;
@@ -1137,16 +1181,16 @@ body {
 	width: 250px;
 }
 
-#reckoning-page .metadata-section .stat-share-wrapper {
+#individual-entry .metadata-section .stat-share-wrapper {
     clear: both;
     padding: 10px 0 0 0;
 }
 
-#reckoning-page .metadata-section .stat-box {
+#individual-entry .metadata-section .stat-box {
 	border: 1px solid #000000;
 }
 
-#reckoning-page .metadata-section .favorite-flag {
+#individual-entry .metadata-section .favorite-flag {
     display: inline-block;
     font-size: 14px;
     position: relative;
@@ -1155,11 +1199,11 @@ body {
     max-width: 100px;
 }
 
-#reckoning-page .metadata-section .form {
+#individual-entry .metadata-section .form {
     display: inline;
 }
 
-#reckoning-page .metadata-section .favorite-flag .button {
+#individual-entry .metadata-section .favorite-flag .button {
     background: transparent;
     border: 0;
     cursor: pointer;
@@ -1170,98 +1214,98 @@ body {
     padding: 0;     
 }
 
-#reckoning-page .metadata-section .profile-picture-wrapper {
+#individual-entry .metadata-section .profile-picture-wrapper {
 	float: right;
     height: 50px;
     margin: 0px 4px;
     width: 50px;
 }
 
-#reckoning-page .metadata-section .bottom-wrapper {
+#individual-entry .metadata-section .bottom-wrapper {
     clear: both;
 }
 
-#reckoning-page .metadata-section .time {
+#individual-entry .metadata-section .time {
     color: #cc0000;
     font-size: 20px;
 }
 
-#reckoning-page .metadata-section .row-wrapper {
+#individual-entry .metadata-section .row-wrapper {
 	clear: both;
 }
 
-#reckoning-page .metadata-section .row-wrapper-2 {
+#individual-entry .metadata-section .row-wrapper-2 {
     margin-top: 10px;
 }
 
-#reckoning-page .metadata-section .reckoning-stats {
+#individual-entry .metadata-section .reckoning-stats {
 	float: left;
 }
 
-#reckoning-page .metadata-section .social-options {
+#individual-entry .metadata-section .social-options {
 	float: right;
 	padding: 4px 4px 1px 4px;
 	text-align: center;
 	width: 252px;
 }
 
-#reckoning-page .metadata-section .like-button {
+#individual-entry .metadata-section .like-button {
 	display: inline-block;
 	margin: 0 6px 0 6px;
 }
 
-#reckoning-page .metadata-section .fblike-wrapper {
+#individual-entry .metadata-section .fblike-wrapper {
 	position: relative;
 	top: -4px;
 }
 
-#reckoning-page .metadata-section .plusone-wrapper {
+#individual-entry .metadata-section .plusone-wrapper {
 	margin: 0px 6px 0 0px;
 }
 
-#reckoning-page .prev-next-section {
+#individual-entry .prev-next-section {
     margin: 0px 7px;
     width: 612px;	
 }
 
-#reckoning-page .prev-next-section a {
+#individual-entry .prev-next-section a {
 	color: black;
     text-decoration: none;  
 }
 
-#reckoning-page .prev-next-section a:hover {
+#individual-entry .prev-next-section a:hover {
 	text-decoration: underline;
 }
 
-#reckoning-page .prev-next-section .prev-wrapper {
+#individual-entry .prev-next-section .prev-wrapper {
 	float: left;
 	text-align: left;
 	width: 300px;
 }
 
-#reckoning-page .prev-next-section .next-wrapper {
+#individual-entry .prev-next-section .next-wrapper {
     float: right;
     text-align: right;
     width: 300px;
 }
 
-#reckoning-page .prev-next-section .previous-reck-img {
+#individual-entry .prev-next-section .previous-reck-img {
     float: left;
     margin: 0 5px 0 0;
 }
 
-#reckoning-page .prev-next-section .next-reck-img {
+#individual-entry .prev-next-section .next-reck-img {
     float: right;
     margin: 0 0 0 5px;
 }
 
-#reckoning-page .prev-next-section .label {
+#individual-entry .prev-next-section .label {
     font-family: Futura, "Century Gothic", Futura, "Tw Cen MT", "URW Gothic L", Tahoma, sans-serif;
     font-size: 18px;	
     text-decoration: underline;
 }
 
-#reckoning-page .prev-next-section .question {
+#individual-entry .prev-next-section .question {
 	color: #000066;
     font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
 	font-size: 9pt;
@@ -1269,12 +1313,12 @@ body {
 	text-transform: uppercase;
 }
 
-#reckoning-page .comment-section {
+#individual-entry .comment-section {
 	clear: both;
 	margin: 0 7px;
 }
 
-#reckoning-page .comment-section .comment-box {
+#individual-entry .comment-section .comment-box {
     background-color: #f6f6f6;
     border: 1px solid #9d9d9d;
     margin: 54px 0 0 0;
@@ -1282,7 +1326,7 @@ body {
     width: 598px;
 }
 
-#reckoning-page .comment-section .inner-comment-box {
+#individual-entry .comment-section .inner-comment-box {
     background-color: white;
     border: 1px solid #9d9d9d;
     padding: 10px 0 0 0;
@@ -1290,33 +1334,33 @@ body {
     width: 578px;
 }
 
-#reckoning-page .comment-section .post-comment-box {
+#individual-entry .comment-section .post-comment-box {
     margin: 20px 10px;
     overflow: auto;
 }
 
-#reckoning-page .comment-section .comment-label {
+#individual-entry .comment-section .comment-label {
     height: 0px;
     position: relative;
     left: 252px;
 }
 
-#reckoning-page .comment-section .comment-form-label {
+#individual-entry .comment-section .comment-form-label {
 	display: none;
 }
 
-#reckoning-page .comment-section .comment-edit-field {
+#individual-entry .comment-section .comment-edit-field {
 	height: 150px;
 	width: 450px;
 }
 
-#reckoning-page .comment-section .field-notation {
+#individual-entry .comment-section .field-notation {
     margin: 0;
     font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
     font-size: 8px;    
 }
 
-#reckoning-page .comment-section .post-comment-box h4 {
+#individual-entry .comment-section .post-comment-box h4 {
     font-family: Futura, "Century Gothic", Futura, "Tw Cen MT", "URW Gothic L", Tahoma, sans-serif;
     font-size: 24px;   
     font-style: italic;
@@ -1324,16 +1368,16 @@ body {
     text-align: center;
 }
 
-#reckoning-page .comment-section .post-comment-box h4 .subtitle {
+#individual-entry .comment-section .post-comment-box h4 .subtitle {
 	font-size: 14px;
 }
 
-#reckoning-page .comment-section .comment-post-options {
+#individual-entry .comment-section .comment-post-options {
 	margin: 20px 0px;
 	text-align: right;
 }
 
-#reckoning-page .comment-section .no-comment-text {
+#individual-entry .comment-section .no-comment-text {
     font-family: Futura, "Century Gothic", Futura, "Tw Cen MT", "URW Gothic L", Tahoma, sans-serif;
     font-size: 18px;
     font-style: italic;
@@ -1343,11 +1387,11 @@ body {
     text-transform: uppercase;	
 }
 
-#reckoning-page .comment-section .no-comment-text .subtitle {
+#individual-entry .comment-section .no-comment-text .subtitle {
 	font-size: 10px;
 }
 
-#reckoning-page .comment-section .comment-header ul
+#individual-entry .comment-section .comment-header ul
 {
     float: right;
     margin: 0 0 8px 0;
@@ -1355,7 +1399,7 @@ body {
     width: 250px;
 }
  
-#reckoning-page .errorlist li
+#individual-entry .errorlist li
  {
     color: red;
     display: inline;
@@ -2078,6 +2122,68 @@ body {
 	margin: 5px auto;
 	text-align: center;
 	width: 100%;	
+}
+
+/***************************************************************************************
+ * BLOG / CONTENT STYLES
+ * Styles used specifically for the Reckon Blog and Content areas
+ ***************************************************************************************/
+
+.blog-site-column {
+    background-image: url(../images/blog-background.png);
+    background-repeat: repeat-y;
+}
+
+#post-content-page
+ {
+    margin: 0 7px 0 7px;
+ }
+ 
+#blog-label-button {
+    margin: 7px auto;
+    text-align: center;
+ }
+ 
+.blog-site-column .sidebar-background-box {
+    background-color: #f6f6f6;
+    border: 1px solid #9d9d9d;
+    padding: 0 14px;
+}
+ 
+#cast-of-characters {
+    margin: 14px auto;
+    text-align: center;
+}
+
+.character-row {
+	margin: 12px 0;
+}
+
+.character-row .character-portrait {
+    display: inline-block;
+}
+
+.character-row .character-text {
+	float: right;
+	width: 120px;
+}
+
+.character-row .person-character-text {
+    position: relative;
+    top: 12px;
+}
+
+.character-row .character-text .name {
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-weight: bold;
+    margin: 4px 0;
+    text-transform: uppercase;
+}
+
+.character-row .character-text .title {
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 10pt;
+    text-transform: uppercase;
 }
 
 

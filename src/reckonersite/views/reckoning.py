@@ -638,7 +638,7 @@ def delete_reckoning_comment(request):
                                                             message_description="Deleted!")
                 
         except Exception:
-            logger.error("Exception when flagging a reckoning:") 
+            logger.error("Exception when deleting a reckoning comment:") 
             logger.error(traceback.print_exc(8))    
 
     
@@ -676,7 +676,7 @@ def update_reckoning_comment(request, id = None):
                                                             message_description="Updated!")
                 
         except Exception:
-            logger.error("Exception when flagging a reckoning:") 
+            logger.error("Exception when updating a reckoning comment:") 
             logger.error(traceback.print_exc(8))    
 
     
@@ -733,7 +733,7 @@ def update_reckoning_ajax(request):
                                                             message_description="Updated!")
                 
         except Exception:
-            logger.error("Exception when flagging a reckoning:") 
+            logger.error("Exception when updating a reckoning:") 
             logger.error(traceback.print_exc(8))    
 
     
@@ -767,7 +767,7 @@ def delete_reckoning_commentary(request):
                                                             message_description="Deleted!")
                 
         except Exception:
-            logger.error("Exception when flagging a reckoning:") 
+            logger.error("Exception when deleting reckoning commentary:") 
             logger.error(traceback.print_exc(8))    
 
     
@@ -798,7 +798,7 @@ def reject_reckoning_ajax(request):
                                                             message_description="Deleted! You're looking at a ghost!")
                 
         except Exception:
-            logger.error("Exception when flagging a reckoning:") 
+            logger.error("Exception when rejecting a reckoning:") 
             logger.error(traceback.print_exc(8))    
 
     

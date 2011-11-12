@@ -7,7 +7,7 @@
     </div>
     {% for comment in reckoning.comments %}
         <hr class="comment-divider">
-        {% include "comment.html" %}
+        {% include "comment.html" with data_type="reckoning"%}
     {% endfor %}
     <hr class="comment-reckoning-divider">
 </div>

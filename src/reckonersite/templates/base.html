@@ -2,7 +2,7 @@
 {% load reckontags %}
 
 {% block pagebody %}
-    <div id="site-column">
+    <div id="site-column" class="{% block sitecolumnclass %} {% endblock %}">
         <div id="top-bar">
             {% block topbar %}
             <div class="logo-section top-bar-section">
@@ -42,8 +42,10 @@
             {% endblock %}
         </div>
         <div id="content-area">
-            <div id="main-section">{% block main %}Main Section!{% endblock %}</div>
-            <div id="right-sidebar-section">{% block rightsidebar %}Sidebar!{% endblock %}</div>
+            {% block contentarea %}
+	            <div id="main-section">{% block main %}Main Section!{% endblock %}</div>
+	            <div id="right-sidebar-section">{% block rightsidebar %}Sidebar!{% endblock %}</div>
+            {% endblock contentarea %}
         </div>
         <div id="bottom-bar">
             {% block bottombar %}

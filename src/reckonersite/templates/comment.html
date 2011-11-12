@@ -7,6 +7,7 @@
         <div id="comment-text-{{comment.id}}" class="comment-text">{{comment.comment|safe}}</div>
         {% if 'UPDATE_ALL_COMMENTS' in perms %}
         <form id="comment-edit-form-{{comment.id}}" class="comment-edit-form" style="display: none">{% csrf_token %}
+	        <input type="hidden" name="data-type" value="{{data_type}}">
 	        <input type="hidden" name="comment-id" value="{{comment.id}}">                        
 	        <textarea maxlength=5000 id="user-comment-edit-field-{{comment.id}}" name="comment" class="user-comment-edit-field">{{comment.comment|safe}}</textarea>
 	        <input type="submit" name="edit-comment-save" value="Save" class="button save-button"/>
@@ -19,6 +20,7 @@
             &middot;
             <span class="favorite">
                 <form id="comment-favorite-form-{{comment.id}}" class="comment-favorite-form form">
+                         <input type="hidden" name="data-type" value="{{data_type}}">                
                          <input type="hidden" name="comment-id" value="{{comment.id}}">
                          <input class="button favorite-button" type="submit" name="favorite-submit" value="Favorite">
                 </form>
@@ -28,6 +30,7 @@
             &middot;
             <span class="flag">
                 <form id="comment-flag-form-{{comment.id}}" class="comment-flag-form form">
+                         <input type="hidden" name="data-type" value="{{data_type}}">                 
                          <input type="hidden" name="comment-id" value="{{comment.id}}">
                          <input class="button flag-button" type="submit" name="flag-submit" value="Flag">
                 </form>
@@ -37,6 +40,7 @@
             &middot;
             <span class="edit">
                 <form id="comment-edit-initialize-form-{{comment.id}}" class="comment-edit-initialize-form form">
+                         <input type="hidden" name="data-type" value="{{data_type}}">                          
                          <input type="hidden" name="comment-id" value="{{comment.id}}">
                          <input class="button edit-button" type="submit" name="edit-submit" value="Edit">
                 </form>
@@ -44,6 +48,7 @@
             &middot;
             <span class="delete">
                 <form action="" id="comment-delete-form-{{comment.id}}" class="comment-delete-form form")">
+                         <input type="hidden" name="data-type" value="{{data_type}}">                          
                          <input type="hidden" name="comment-id" value="{{comment.id}}">
                          <input class="button delete-button" type="submit" name="delete-submit" value="Delete">
                 </form>

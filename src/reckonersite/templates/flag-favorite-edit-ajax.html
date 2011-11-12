@@ -3,9 +3,10 @@
          $(".comment-favorite-form").submit(function(e) {
              e.preventDefault();
              var $form = $( this ),
-                 commentId = $form.find("input[name=comment-id]").val();
+                 commentId = $form.find("input[name=comment-id]").val(),
+                 dataType = $form.find("input[name=data-type]").val();
              
-             $.post("/ajax/notes/reckoning/comment/favorite/" + commentId, null,
+             $.post("/ajax/notes/" + dataType +  "/comment/favorite/" + commentId, null,
                     function(data) {                 
                        var message = $( data ).find( 'message_description' ),
                            success = $( data ).find( 'success' ).text();                   
@@ -25,9 +26,10 @@
           $(".comment-flag-form").submit(function(e) {
               e.preventDefault();
               var $form = $( this ),
-                  commentId = $form.find("input[name=comment-id]").val();
+                  commentId = $form.find("input[name=comment-id]").val(),
+                  dataType = $form.find("input[name=data-type]").val();
               
-              $.post("/ajax/notes/reckoning/comment/flag/" + commentId, null,
+              $.post("/ajax/notes/" + dataType +  "/comment/flag/" + commentId, null,
                      function(data) {                 
                         var message = $( data ).find( 'message_description' ),
                             success = $( data ).find( 'success' ).text();                   
@@ -60,10 +62,11 @@
           $(".comment-edit-form").submit(function(e) {
               e.preventDefault();
               var $form = $( this ),
-                  commentId = $form.find("input[name=comment-id]").val();
-                  comment = $form.find("textarea[name=comment]")
+                  commentId = $form.find("input[name=comment-id]").val(),
+                  comment = $form.find("textarea[name=comment]"),
+                  dataType = $form.find("input[name=data-type]").val();
                         
-              $.post("/ajax/comment/reckoning/update", $form.serialize(),
+              $.post("/ajax/comment/" + dataType +  "/update", $form.serialize(),
                       function(data) {                 
                          var message = $( data ).find( 'message_description' ),
                              success = $( data ).find( 'success' ).text();                   
@@ -83,12 +86,13 @@
           $(".comment-delete-form").submit(function(e) {
               e.preventDefault();
               var $form = $( this ),
-                  commentId = $form.find("input[name=comment-id]").val();
+                  commentId = $form.find("input[name=comment-id]").val(),
+                  dataType = $form.find("input[name=data-type]").val();
                   
               var accepted = confirm('Delete comment ' + commentId + '?\n\n');
                         
               if (accepted) {        
-	              $.post("/ajax/comment/reckoning/delete", $form.serialize(),
+	              $.post("/ajax/comment/" + dataType +  "/delete", $form.serialize(),
 	                      function(data) {                 
 	                         var message = $( data ).find( 'message_description' ),
 	                             success = $( data ).find( 'success' ).text();                   
@@ -104,20 +108,21 @@
        });
     
       $(function(){
-          $(".reckoning-favorite-form").submit(function(e) {
+          $(".favorite-form").submit(function(e) {
               e.preventDefault();
               var $form = $( this ),
-                  reckoningId = $form.find("input[name=reckoning-id]").val();
-              
-              $.post("/ajax/notes/reckoning/favorite/" + reckoningId, null,
+              dataType = $form.find("input[name=data-type]").val(),
+              dataId = $form.find("input[name=" + dataType + "-id]").val();
+                  
+              $.post("/ajax/notes/" + dataType +  "/favorite/" + dataId, null,
                      function(data) {                 
                         var message = $( data ).find( 'message_description' ),
                             success = $( data ).find( 'success' ).text();                   
-                        $("#reckoning-favorite-form-" + reckoningId).empty().append(message);
+                        $("#" + dataType + "-favorite-form-" + dataId).empty().append(message);
                         
                         if (success.toLowerCase() === 'true') {
-                            var favCount = parseInt($("#favorite-count-" + reckoningId).html()) + 1;
-                            $("#favorite-count-" + reckoningId).empty().append(favCount);
+                            var favCount = parseInt($("#favorite-count-" + dataId).html()) + 1;
+                            $("#favorite-count-" + dataId).empty().append(favCount);
                         }
                      } 
                      , "xml")
@@ -125,16 +130,17 @@
        });
       
       $(function(){
-          $(".reckoning-flag-form").submit(function(e) {
-              e.preventDefault();
+          $(".flag-form").submit(function(e) {
+        	  e.preventDefault();
               var $form = $( this ),
-                  reckoningId = $form.find("input[name=reckoning-id]").val();
+              dataType = $form.find("input[name=data-type]").val(),
+              dataId = $form.find("input[name=" + dataType + "-id]").val();
               
-              $.post("/ajax/notes/reckoning/flag/" + reckoningId, null,
+              $.post("/ajax/notes/" + dataType +  "/flag/" + dataId, null,
                      function(data) {                 
                         var message = $( data ).find( 'message_description' ),
                             success = $( data ).find( 'success' ).text();                   
-                        $("#reckoning-flag-form-" + reckoningId).empty().append(message);
+                        $("#" + dataType + "-flag-form-" + dataId).empty().append(message);
                      } 
                      , "xml")
           }); 

@@ -1,30 +1,25 @@
-{% extends "standard_sidebar.html" %}
+{% extends "blog_sidebar.html" %}
 {% load reckontags %}
 
-{% block pagetitle %}The Reckoner! - {{ reckoning.question }}{% endblock %}
+{% block pagetitle %}{{ SITE_NAME }} - {{ content.title|truncatewords:15 }}{% endblock %}
 
-{% block fb-title %}"{{ reckoning.question }}"{% endblock %}
-{% block fb-url %}"{{ SITE_ROOT }}{{ reckoning.getURL }}"{% endblock %}
-{% block fb-description %}"{{ reckoning.description|striptags|truncatewords_html:50 }}"{% endblock %}
+{% block fb-title %}"{{ SITE_NAME }} - {{ content.title|truncatewords:15 }}"{% endblock %}
+{% block fb-url %}"{{ SITE_ROOT }}{{ content.getURL }}"{% endblock %}
+{% block fb-description %}"{{ content.summary|striptags|truncatewords_html:50 }}"{% endblock %}
 
-{% block gplus-title %}"{{ SITE_NAME }} - {{ reckoning.question }}"{% endblock %}
-{% block gplus-description %}"{{ reckoning.description|striptags|truncatewords_html:50 }}"{% endblock %}
+{% block gplus-title %}"{{ SITE_NAME }} - {{ content.title|truncatewords:15 }}"{% endblock %}
+{% block gplus-description %}"{{ content.summary|striptags|truncatewords_html:50 }}"{% endblock %}
 
-{% block canon-url %}"{{ SITE_ROOT }}{{ reckoning.getURL }}"{% endblock %}
+{% block canon-url %}"{{ SITE_ROOT }}{{ content.getURL }}"{% endblock %}
 
 {% block extraheader %}
       <script src="{{ STATIC_URL }}js/ajax-post.js"></script>
       <script src="{{ STATIC_URL }}ckeditor/ckeditor.js"></script>
       <script src="{{ STATIC_URL }}ckeditor/adapters/jquery.js"></script>
-      {% if 'UPDATE_ALL_RECKONINGS' in perms %}
-        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-        <script src="{{ STATIC_URL }}js/jquery-ui-timepicker-addon.js"></script>
-        <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/blitzer/jquery-ui.css">        
-      {% endif %}  
 {% endblock %}
 
 {% block main %}
-    <div id="individual-entry">
+    <div id="individual-entry" class="{{ content.content_type }}-page content-page">
         {% if messages %}
             <div class="messages">
                 {% for message in messages %}
@@ -32,77 +27,74 @@
                 {% endfor %}
             </div>
         {% endif %}
-        {% if 'UPDATE_ALL_RECKONINGS' in perms %}
+        {% if 'UPDATE_ALL_CONTENT' in perms %}
         <div class="edit-commentary-section">
-            <form id="commentary-edit-form" class="reckoning-edit-form" style="display: none">{% csrf_token %}        
-                <textarea maxlength=3000 id="commentary-edit-field" class="text-edit-field" name="commentary">{% if reckoning.commentary %}{{reckoning.commentary}}{% endif%}</textarea>
-                <input type="hidden" name="reckoning-id" value="{{reckoning.id}}">
+            <form id="commentary-edit-form" class="content-edit-form" style="display: none">{% csrf_token %}        
+                <textarea maxlength=3000 id="commentary-edit-field" class="text-edit-field" name="commentary">{% if content.commentary %}{{content.commentary}}{% endif%}</textarea>
+                <input type="hidden" name="content-id" value="{{content.id}}">
                 <input type="submit" name="save" value="Save" class="button save-button"/>                
             </form>
             <div id="commentary-edit-form-message" class="ajax-message"></div>
-            {% if reckoning.commentary and reckoning.commentary|length > 0 %}
+            {% if content.commentary and content.commentary|length > 0 %}
                 <span id="commentary-edit-button" class="reckon-edit-button show-hide-button" data-hide=".commentary-section" data-show="#commentary-edit-form">Update!&nbsp;&nbsp;</span><span class="reckon-edit-button" id="commentary-delete-button">Delete! &middot; </span>
             {% else %}
                 <div id="commentary-add-button" class="reckon-edit-button commentary-add-button show-hide-button" data-hide=".commentary-section" data-show="#commentary-edit-form" >Add Commentary!</div>
             {% endif %}
         </div>
         {% endif %}   
-        {% if reckoning.commentary and reckoning.commentary|length > 0 %}
+        {% if content.commentary and content.commentary|length > 0 %}
         <div class="commentary-section">
-            <div id="commentary-profile-picture" class="profile-picture-wrapper"><img src="{{reckoning.commentary_user.profile_picture_url}}" class="profile-picture"></div>
-            <div class="profile-name"><a href="{{reckoning.commentary_user.getURL}}">{{reckoning.commentary_user.first_name}} {{reckoning.commentary_user.last_name}}</a></div>
-            <div class="commentary-text">{{reckoning.commentary}}</div>
+            <div id="commentary-profile-picture" class="profile-picture-wrapper"><img src="{{content.commentary_user.profile_picture_url}}" class="profile-picture"></div>
+            <div class="profile-name"><a href="{{content.commentary_user.getURL}}">{{content.commentary_user.first_name}} {{content.commentary_user.last_name}}</a></div>
+            <div class="commentary-text">{{content.commentary}}</div>
         </div>      
         {% endif %}
         
-        <div class="question-section">
-            {% if 'UPDATE_ALL_RECKONINGS' in perms %}
-            <div class="edit-question-section">
-                <form id="question-edit-form" class="question-edit-form" style="display: none">{% csrf_token %}        
-                    <textarea maxlength=150 id="question-edit-field" class="text-edit-field" name="question">{{reckoning.question}}</textarea>
-                    <input type="hidden" name="reckoning-id" value="{{reckoning.id}}">
+        <div class="title-section">
+            {% if 'UPDATE_ALL_CONTENT' in perms %}
+            <div class="edit-title-section">
+                <form id="title-edit-form" class="title-edit-form" style="display: none">{% csrf_token %}        
+                    <textarea maxlength=150 id="title-edit-field" class="text-edit-field" name="title">{{content.title}}</textarea>
+                    <input type="hidden" name="content-id" value="{{content.id}}">
                     <input type="submit" name="save" value="Save" class="button save-button"/>                
                 </form>
-                <span id="question-edit-button" class="reckon-edit-button show-hide-button" data-hide=".question-wrapper" data-show="#question-edit-form">Edit!</span> <span id="question-edit-form-message" class="ajax-message"></span>
+                <span id="title-edit-button" class="reckon-edit-button show-hide-button" data-hide=".title-wrapper" data-show="#title-edit-form">Edit!</span> <span id="title-edit-form-message" class="ajax-message"></span>
             </div>
             {% endif %}  
-            <div class="question-wrapper"><h2>{{reckoning.question}}</h2></div> 
-            {% if 'UPDATE_ALL_RECKONINGS' in perms %}
-            <div class="edit-description-section">
-                <form id="description-edit-form" class="description-edit-form" style="display: none">{% csrf_token %}        
-                    <textarea maxlength=150 id="description-edit-field" class="text-edit-field ckedit-field" name="description">{{reckoning.description|safe}}</textarea>
-                    <input type="hidden" name="reckoning-id" value="{{reckoning.id}}">
+            <div class="title-wrapper"><h2>{{content.title}}</h2></div> 
+            {% if 'UPDATE_ALL_CONTENT' in perms %}
+            <div class="edit-body-section">
+                <form id="body-edit-form" class="body-edit-form" style="display: none">{% csrf_token %}        
+                    <textarea maxlength=150 id="body-edit-field" class="text-edit-field ckedit-field" name="body">{{content.body|safe}}</textarea>
+                    <input type="hidden" name="content-id" value="{{content.id}}">
                     <input type="submit" name="save" value="Save" class="button save-button"/>                
                 </form>
-                <span id="description-edit-button" class="reckon-edit-button show-hide-button" data-hide=".description-wrapper" data-show="#description-edit-form">Edit!</span> <span id="description-edit-form-message" class="ajax-message"></span>
+                <span id="body-edit-button" class="reckon-edit-button show-hide-button" data-hide=".body-wrapper" data-show="#body-edit-form">Edit!</span> <span id="body-edit-form-message" class="ajax-message"></span>
             </div>
             {% endif %}  
-            <div class="description-wrapper"><p>{{reckoning.description|safe}}</p></div>           
-        </div>
-        <div class="voting-section">
-            {% include "reckon-two-voting-box.html" %}
+            <div class="body-wrapper"><p>{{content.body|safe}}</p></div>           
         </div>
         <div class="metadata-section">
             <div class="row-wrapper row-wrapper-1">
                  <div class="reckoning-stats">
                      <div class="stat-box views-stat-box">
-                        <div class="count">{{ reckoning.views|condense_int }}</div>
-                        <div class="box-label">VIEW{% if popular_reckoning.views != 1 %}S{%endif%}</div> 
+                        <div class="count">{{ content.views|condense_int }}</div>
+                        <div class="box-label">VIEW{% if content.views != 1 %}S{%endif%}</div> 
                      </div> 
                      <div class="stat-box views-stat-box">
-                        <div class="count">{{ reckoning.comments|length|condense_int }}</div>
-                        <div class="box-label-small">COMMENT{% if reckoning.comments|length != 1 %}S{%endif%}</div> 
+                        <div class="count">{{ content.comments|length|condense_int }}</div>
+                        <div class="box-label-small">COMMENT{% if content.comments|length != 1 %}S{%endif%}</div> 
                      </div>   
                      <div class="stat-box favorites-stat-box">
-                        <div id="favorite-count-{{reckoning.id}}" class="count">{{ reckoning.favorites|length|condense_int }}</div>
+                        <div id="favorite-count-{{content.id}}" class="count">{{ content.favorites|length|condense_int }}</div>
                         <div class="box-label-small">TRACKING</div> 
                      </div>
 	                 <div class="favorite-flag">
 	                     {% if 'FAVORITE' in perms %}
 	                     <span class="favorite">
-	                         <form id="reckoning-favorite-form-{{reckoning.id}}" class="reckoning-favorite-form favorite-form form">
-	                                  <input type="hidden" name="reckoning-id" value="{{reckoning.id}}">
-	                                  <input type="hidden" name="data-type" value="reckoning">
+	                         <form id="content-favorite-form-{{content.id}}" class="content-favorite-form favorite-form form">
+	                                  <input type="hidden" name="data-type" value="content"> 
+	                                  <input type="hidden" name="content-id" value="{{content.id}}">
 	                                  <input class="button favorite-button" type="submit" name="favorite-submit" value="Track">
 	                         </form> 
 	                     </span>    
@@ -110,9 +102,9 @@
 	                     {% endif %}      
 	                     {% if 'FLAG' in perms %}
 	                     <span class="flag">
-	                         <form id="reckoning-flag-form-{{reckoning.id}}" class="reckoning-flag-form flag-form form">
-	                                  <input type="hidden" name="reckoning-id" value="{{reckoning.id}}">
-	                                  <input type="hidden" name="data-type" value="reckoning">
+	                         <form id="content-flag-form-{{content.id}}" class="content-flag-form flag-form form">
+	                                  <input type="hidden" name="data-type" value="content"> 
+	                                  <input type="hidden" name="content-id" value="{{content.id}}">
 	                                  <input class="button flag-button" type="submit" name="flag-submit" value="Flag">
 	                         </form> 
 	                     </span> 
@@ -120,10 +112,10 @@
 	                 </div>      
                 </div>   
 				<div class="poster-wrapper">
-				     <div class="profile-picture-wrapper"><img src="{{reckoning.posting_user.profile_picture_url}}" class="profile-picture"></div>
+				     <div class="profile-picture-wrapper"><img src="{{content.posting_user.profile_picture_url}}" class="profile-picture"></div>
 				     <div class="label">Posted By:</div>
-				     <div class="poster-name">{{reckoning.posting_user|print_user_name}}</div>
-				     <div class="poster-date">{{reckoning.posting_date}}</div>
+				     <div class="poster-name">{{content.posting_user|print_user_name}}</div>
+				     <div class="poster-date">{{content.posting_date}}</div>
 				</div>
 				<div style="clear: both;"></div>
             </div>
@@ -131,46 +123,21 @@
                 <div class="spec-wrapper">
                      <div class="tags-wrapper"> 
                          <span class="label">Tags:</span>
-                         {% if 'UPDATE_ALL_RECKONINGS' in perms %}
+                         {% if 'UPDATE_ALL_CONTENT' in perms %}
                             <span id="tag-edit-button" class="reckon-edit-button show-hide-button" data-hide=".tags" data-show="#tag-edit-form">Edit!</span> <span id="tag-edit-form-message" class="ajax-message"></span>
                             <div class="edit-tag-section">
                                 <form id="tag-edit-form" class="tag-edit-form" style="display: none">{% csrf_token %}        
-                                    <input type="text" maxlength=150 id="tag-edit-field" class="input-edit-field" name="tags" value="{{reckoning.getTagCSV}}">
-                                    <input type="hidden" name="reckoning-id" value="{{reckoning.id}}">
+                                    <input type="text" maxlength=150 id="tag-edit-field" class="input-edit-field" name="tags" value="{{content.getTagCSV}}">
+                                    <input type="hidden" name="content-id" value="{{content.id}}">
                                     <input type="submit" name="save" value="Save" class="button save-button"/>                
                                 </form>
                             </div>
                          {% endif %} 
                          <div class="tags">
-                             {% for tag in reckoning.tags %}
+                             {% for tag in content.tags %}
                                 {{tag|print_tag_link}}{% if not forloop.last %}, {% endif %}
                              {% endfor %}
                          </div>
-                     </div>
-                     <div class="time-wrapper">
-                         {% if 'UPDATE_ALL_RECKONINGS' in perms %}
-                            <span id="time-edit-button" class="reckon-edit-button show-hide-button" data-hide=".time" data-show="#time-edit-form">Edit!</span> <span id="time-edit-form-message" class="ajax-message"></span>
-                         {% endif %}  
-                         {% if reckoning.open %}
-                             <div class="label">Remaining Time:</div>
-                             <div class="time">
-                                {{ reckoning.closing_date|until_time }}
-                             </div>                    
-                         {% else %}
-                             <div class="label">Closing Time:</div>
-                             <div class="time">
-                                 {{reckoning.closing_date}}
-                             </div>
-                         {% endif %}
-                         {% if 'UPDATE_ALL_RECKONINGS' in perms %}
-                            <div class="edit-time-section">
-                                <form id="time-edit-form" class="time-edit-form" style="display: none">{% csrf_token %}        
-                                    <input type="text" maxlength=150 id="time-edit-field" class="input-edit-field" name="time" value="{{reckoning.closing_date|form_time}}">
-                                    <input type="hidden" name="reckoning-id" value="{{reckoning.id}}">
-                                    <input type="submit" name="save" value="Save" class="button save-button"/>                
-                                </form>
-                             </div>
-                         {% endif %}  
                      </div>
                 </div>
 			     <div class="social-options">
@@ -181,57 +148,31 @@
                         <div class="g-plusone" data-size="tall" expandto="top"></div>  
                     </div>
 			        <div class="tweet-wrapper like-button">
-			            <a href="https://twitter.com/share" class="twitter-share-button" data-text="{{ reckoning.question|truncatewords:15 }}" data-count="vertical" data-via="TheReckonerSite">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>       
+			            <a href="https://twitter.com/share" class="twitter-share-button" data-text="{{ content.title|truncatewords:15 }}" data-count="vertical" data-via="TheReckonerSite">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>       
 			        </div>
 			     </div>
 			</div>
             <div class="bottom-wrapper">
                  {% if 'UPDATE_ALL_RECKONINGS' in perms %}
-                    <div class="highlight-reckoning-section">
-                        {% if reckoning.highlighted %} <div id="highlighted-button" class="reckon-edit-button" data-state="highlighted">De-Highlight!</div>{% endif %}
-                        {% if not reckoning.highlighted %} <div id="highlighted-button" class="reckon-edit-button" data-state="de-highlighted">Highlight!</div>{% endif %}
-                        <div id="highlight-reckoning-message" class="ajax-message"></div>
-                    </div>
-                    <div class="reject-reckoning-section">
-                        <form id="reject-reckoning-form">{% csrf_token %}        
-                            <input type="hidden" name="reckoning-id" value="{{reckoning.id}}">
-                            <input type="submit" name="reject" value="Reject Reckoning!" class="button save-button"/>                
+                    <div class="reject-content-section">
+                        <form id="reject-content-form">{% csrf_token %}        
+                            <input type="hidden" name="content-id" value="{{content.id}}">
+                            <input type="submit" name="reject" value="DELETE POST!" class="button save-button"/>                
                         </form>
-                        <div id="reject-reckoning-form-message" class="ajax-message"></div>
+                        <div id="reject-content-form-message" class="ajax-message"></div>
                     </div>
                  {% endif %}  
             </div>
-        </div>
-        <hr class="section-divider">
-        <div class="prev-next-section">
-            {% if prev_reck %}
-            <a href="{{prev_reck.url}}">
-            <div class="prev-wrapper">
-                <img src="{{ STATIC_URL }}images/chevron_prev.png" alt="Previous Reckoning!" class="previous-reck-img"/>
-                <div class="label">PREVIOUS!</div>
-                <div class="question">{{ prev_reck.question }}</div>
-            </div>
-            </a>
-            {% endif %}
-            {% if next_reck %}
-            <a href="{{next_reck.url}}">
-            <div class="next-wrapper">
-                <img src="{{ STATIC_URL }}images/chevron_next.png" alt="Next Reckoning!" class="next-reck-img"/>
-                <div class="label">NEXT!</div>
-                <div class="question">{{ next_reck.question }}</div>            
-            </div>
-            </a>
-            {% endif %}
         </div>
         <hr class="section-divider">
         <div id="comment-main" class="comment-section">
              <div class="comment-label"><img src="{{ STATIC_URL }}images/reckoning-comment-label.png" alt="Reckoning Comments!"></div>
              <div class="comment-box">
                 <div class="inner-comment-box">
-	                {% if reckoning.comments %}
-	                    {% for comment in reckoning.comments %}
+	                {% if content.comments %}
+	                    {% for comment in content.comments %}
 	                       {% if forloop.last %} <div id="comment-last"> {% endif %}
-                           {% include "comment.html" with data_type="reckoning" %}
+                           {% include "comment.html" with data_type="content"%}
                            {% if forloop.last %} </div> {% endif %}
 	                       <hr class="comment-divider">
 	                    {% endfor %}
@@ -249,15 +190,15 @@
                     <div class="comment">
 	                    <div class="profile-picture-wrapper"><img src="{{ user.profile_picture_url }}" alt="You!" class="profile-picture"></div>
 	                    <div class="comment-data">
-                            <form id="comment-form" action="/comment/reckoning/post" method="post">{% csrf_token %}	                    
+                            <form id="comment-form" action="/comment/content/post" method="post">{% csrf_token %}	                    
 		                        <div class="comment-header">
                                    {{errors.comment}}		                        
 			                       <div class="profile-name">{{user.first_name}} {{user.last_name}}</div>
 			                    </div>
                                 <div class="comment-field">
                                      <label for="id_commentform-comment" class="comment-form-label"><h5>Comment!</h5></label>
-                                     <input type="hidden" name="redirect" value="{{ reckoning.getURL}}?redirect=true#comment-last"/>
-                                     <input type="hidden" name="reckoning-id" value="{{ reckoning.id }}"/>
+                                     <input type="hidden" name="redirect" value="{{ content.getURL }}?redirect=true#comment-last"/>
+                                     <input type="hidden" name="content-id" value="{{ content.id }}"/>
                                      <textarea maxlength=5000 id="id_commentform-comment" name="commentform-comment" class="comment-edit-field"></textarea>
                                      <div class="field-notation">(5000 Character Max)<noscript> Allowed Tags: &lt;p&gt; &lt;i&gt; &lt;strong&gt; &lt;b&gt; &lt;u&gt; &lt;a&gt; &lt;pre&gt; &lt;br&gt; &lt;img&gt; &lt;ul&gt; &lt;li&gt;</noscript></div>
                                 </div>
@@ -306,20 +247,6 @@
 	  $(document).ready(function(){ 
 	      var largestHeight = 0;
 	      
-	      // The rendering adjustment compensates for how the button 'table-cells' are rendered.
-	      // Also establishes a minimum size.
-	      var renderAdjustment = 20;
-	 
-	      $('.button-area').find(".reckonbutton > span").each(function() {
-	          if ($(this).height() > largestHeight) {
-	            largestHeight = $(this).height();
-	          }
-	      });
-	      
-	      $('.button-area').find(".reckonbutton > span").each(function() {
-	          $(this).css('height', largestHeight + renderAdjustment);
-	      });
-	      
 	      // Substitutes a CKEditor field for new comments
 	      $(".comment-edit-field").ckeditor(
 	              function () { /* Callback code */}, {
@@ -328,11 +255,6 @@
 	                  toolbar: 'Basic'
 	              }             
 	            );
-	      
-	      {% if 'UPDATE_ALL_RECKONINGS' in perms %}
-          // Creates a jQuery Calendar for the Closing Date (if the user can edit it)
-          $("#time-edit-field").datetimepicker();
-          {% endif %}
 	  });
 	  
       $(function(){ 
@@ -356,16 +278,16 @@
          }); 
        });  
       
-      {% if 'UPDATE_ALL_RECKONINGS' in perms %}
+      {% if 'UPDATE_ALL_CONTENT' in perms %}
       
       $(function(){ 
           $("#commentary-edit-form").submit(function(e) {
               e.preventDefault();
               var $form = $( this ),
-                  reckoningId = $form.find("input[name=reckoning-id]").val(),
+                  contentId = $form.find("input[name=content-id]").val(),
                   commentary = $form.find("textarea[name=commentary]").val(); 
               
-              $.post("/ajax/reckoning/update", $form.serialize(),
+              $.post("/ajax/content/update", $form.serialize(),
                      function(data) {                 
                         var message = $( data ).find( 'message_description' ),
                             success = $( data ).find( 'success' ).text();                   
@@ -398,12 +320,12 @@
       $(function(){
           $("#commentary-delete-button").click(function(e) {
               e.preventDefault();
-              reckoningId = "{{reckoning.id}}";
+              contentId = "{{content.id}}";
                   
-              var accepted = confirm('Delete commentary for this reckoning?');
+              var accepted = confirm('Delete commentary for this content?');
                         
               if (accepted) {        
-                  $.post("/ajax/reckoning/commentary/delete", "reckoning-id=" + reckoningId,
+                  $.post("/ajax/content/commentary/delete", "content-id=" + contentId,
                        function(data) {                 
                           var message = $( data ).find( 'message_description' ),
                               success = $( data ).find( 'success' ).text();                   
@@ -419,22 +341,22 @@
        });
       
       $(function(){ 
-          $("#question-edit-form").submit(function(e) {
+          $("#title-edit-form").submit(function(e) {
               e.preventDefault();
               var $form = $( this ),
-                  reckoningId = $form.find("input[name=reckoning-id]").val(),
-                  question = $form.find("textarea[name=question]").val(); 
+                  contentId = $form.find("input[name=content-id]").val(),
+                  title = $form.find("textarea[name=title]").val(); 
               
-              $.post("/ajax/reckoning/update", $form.serialize(),
+              $.post("/ajax/content/update", $form.serialize(),
                      function(data) {                 
                         var message = $( data ).find( 'message_description' ),
                             success = $( data ).find( 'success' ).text();                   
-                        $("#question-edit-form-message").empty().append(message);
+                        $("#title-edit-form-message").empty().append(message);
                         
                         if (success.toLowerCase() === 'true') {
-                            $('.question-wrapper').html('<h2>' + question + '</h2>');
-                            $('.question-wrapper').show();  
-                            $('#question-edit-form').hide();
+                            $('.title-wrapper').html('<h2>' + title + '</h2>');
+                            $('.title-wrapper').show();  
+                            $('#title-edit-form').hide();
                             $(".show-hide-button").show();
                         }
                      } 
@@ -443,22 +365,22 @@
        }); 
       
       $(function(){ 
-          $("#description-edit-form").submit(function(e) {
+          $("#body-edit-form").submit(function(e) {
               e.preventDefault();
               var $form = $( this ),
-                  reckoningId = $form.find("input[name=reckoning-id]").val(),
-                  description = $form.find("textarea[name=description]").val(); 
+                  contentId = $form.find("input[name=content-id]").val(),
+                  body = $form.find("textarea[name=body]").val(); 
               
-              $.post("/ajax/reckoning/update", $form.serialize(),
+              $.post("/ajax/content/update", $form.serialize(),
                      function(data) {                 
                         var message = $( data ).find( 'message_description' ),
                             success = $( data ).find( 'success' ).text();                   
-                        $("#description-edit-form-message").empty().append(message);
+                        $("#body-edit-form-message").empty().append(message);
                         
                         if (success.toLowerCase() === 'true') {
-                            $('.description-wrapper').html(description);
-                            $('.description-wrapper').show();  
-                            $('#description-edit-form').hide();
+                            $('.body-wrapper').html(body);
+                            $('.body-wrapper').show();  
+                            $('#body-edit-form').hide();
                             $(".show-hide-button").show();
                         }
                      } 
@@ -470,10 +392,10 @@
           $("#tag-edit-form").submit(function(e) {
               e.preventDefault();
               var $form = $( this ),
-                  reckoningId = $form.find("input[name=reckoning-id]").val(),
+                  contentId = $form.find("input[name=content-id]").val(),
                   tags = $form.find("input[name=tags]").val(); 
               
-              $.post("/ajax/reckoning/update", $form.serialize(),
+              $.post("/ajax/content/update", $form.serialize(),
                      function(data) {                 
                         var message = $( data ).find( 'message_description' ),
                             success = $( data ).find( 'success' ).text();                   
@@ -491,65 +413,19 @@
        }); 
       
       $(function(){ 
-          $("#time-edit-form").submit(function(e) {
+          $("#reject-content-form").submit(function(e) {
               e.preventDefault();
               var $form = $( this ),
-                  reckoningId = $form.find("input[name=reckoning-id]").val(),
-                  time = $form.find("input[name=time]").val(); 
-              
-              $.post("/ajax/reckoning/update", $form.serialize(),
-                     function(data) {                 
-                        var message = $( data ).find( 'message_description' ),
-                            success = $( data ).find( 'success' ).text();                   
-                        $("#time-edit-form-message").empty().append(message);
-                        
-                        if (success.toLowerCase() === 'true') {
-                            $('.time').html(time);
-                            $('.time').show();  
-                            $('#time-edit-form').hide();
-                            $(".show-hide-button").show();
-                        }
-                     } 
-                     , "xml")
-          }); 
-       }); 
+                  contentId = $form.find("input[name=content-id]").val(); 
 
-      $(function(){ 
-          $("#highlighted-button").click(function(e) {
-              e.preventDefault();
-              var status = $(this).attr("data-state");
-              var newState = false;
-              
-              if (status === 'de-highlighted') { newState = true; }
-              
-              $.post("/ajax/reckoning/update", "reckoning-id={{reckoning.id}}&highlighted=" 
-            		  + newState.toString(),
-                     function(data) {                 
-                        var message = $( data ).find( 'message_description' ),
-                            success = $( data ).find( 'success' ).text();                   
-                        $("#highlight-reckoning-message").empty().append(message);
-                        
-                        if (newState) { $("#highlighted-button").html("De-Highlight!") }
-                        else { $("#highlighted-button").html("Highlight!") }
-                     } 
-                     , "xml")
-          }); 
-       }); 
-      
-      $(function(){ 
-          $("#reject-reckoning-form").submit(function(e) {
-              e.preventDefault();
-              var $form = $( this ),
-                  reckoningId = $form.find("input[name=reckoning-id]").val(); 
-
-              var accepted = confirm('Reject this Reckoning?');
+              var accepted = confirm('Reject this Content?');
               
               if (accepted) {
-	              $.post("/ajax/reckoning/reject", $form.serialize(),
+	              $.post("/ajax/content/reject", $form.serialize(),
 	                     function(data) {                 
 	                        var message = $( data ).find( 'message_description' ),
 	                            success = $( data ).find( 'success' ).text();                   
-	                        $("#reject-reckoning-form-message").empty().append(message);
+	                        $("#reject-content-form-message").empty().append(message);
 	                        
 	                     } 
 	                     , "xml")
