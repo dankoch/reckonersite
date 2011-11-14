@@ -7,7 +7,7 @@
 
 {% block rightsidebar %}
     <div id="standard-sidebar" class="sidebar-content">
-       <div id="blog-label-button"><img src="{{STATIC_URL}}images/reckoner-blog-bubble.png"></div>
+       <div id="blog-label-button"><a href="/blog"><img src="{{STATIC_URL}}images/reckoner-blog-bubble.png"></a></div>
        <div class="sidebar-background-box">
            <div id="cast-of-characters"><img src="{{STATIC_URL}}images/cast-of-characters.png"></div>
            <div class="character-row">
@@ -24,6 +24,22 @@
                     <div class="title">Pit Boss</div>
                 </div>
            </div>
+       </div>
+       <div class="sidebar-background-box">
+           <div class="head-label">Tags</div>
+           <ul>
+           {% for tag in nav_tags %}
+              <li><a href="{{page_url}}?tag={{tag.tag}}">{{tag.tag}} ({{tag.count}})</a></li>
+           {% endfor %}
+           </ul>
+       </div>
+       <div class="sidebar-background-box">
+           <div class="head-label">Archive</div>
+           <ul>
+           {% for month in content_months %}
+              <li><a href="{{page_url}}?month={{month.month}}&year={{month.year}}">{{month|date:"b Y"}}</a></li>
+           {% endfor %}
+           </ul>
        </div>
     </div>
 {% endblock %}

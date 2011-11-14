@@ -188,7 +188,6 @@ body {
 
 #main-section {
 	/* Total width here should add up to 640px - horiz padding + border + width */
-    border-right: 1px dotted black;
     float: left;
     height: 100%;
     padding: 7px 7px 7px 7px;
@@ -272,6 +271,15 @@ body {
 	vertical-align: middle;
 }
 
+#content-area .section-header span a {
+    color: #f9f4f4;
+    text-decoration: none;
+}
+
+#content-area .section-header span a:hover {
+    text-decoration: underline;
+}
+
 #content-area .stat-box {
 	background-color: #f1fee9;
 	border: 1px solid #666666;
@@ -343,6 +351,11 @@ body {
     text-align: center;
     text-transform: uppercase;
     width: 500px;
+}
+
+.regular-site-column {
+    background-image: url(../images/main-background.png);
+    background-repeat: repeat-y;	
 }
 
 /* css for timepicker */
@@ -822,7 +835,7 @@ body {
 }
 
 /***************************************************************************************
- * INDIVIDUAL RECKONING STYLES
+ * INDIVIDUAL RECKONING AND CONTENT STYLES
  * Styles used specifically to show an individual reckoning
  ***************************************************************************************/
 
@@ -926,20 +939,30 @@ body {
     font-family: Perpetua, Baskerville, "Big Caslon", "Palatino Linotype", Palatino, "URW Palladio L", "Nimbus Roman No9 L", serif;
     font-size: 32px;
     line-height: 28px;
-    margin: .3em 0 .8em 0;
+    margin: .3em 0 .5em 0;
+}
+
+#individual-entry .title-section a {
+    color: black;
+    text-decoration: none;
+}
+
+#individual-entry .title-section a:hover {
+    color: #cc0000;
 }
 
 #individual-entry .title-section p {
     margin: .5em 0;
 }
 
-#individual-entry .body-wrapper {
-	margin: 0 0 3em 0;
+#individual-entry .body-section {
+    margin: 0 7px 1.2em 7px;
 }
 
-#individual-entry .body-wrapper p {
+#individual-entry .body-section p {
     font-family: Cambria, Georgia, "New Century Schoolbook", "Century Schoolbook L", "Times New Roman", serif;
     font-size: 13pt;
+    margin: .5em 0;
 }
 
 #individual-entry .voting-section {
@@ -1148,6 +1171,10 @@ body {
     font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
 	margin: 0px 7px;
 	width: 612px;
+}
+
+.content-list-section #individual-entry .metadata-section {
+	margin: 0em 7px 2em 7px;
 }
 
 #individual-entry .metadata-section .label {
@@ -1677,7 +1704,7 @@ body {
 	top: -4px;
 }
 
-#content-area .reckonings-list-box .paging-section {
+#content-area  .paging-section {
     font-family: Futura, "Century Gothic", Futura, "Tw Cen MT", "URW Gothic L", Tahoma, sans-serif;
     font-size: 14px;
     font-weight: normal;
@@ -1686,65 +1713,65 @@ body {
 	width: 595px;
 }
 
-#content-area .reckonings-list-box .paging-section a {
+#content-area  .paging-section a {
 	color: black;
     text-decoration: none;
 }
 
-#content-area .reckonings-list-box .paging-section a:hover {
+#content-area  .paging-section a:hover {
     text-decoration: underline;
 }
 
-#content-area .reckonings-list-box .paging-section .pages {
+#content-area  .paging-section .pages {
 	color: #9b9b9b;
     text-align: center;
 }
 
-#content-area .reckonings-list-box .paging-section .pages a {
+#content-area  .paging-section .pages a {
     color: #9b9b9b;
 }
 
-#content-area .reckonings-list-box .paging-section .pages .active-page {
+#content-area  .paging-section .pages .active-page {
     color: black;
 }
 
-#content-area .reckonings-list-box .paging-section .pages .active-page a {
+#content-area  .paging-section .pages .active-page a {
     color: black;
 }
 
-#content-area .reckonings-list-box .paging-section .previous-page {
+#content-area  .paging-section .previous-page {
     float: left;
     text-align: left;
     width: 160px;
 }
 
-#content-area .reckonings-list-box .paging-section .next-page  {
+#content-area  .paging-section .next-page  {
     float: right;
     text-align: right;
     width: 160px;
 }
 
-#content-area .reckonings-list-box .paging-section .previous-page img {
+#content-area  .paging-section .previous-page img {
     float: left;
     margin: 0 5px 0 0;
 }
 
-#content-area .reckonings-list-box .paging-section .next-page img {
+#content-area  .paging-section .next-page img {
     float: right;
     margin: 0 0 0 5px;
 }
 
-#content-area .reckonings-list-box .paging-section .label {
+#content-area  .paging-section .label {
     font-family: Futura, "Century Gothic", Futura, "Tw Cen MT", "URW Gothic L", Tahoma, sans-serif;
     font-size: 18px;    
 }
 
-#content-area .reckonings-list-box .paging-section .page-size-select {
+#content-area  .paging-section .page-size-select {
     margin: 20px 0;
     text-align: center;
 }
 
-#content-area .reckonings-list-box .paging-section .page-box {
+#content-area  .paging-section .page-box {
     background-color: #f1fee9;
     border: 1px solid #666666;
     display: inline-block;
@@ -1753,23 +1780,23 @@ body {
     width: 55px;
 }
 
-#content-area .reckonings-list-box .paging-section .page-box a {
+#content-area  .paging-section .page-box a {
     color: #9b9b9b;
 }
 
-#content-area .reckonings-list-box .paging-section .page-box-selected a {
+#content-area  .paging-section .page-box-selected a {
     color: black;
     text-decoration: none;
 }
 
-#content-area .reckonings-list-box .paging-section .page-box .count {
+#content-area  .paging-section .page-box .count {
     font-family: "Futura", "Lucida Sans", "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
     font-size: 18px;
     line-height: 12px;
     margin: 8px auto 1px auto;
 }
 
-#content-area .reckonings-list-box .paging-section .page-box .box-label {
+#content-area  .paging-section .page-box .box-label {
     display: inline-block;
     margin: 0 auto;
     font-family: "Futura", "Lucida Sans", "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
@@ -1832,8 +1859,55 @@ body {
     margin: 3px 0;
 }
 
+#content-area .sidebar-box {
+    background-color: #fafafa;
+    border: 1px solid #9d9d9d;
+    margin: 3px 0;
+}
+
+#content-area .sidebar-box #blog-box-content {
+    clear: both;
+    margin: 14px 7px;
+}
+
+#content-area .sidebar-box #blog-box-content .blog-title {
+    font-family: "Futura", "Lucida Sans", "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-style: italic;
+}
+
+#content-area .sidebar-box #blog-box-content .blog-title a {
+    color: black;
+    text-decoration: none;
+}
+
+#content-area .sidebar-box #blog-box-content .blog-title a:hover {
+    color: #cc0000;
+    text-decoration: underline;
+}
+
+#content-area .sidebar-box #blog-box-content .blog-subtitle {
+	font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 12px;
+}
+
+#content-area .sidebar-box #blog-box-content .blog-content p {
+    font-size: 13px;
+    margin: 1em 0;
+}
+
+#content-area .sidebar-box #blog-box-content .blog-read-more {
+    font-size: 12px;
+    margin: 0 0 1em 0;
+}
+
 #content-area #top-reckonings-section .sidebar-tab-box {
-    min-height: 250px;
+    min-height: 150px;
+}
+
+#content-area #related-reckonings-section .sidebar-tab-box {
+    min-height: 150px;
 }
 
 #content-area .sidebar-tab-box .reckoning-tab {
@@ -2129,6 +2203,10 @@ body {
  * Styles used specifically for the Reckon Blog and Content areas
  ***************************************************************************************/
 
+#blog-list-page .blog-entry-divider {
+	margin: 3em 0 1.5em 0;
+}
+
 .blog-site-column {
     background-image: url(../images/blog-background.png);
     background-repeat: repeat-y;
@@ -2147,12 +2225,38 @@ body {
 .blog-site-column .sidebar-background-box {
     background-color: #f6f6f6;
     border: 1px solid #9d9d9d;
-    padding: 0 14px;
+    margin: 10px 0;
+    padding: 7px 14px;
 }
  
 #cast-of-characters {
-    margin: 14px auto;
+    margin: 7px 0 14px 0;
     text-align: center;
+}
+
+.blog-site-column .sidebar-background-box .head-label {
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+	font-weight: bold;
+	text-decoration: underline;
+	text-transform: uppercase;
+}
+
+.blog-site-column .sidebar-background-box ul {
+	font-size: 12px;
+	line-height: 20px;
+	list-style-type: none;
+    margin: .5em 0;
+    padding-left: 1em;
+    text-transform: capitalize;
+}
+
+.blog-site-column .sidebar-background-box a {
+	color: #0161c3;
+    text-decoration: none;
+}
+
+.blog-site-column .sidebar-background-box a:hover {
+    text-decoration: underline;
 }
 
 .character-row {
@@ -2184,6 +2288,20 @@ body {
     font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
     font-size: 10pt;
     text-transform: uppercase;
+}
+
+.content-list-section .full-post-link {
+    font-family: Cambria, Georgia, "New Century Schoolbook", "Century Schoolbook L", "Times New Roman", serif;
+    font-weight: bold;
+}
+
+.content-list-section .full-post-link a {
+    color: #990000;
+    text-decoration: none;
+}
+
+.content-list-section .full-post-link a:hover {
+    text-decoration: underline;
 }
 
 

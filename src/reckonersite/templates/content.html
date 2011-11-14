@@ -62,10 +62,12 @@
             </div>
             {% endif %}  
             <div class="title-wrapper"><h2>{{content.title}}</h2></div> 
+         </div>
+         <div class="body-section">
             {% if 'UPDATE_ALL_CONTENT' in perms %}
             <div class="edit-body-section">
                 <form id="body-edit-form" class="body-edit-form" style="display: none">{% csrf_token %}        
-                    <textarea maxlength=150 id="body-edit-field" class="text-edit-field ckedit-field" name="body">{{content.body|safe}}</textarea>
+                    <textarea maxlength=50000 id="body-edit-field" class="text-edit-field ckedit-field" name="body">{{content.body|safe}}</textarea>
                     <input type="hidden" name="content-id" value="{{content.id}}">
                     <input type="submit" name="save" value="Save" class="button save-button"/>                
                 </form>

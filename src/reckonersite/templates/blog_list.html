@@ -1,0 +1,69 @@
+{% extends "blog_sidebar.html" %}
+{% load reckontags %}
+
+{% block pagetitle %}The Reckoner! - Blog!{% endblock %}
+
+{% block fb-title %}"The Reckoner! - Blog!"{% endblock %}
+{% block fb-url %}"{{ SITE_ROOT }}{{ page_url }}"{% endblock %}
+{% block fb-description %}"It's the Reckon Blog! Catch the latest news and commentary on the hottest action The Reckoner has to offer!"{% endblock %}
+
+{% block gplus-title %}"The Reckoner! - Blog!"{% endblock %}
+{% block gplus-description %}"It's the Reckon Blog! Catch the latest news and commentary on the hottest action The Reckoner has to offer!"{% endblock %}
+
+{% block canon-url %}"{{ SITE_ROOT }}{{ page_url }}"{% endblock %}
+
+{% block main %}
+    <div id="blog-list-page">
+        <div class="content-list-section">
+            {% for content in contents %}
+                <div id="individual-entry">
+                    <div class="title-section">
+	                   <div class="title-wrapper"><h2><a href="{{content.getURL}}">{{content.title}}</a></h2></div>
+	                </div>
+	                <div class="body-section">
+		                {% if forloop.first %}
+		                    <div class="body-wrapper"><p>{{content.body|safe}}</p></div>
+		                    <div class="full-post-link"><a href="{{content.getURL}}">Read Comments!</a></div>
+		                {% else %}
+		                    <div class="body-wrapper"><p>{{content.body|safe|truncatewords_html:150}}</p></div>
+		                    {% if content.body|wordcount > 150 %}
+		                        <div class="full-post-link"><a href="{{content.getURL}}">Read Full Post...</a></div>
+		                    {% else %}
+                                <div class="full-post-link"><a href="{{content.getURL}}">Read Comments!</a></div>		                    
+		                    {% endif %}
+		                {% endif %}
+	                </div>
+	                <div class="metadata-section">
+		                 <div class="reckoning-stats">
+		                     <div class="stat-box views-stat-box">
+		                        <div class="count">{{ content.views|condense_int }}</div>
+		                        <div class="box-label">VIEW{% if content.views != 1 %}S{%endif%}</div> 
+		                     </div> 
+		                     <div class="stat-box views-stat-box">
+		                        <div class="count">{{ content.comments|length|condense_int }}</div>
+		                        <div class="box-label-small">COMMENT{% if content.comments|length != 1 %}S{%endif%}</div> 
+		                     </div>   
+		                     <div class="stat-box favorites-stat-box">
+		                        <div id="favorite-count-{{content.id}}" class="count">{{ content.favorites|length|condense_int }}</div>
+		                        <div class="box-label-small">TRACKING</div> 
+		                     </div>
+		                </div>	                
+		                <div class="poster-wrapper">
+		                     <div class="profile-picture-wrapper"><img src="{{content.posting_user.profile_picture_url}}" class="profile-picture"></div>
+		                     <div class="label">Posted By:</div>
+		                     <div class="poster-name">{{content.posting_user|print_user_name}}</div>
+		                     <div class="poster-date">{{content.posting_date}}</div>
+		                </div>
+		                <div style="clear: both;"></div>
+	                </div>
+                </div>
+                {% if not forloop.last %}
+                    <hr class="blog-entry-divider">
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="paging-section">
+            {% include "paging_widget.html" with hide_page_size="True" %}
+        </div>
+    </div>
+{% endblock %}

@@ -40,6 +40,8 @@ class ReckonerUser(Base):
             
         if not xml_element is None:
             self.buildFromXMLElement(xml_element)
+            
+        self.url = self.getURL()
     
     def getXML(self):
         return (buildXml(self.__dict__, 'user'))

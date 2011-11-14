@@ -1,10 +1,15 @@
 {% extends "base.html" %}
 {% load reckontags %}
 
+{% block sitecolumnclass %}
+    regular-site-column
+{% endblock %}
+
 {% block rightsidebar %}
     <div id="standard-sidebar" class="sidebar-content">
        {% include "top-reckonings.html" %}
        {% include "related-reckonings.html" %}
+       {% include "blog-box.html" %}
     </div>
 {% endblock %}
 
@@ -12,4 +17,5 @@
   {{ block.super }}
   {% include "top-reckonings-ajax.html" %}
   {% include "related-reckonings-ajax.html" %} 
+  {% include "blog-box-ajax.html" %}
 {% endblock %}

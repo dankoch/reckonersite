@@ -9,6 +9,7 @@ from django.conf import settings
 from reckonersite.client.utilities import url_encode_list
 from reckonersite.domain.contentservicelist import ContentServiceList
 from reckonersite.domain.dataservicelist import DataServiceList
+from reckonersite.domain.tagservicelist import TagServiceList
 from reckonersite.domain.serviceresponse import ServiceResponse
 
 def client_post_content(content, session_id):
@@ -60,13 +61,13 @@ def client_get_contents(content_type=None, posted_before=None, posted_after=None
                           include_tags=None, submitted_by=None,
                           sort_by=None, ascending=False, page=None, size=None, randomize=None, count_only=None,
                           session_id=None):
-    url = settings.RECKON_CONTENT_SERVICES_HOST + "/reckoning" + "?"
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/content" + "?"
     if (content_type):
         url += "content_type=" + content_type + "&"  
     if (posted_before):
         url += "posted_before=" + posted_before.isoformat() + "&"    
     if (posted_after):
-        url += "posted_after=" + posted_before.isoformat() + "&"  
+        url += "posted_after=" + posted_after.isoformat() + "&"  
     if (include_tags):
         if (isinstance(include_tags, list) or isinstance(include_tags, tuple)):
             url += "include_tags=" + url_encode_list(include_tags) + "&" 
@@ -86,6 +87,8 @@ def client_get_contents(content_type=None, posted_before=None, posted_after=None
         url += "count_only=true&"        
     if (session_id):
         url += "session_id=" + session_id + "&"
+        
+    print "Content URL: " + url
     
     response = urllib2.urlopen(url)    
     content = response.read()
@@ -113,5 +116,16 @@ def client_reject_content(content_id, session_id):
     response = urllib2.urlopen(url)
     content = response.read()
     servResponse = ServiceResponse(xml_string = content)
+    
+    return servResponse    
+
+def client_get_content_tags(session_id):
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/content/tags"
+    if (session_id):
+        url += "?session_id=" + session_id
+    
+    response = urllib2.urlopen(url)
+    content = response.read()
+    servResponse = TagServiceList(xml_string = content)
     
     return servResponse    

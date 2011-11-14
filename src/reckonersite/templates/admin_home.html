@@ -13,6 +13,9 @@
             <li><a href="/admin/approval">Approve Reckonings!</a></li>
             <li><a href="/admin/flagged">Review Flagged Reckonings!</a></li>
             {% endif %}
+            {% if 'POST_CONTENT' in perms %}
+            <li><a href="/post-content">Post Content!</a></li>            
+            {% endif %}
         </ul>
     </div>
 {% endblock %}

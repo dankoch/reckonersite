@@ -41,6 +41,7 @@
         {% endif %}
     </div>
 </div>
+{% if not hide_page_size %}
 <div class="page-size-select">
     <div class="page-box {% if size == 15 %}page-box-selected{% endif %}">
         <a href="{{ page_url }}?size=15">
@@ -59,5 +60,8 @@
             <div class="count">50</div>
             <div class="box-label">Per Page</div>    
         </a>                
-    </div>                                  
+    </div> 
 </div>
+{% else %}
+<div class="float-clear"></div>  
+{% endif %}                             

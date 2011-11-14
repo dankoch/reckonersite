@@ -2,6 +2,7 @@
 Created on Aug 23, 2011
 @author: danko
 '''
+import datetime
 import logging
 import sys
 import traceback
@@ -25,7 +26,8 @@ from reckonersite.client.contentclient import client_post_content, \
                                               client_get_content, \
                                               client_get_content_types, \
                                               client_update_content, \
-                                              client_reject_content
+                                              client_reject_content, \
+                                              client_get_content_tags
 
 from reckonersite.domain.ajaxserviceresponse import AjaxServiceResponse
 from reckonersite.domain.comment import Comment
@@ -76,7 +78,7 @@ def post_content(request):
             logger.error(traceback.print_exc(8))
             raise Exception  
     else:
-        return HttpResponseRedirect("/post-content-thanks")      
+        return HttpResponseRedirect("/")      
 
 class PostContentForm(forms.Form):  
     def __init__(self, *args, **kwargs):
@@ -129,12 +131,15 @@ def get_content(request, id = None, title = None):
         else:
             commentForm = CommentReckoningForm(prefix=commentFormPrefix)            
             content = service_response.contents[0]
-
             errors = request.session.get('errors', {})
             request.session['errors'] = None
+            
+            context = {'content' : content,
+                       'errors' : errors  }
+            context.update(getContentTagContext(request))
+            context.update(getContentMonthContext(request))
 
-            c = RequestContext(request, {'content' : content,
-                                         'errors' : errors})
+            c = RequestContext(request, context)
             
             return render_to_response('content.html', c)
     except Http404:
@@ -374,3 +379,48 @@ def reject_content_ajax(request):
     
     return HttpResponse(site_response.getXMLString())
 
+
+###############################################################################################
+#  Utility used to add tags to the request context for the blog sidebar
+###############################################################################################
+
+def getContentTagContext(request):
+    '''
+    Calls the service necessary to pull all of the tags used for content and prepares them
+    for the display context.
+    '''
+    nav_tags=[]
+
+    service_response = client_get_content_tags(request.user.session_id)
+    if (service_response.status.success):
+        nav_tags = service_response.tags
+
+    return ({'nav_tags' : nav_tags})
+
+###############################################################################################
+#  Utility used to add the monthly breakdown to the blog sidebar.
+###############################################################################################
+
+def getContentMonthContext(request):
+    '''
+    Calls the service necessary to pull the month categories used for content and prepares them
+    for the display context.
+    '''
+    content_months=[]
+    
+    current_time = datetime.datetime.now()
+    current_month = current_time.month
+    current_year = current_time.year
+
+    start_month=3
+    start_year=2011
+    
+    while (current_month != start_month or current_year != start_year):
+        content_months.append(datetime.date(current_year, current_month, 1))
+        
+        current_month -= 1;
+        if (current_month < 1):
+            current_month = 12;
+            current_year -= 1;
+    
+    return ({'content_months' : content_months})

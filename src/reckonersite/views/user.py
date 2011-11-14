@@ -15,7 +15,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 from reckonersite.client.authclient import client_get_user_by_id, client_update_user
-from reckonersite.client.commentclient import client_get_user_comments, client_get_favorited_comments
+from reckonersite.client.commentclient import client_get_user_comments, client_get_favorited_reckoning_comments
 from reckonersite.client.reckoningclient import client_get_user_reckonings, client_get_favorited_reckonings
 from reckonersite.client.voteclient import client_get_user_reckoning_votes
 

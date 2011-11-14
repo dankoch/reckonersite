@@ -47,7 +47,7 @@ def pageDisplay(current_page, page_size, total_items):
         else:
             end_pages = range(final_page, final_page+1)
     else:
-        begin_pages = range(1, final_page+1)             
+        begin_pages = range(1, final_page+1)   
     
     return ({'begin_pages' : begin_pages,
              'page_spread' : page_spread,
