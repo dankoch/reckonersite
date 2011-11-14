@@ -101,8 +101,6 @@ def get_user_profile(request, id = None, name = None):
                            'vote_count' : votes_response.count,
                            'tracking_count' : tracking_response.count}
                 
-                print "Context: " + str(reckoning_count) + " " + str(context)
-                
                 context.update(pageDisplay(page, size, reckoning_count))
                 c = RequestContext(request, context)
             

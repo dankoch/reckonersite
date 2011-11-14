@@ -87,8 +87,6 @@ def client_get_contents(content_type=None, posted_before=None, posted_after=None
         url += "count_only=true&"        
     if (session_id):
         url += "session_id=" + session_id + "&"
-        
-    print "Content URL: " + url
     
     response = urllib2.urlopen(url)    
     content = response.read()

@@ -7,14 +7,14 @@
 
 {% block rightsidebar %}
     <div id="standard-sidebar" class="sidebar-content">
-       {% include "blog-box.html" %}
        {% include "top-reckonings.html" %}
+       {% include "related-reckonings.html" %}
        {% include "social-sidebar-box.html" %}
     </div>
 {% endblock %}
 
 {% block javascript %}
   {{ block.super }}
+  {% include "tag_filter_widget.html" %}
   {% include "top-reckonings-ajax.html" %}
-  {% include "blog-box-ajax.html" %}
 {% endblock %}

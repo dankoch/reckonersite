@@ -124,9 +124,6 @@ def client_post_content_flag(flag, content_id, session_id):
     if (session_id):
         url += "?session_id=" + session_id
     
-    print "Content Flag: " + url
-    print "Content Flag: " + flag.getPostingXMLString(session_id)
-    
     req = urllib2.Request(url = url,
                           data = flag.getPostingXMLString(session_id),
                           headers = {'Content-Type': 'text/xml'})

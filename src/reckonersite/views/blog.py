@@ -60,8 +60,6 @@ def blog_list_page(request):
                 posted_after = convertFormToDateTime("".join((month,"/01/",year," 00:01")))
                 posted_before = convertFormToDateTime("".join((next_month,"/01/",year," 00:01")))
                 
-            print "Date: " + str(posted_after) + " " + str(posted_before)
-                
             # Persist the filter information.  Keep it if we're moving across pages.
             if (tag is not None):
                 request.session['blog-include-tags'] = tag
