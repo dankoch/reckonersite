@@ -75,3 +75,6 @@ def home_page(request):
     
 def search_page(request):
     return render_to_response('search.html', RequestContext(request, None))
+
+def about_page(request):
+    return render_to_response('about.html', RequestContext(request, None))

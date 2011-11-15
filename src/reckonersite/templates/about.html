@@ -1,0 +1,50 @@
+{% extends "standard_sidebar.html" %}
+
+{% block pagetitle %}The Reckoner! - About This Fine Website!{% endblock %}
+
+{% block fb-title %}"The Reckoner! - About This Fine Website!"{% endblock %}
+{% block fb-url %}"{{ SITE_ROOT }}/about"{% endblock %}
+{% block fb-description %}"All about The Reckoner, by Dan Koch of ReckonLabs!  Use the power of Democracy in your own life!"{% endblock %}
+
+{% block gplus-title %}"The Reckoner! - About This Fine Website!"{% endblock %}
+{% block gplus-description %}"All about The Reckoner, by Dan Koch of ReckonLabs!  Use the power of Democracy in your own life!"{% endblock %}
+
+{% block canon-url %}"{{ SITE_ROOT }}/about"{% endblock %}
+
+{% block main %}
+    <div id="about-page" class="static-page">
+        <div class="page-header"><h1>ABOUT THE RECKONER!</h1></div>
+        <h3>Life is full of decisions!<br><span class="highlight">The Reckoner can help!</span></h3>
+        <h5>Post your intractable 'yes or no', 'this or that', binary questions on The Reckoner, and the world will answer it once and for all.  Give your decision-packed life the karate chop of democracy that it needs!</h5>
+        <hr class="minor-divider">
+        <h3>HOW IT WORKS!</h3>
+        <ol>
+            <li><div class="highlight">Post a reckoning up on the site, starting <a href="/post-reckoning-welcome">here!</a></div><div class="subtitle">The Reckoner thrives on the quality of its questions, so put your elbow into it, make it entertaining but even-handed, and Reckonbot's gauges will flutter with delight.</div></li>
+            <li><div class="highlight">Reckonbot processes it and approves or rejects it for the site.</div><div class="subtitle">It can be a real curmudgeon sometimes, so bear with it if your question doesn't get through.  The Reckoner still loves you!</div></li>
+            <li><div class="highlight">The approved question gets posted to The Reckoner for voting.</div><div class="subtitle">All site visitors get a chance to vote on it and weigh in with their comments.</div></li>
+            <li><div class="highlight">The question closes after a week, and you have your answer!</div></li>
+            <li><div class="highlight fin">Fin.</div></li>
+        </ol>
+        <hr class="minor-divider">
+        <p>Anyone can vote, and a quick sign-up using your Facebook or Google+ account will allow you to comment and follow your stats to your heart's content.</p>
+        <p>For those of you who just want to spectate and vote, go nuts!  If The Reckoner can brighten one lunch break, settle one bar argument, or prevent one fistfight in the parking lot of a Denny's, it has served its purpose.</p>
+        <hr>
+        <h1>ABOUT US!</h1>
+        <div class="about-us">
+	        <p>The Reckoner was created and built by a fellow named Dan Koch, who manufactured a Reckonbot 3000 Binary Decision Processor out of an old Technics SA-800 stereo receiver.  To test out his new hardware, he's built this sparkling new website to bring the power of Reckonbot to bear on our everyday decisions and arguments.</p>
+	        <hr class="minor-divider">
+	        <div class="profile-row">
+               <div class="about-us-picture"><img src="{{STATIC_URL}}images/reckonbot-reckon-blog.png" alt="Reckonbot!  Pit Boss of The Reckoner!"></div>   
+	           <p><strong>Reckonbot 3000</strong> is a robo-taskmistress who can process, edit, approve, deny, and otherwise shepherd 900 reckonings a second (but can only be bothered to do it once or twice an hour).</p>
+	        </div>
+	        <div class="profile-row">
+               <div class="about-us-picture"><img src="{{STATIC_URL}}images/Dan-Koch-Reckon_Blog.png" alt="Dan Koch!  Creator of The Reckoner!"></div>     	        
+	           <div class="person-bio"><p><a href="http://www.facebook.com/profile.php?id=613012"><b>Dan Koch</b></a> is a human being and CEO of <a href="http://www.reckonlabs.org">ReckonLabs</a>, which owns the Reckoner and is dedicated to both the creation of great software and the creation of organizations that can build great software.</p></div>
+	        </div>
+	        <div class="float-clear"></div>
+            <hr class="minor-divider">	        
+	        <p>For questions or bugs, here's our contact form!</p>
+	        <p>For more about Dan, check out the <a href="http://www.workingdan.com">Working Dan blog</a>, or give him a shout on <a href="https://twitter.com/#!/workingdankoch">Twitter</a> or <a href="http://www.linkedin.com/pub/dan-koch/10/164/bb7">LinkedIn!</a></p>
+        </div>
+    </div>
+{% endblock %}

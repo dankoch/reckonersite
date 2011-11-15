@@ -432,6 +432,73 @@ body {
 	text-align: center;
 }
 
+#about-page p {
+	clear: both;
+}
+
+#about-page .minor-divider {
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 1px;
+    border-bottom-color: #9d9d9d;
+    border-bottom-style: dotted;
+    clear: both;
+    margin: 20px 30px 10px 30px;
+    text-align: center;
+}
+
+#about-page h5 {
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 12pt;
+    font-weight: normal;
+	margin: 0;
+	text-transform: none;
+}
+
+#about-page ol {
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 12pt;
+    margin: 0px 10px;
+}
+
+#about-page ol li {
+    margin: 16px 0;
+}
+
+#about-page ol li .highlight {
+    font-size: 14pt;
+    margin: .2em 0
+}
+
+#about-page ol li .subtitle {
+    font-size: 10pt;
+}
+
+#about-page .fin {
+	font-family: Garamond, serif;
+	font-style: italic;
+}
+
+#about-page .about-us-picture {
+	float: left;
+	margin: 4px 10px;
+}
+
+#about-page .profile-row {
+	clear: both;
+	margin: 0 20px;
+}
+
+#about-page .profile-row .person-bio {
+    position: relative;
+    top: 17px;
+}
+
+#about-page .profile-row p {
+	clear: none;
+}
+
 /***************************************************************************************
  * SEARCH STYLES
  * Styles used to display Google Custom Search
