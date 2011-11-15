@@ -1,12 +1,19 @@
 {% extends "head.html" %}
 {% load reckontags %}
 
+{% block extraheader %} 
+    {{ block.super }} 
+    <link rel="stylesheet" href="//www.google.com/cse/style/look/default.css" type="text/css" />
+{% endblock %}
+
 {% block pagebody %}
     <div id="site-column" class="{% block sitecolumnclass %} {% endblock %}">
         <div id="top-bar">
             {% block topbar %}
             <div class="logo-section top-bar-section">
-                <div class="search-wrapper"><img src="{{ STATIC_URL }}images/google-search-image.png"></div>
+                <div class="search-wrapper">
+	                {% include "google-search-widget.html" %}
+                </div>
                 <div class="logo-wrapper"><h1><a href="/"><img src="{{ STATIC_URL }}images/reckoner-top-logo.png" alt="The Reckoner!"></a></h1></div>
                 {% if user.is_anonymous %}
 	                <div class="login-wrapper">

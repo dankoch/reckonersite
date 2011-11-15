@@ -39,6 +39,7 @@ body {
     position: relative;
     top: 3px;
     right: 7px;
+    width: 200px;
 }
 
 #top-bar .login-wrapper {
@@ -64,7 +65,7 @@ body {
 #top-bar .navigation-section .nav-text-wrapper h2 {
     color: #f6f6f6;
     font-family: Futura, "Century Gothic", Futura, "Tw Cen MT", "URW Gothic L", Tahoma, sans-serif;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: normal;
     margin: 0px;
     text-transform: uppercase;
@@ -89,7 +90,7 @@ body {
     height: 50px;
     padding: 4px;
     position: relative;
-    top: 11px;
+    top: 8px;
     right: 30px;
     width: 154px;	
 }
@@ -188,6 +189,7 @@ body {
 
 #main-section {
 	/* Total width here should add up to 640px - horiz padding + border + width */
+	border-right: 1px dotted black;
     float: left;
     height: 100%;
     padding: 7px 7px 7px 7px;
@@ -226,7 +228,7 @@ body {
 #bottom-bar .navigation-section .nav-text-wrapper h3 {
     color: #f6f6f6;
     font-family: Futura, "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: normal;
     margin: 0px;
     text-transform: uppercase;
@@ -428,6 +430,19 @@ body {
     font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
 	font-size: 12px;
 	text-align: center;
+}
+
+/***************************************************************************************
+ * SEARCH STYLES
+ * Styles used to display Google Custom Search
+ ***************************************************************************************/
+
+.gsc-search-box table {
+	margin: 0;
+}
+
+#search-results-page table {
+	margin: 0;
 }
 
 /***************************************************************************************
@@ -1912,6 +1927,13 @@ body {
 
 #content-area #reckoner-side-social-box {
     padding: 7px;
+}
+
+#content-area #reckoner-side-social-box hr {
+	border-left: none;
+	border-right: none;
+	border-bottom: none;
+    margin: .5em;
 }
 
 #content-area #top-reckonings-section .sidebar-tab-box {
