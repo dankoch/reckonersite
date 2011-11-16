@@ -499,6 +499,16 @@ body {
 	clear: none;
 }
 
+#privacy-policy-page ul {
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 12pt;
+    margin: 0px 10px;	
+}
+
+#privacy-policy-page li {
+    margin: 10px 0px;  
+}
+
 /***************************************************************************************
  * SEARCH STYLES
  * Styles used to display Google Custom Search
@@ -2403,6 +2413,57 @@ body {
 
 .content-list-section .full-post-link a:hover {
     text-decoration: underline;
+}
+
+/***************************************************************************************
+ * CONTACT US STYLES
+ * Styles used specifically for the Contact Us Page
+ ***************************************************************************************/
+
+#contact-us-page h5 {
+	margin: 0;
+}
+
+#contact-us-page textarea {
+    margin: 0;
+}
+
+#contact-us-page .field-wrapper {
+	margin: 1em 0;
+}
+
+#contact-us-page .field-notation {
+    margin: 0;
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 8px;    
+}
+ 
+#contact-us-page .subject-edit-field {
+    width: 606px;
+}
+
+#contact-us-page .message-edit-field {
+	height: 200px;
+    width: 606px;
+}
+
+#contact-us-page .error {
+    color: #cc0000;
+    text-transform: uppercase;	
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+#contact-us-page .error ul {
+    float: right;
+	list-style-type: none;
+	margin: 0;
+}
+
+#contact-us-page .save-button {
+	margin: 2em 0;
+	width: 200px;
 }
 
 

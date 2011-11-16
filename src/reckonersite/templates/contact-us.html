@@ -1,0 +1,90 @@
+{% extends "standard_sidebar.html" %} %}
+{% load reckontags %}
+
+{% block pagetitle %}The Reckoner! - Contact Us!{% endblock %}
+
+{% block fb-title %}"The Reckoner! - Contact Us!"{% endblock %}
+{% block fb-url %}"{{ SITE_ROOT }}/contact-us"{% endblock %}
+{% block fb-description %}"Shoot The Reckoner a note to let it know how it's doing!"{% endblock %}
+
+{% block gplus-title %}"The Reckoner! - Contact Us!"{% endblock %}
+{% block gplus-description %}"Shoot The Reckoner a note to let it know how it's doing!"{% endblock %}
+
+{% block canon-url %}"{{ SITE_ROOT }}/contact-us"{% endblock %}
+
+{% block main %}
+    <div id="contact-us-page" class="static-page">
+        <div class="page-header"><h1>CONTACT US!</h1></div>
+        <p><b>We're always excited to hear from you here at The Reckoner.</b>  Yes, even Reckonbot!  Drop us a line, and we'll get back to you in 24 hours or less, or your money back. Now that's a great deal!</p>
+        {% if 'CONTACT_US' in perms %}
+
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            <div id="contact-us-form" class="form-wrapper">
+                <form action="contact-us/submit" method="post">{% csrf_token %}
+                    <div class="field-wrapper">
+                         <div class="error field-error">{{errors.name}}</div>                     
+                         <label for="id_name"><h5>Name!</h5></label>
+                         <input type="text" maxlength=50 id="id_name" name="name" class="name-edit-field"></input>
+                         <div class="field-notation">(*Required)</div>
+                    </div><div class="field-wrapper">
+                         <div class="error field-error">{{errors.email}}</div>  
+                         <label for="id_email"><h5>Email!</h5></label>
+                         <input type="text" maxlength=200 id="id_email" name="email" class="text-edit-field"></input>
+                         <div class="field-notation">(*Required)</div>
+                    </div><div class="field-wrapper">
+                         <div class="error field-error">{{errors.subject}}</div>                    
+                         <label for="id_subject"><h5>Subject!</h5></label> 
+                         <input type="text" maxlength=200 id="id_subject" name="subject" class="subject-edit-field"></input>
+                         <div class="field-notation">(*Required - 200 Character Max)</div>
+                    </div><div class="field-wrapper">
+                         <div class="error field-error">{{errors.message}}</div>                     
+                         <label for="id_message"><h5>Message!</h5></label>
+                         <textarea maxlength=3000 id="id_message" name="message" class="message-edit-field"></textarea>
+                         <div class="field-notation">(*Required - 3000 Character Max)</div>
+                    </div>
+                    <div class="error captcha-error">{{errors.contact_us_captcha}}</div>
+                    <script type="text/javascript" src="http://www.google.com/recaptcha/api/challenge?k={{captcha_pub_key}}"></script>
+				    <noscript>
+					     <iframe src="http://www.google.com/recaptcha/api/noscript?k={{captcha_pub_key}}"
+					         height="300" width="500" frameborder="0"></iframe><br>
+					     <textarea name="recaptcha_challenge_field" rows="3" cols="40">
+					     </textarea>
+					     <input type="hidden" name="recaptcha_response_field"
+					         value="manual_challenge">
+				    </noscript>   
+				    <div class="field-notation">(Sorry -- since this form is open to the public, we have to do a Captcha. We hate 'em too. 
+				    If you miss the Captcha and lose your text, your browser should have saved it if you use the 'Back' button.  I just want to say good luck, we're all counting on you.)</div> 
+                    
+                    <div class="form-buttons">
+                        <input type="submit" name="submit" value="Submit" class="button save-button"/>
+                    </div>
+                </form>
+            </div>
+        {% else %}
+            <div class="sign-up-box">
+                <h4>Want to post a reckoning?</h4>
+                <h2>Sign up or log in!</h2>
+                <h3>It's easy!</h3>
+                <div class="login-buttons">
+                     <div class="login-button login-button-1">    
+                         <a href="{{ FACEBOOK_OAUTH_URL }}?client_id={{ FACEBOOK_APP_ID }}&redirect_uri={{ FACEBOOK_REDIRECT_URL }}&scope={{ FACEBOOK_SCOPE }}">
+                         <img src="{{ STATIC_URL }}images/big-facebook-login-button.png" alt="Login with Facebook!">
+                         </a>     
+                     </div>
+                     <div class="login-button login-button-2">
+                         <a href="{{ GOOGLE_API_OAUTH_URL }}?client_id={{ GOOGLE_APP_ID }}&redirect_uri={{ GOOGLE_REDIRECT_URL }}&scope={{ GOOGLE_SCOPE }}&response_type=code">
+                         <img src="{{ STATIC_URL }}images/big-google-login-button.png">     
+                         </a>
+                     </div>                
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

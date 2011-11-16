@@ -71,10 +71,3 @@ def home_page(request):
         logger.error("Exception when rending home page:") 
         logger.error(traceback.print_exc(8))
         raise Exception
-    
-    
-def search_page(request):
-    return render_to_response('search.html', RequestContext(request, None))
-
-def about_page(request):
-    return render_to_response('about.html', RequestContext(request, None))

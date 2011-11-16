@@ -27,7 +27,7 @@ class AnonSiteCustomUser(SiteCustomUser):
         # Default permissions for anonymous users.  Reckon Site will
         # vouch for anonymous 
         self.groups = ['ANONYMOUS']
-        self.permissions = ['VIEW_CONTENT', 'VIEW_LIST', 'VIEW_PROFILE', 'VIEW_RECKONING', 'VOTE',]
+        self.permissions = ['VIEW_CONTENT', 'VIEW_LIST', 'VIEW_PROFILE', 'VIEW_RECKONING', 'VOTE', 'CONTACT_US',]
         self.active = True
         
         self.session_id = session_id

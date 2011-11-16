@@ -61,6 +61,24 @@ STANDARD_LOGGER = 'reckonersite.standard'
 RECKONER_API_SESSION_ID = 'rcktk'
 LAST_SITE_TOKEN_ID = 'lastsite'
 
+# Settings used for sending emails
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'contact@reckonlabs.org'
+EMAIL_HOST_PASSWORD = '_qazwsx_EDCRFV'
+EMAIL_USE_TLS = True
+
+# Destination used for Contact Us form
+CONTACT_US_EMAIL='contact@reckonlabs.org'
+
+# Settings used for CAPTCHA
+#localhost
+CAPTCHA_PRIVATE_KEY='6LcPKMoSAAAAAIJz6RqqoartHdB_QaJGvqrig00C'
+CAPTCHA_PUBLIC_KEY='6LcPKMoSAAAAANk6sbcYgBuLDR611Fe1xXYanu4c'
+#thereckoner.net
+#CAPTCHA_PRIVATE_KEY='6LcQKMoSAAAAAPnslgNlrFeqYtHY9FgeN0fSq_kN' 
+#CAPTCHA_PUBLIC_KEY='6LcQKMoSAAAAAFEu8H-CokaO6V4XETHJGBwuRe_W'
+
 # Miscellaneous Settings
 ## Sentinel used to mark fields as deleted for Reckoning update calls
 RECKONING_UPDATE_DELETE_SENTINEL = "null"
