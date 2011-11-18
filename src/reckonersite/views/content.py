@@ -412,7 +412,7 @@ def getContentMonthContext(request):
     current_month = current_time.month
     current_year = current_time.year
 
-    start_month=3
+    start_month=10
     start_year=2011
     
     while (current_month != start_month or current_year != start_year):

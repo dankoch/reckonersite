@@ -189,7 +189,6 @@ body {
 
 #main-section {
 	/* Total width here should add up to 640px - horiz padding + border + width */
-	border-right: 1px dotted black;
     float: left;
     height: 100%;
     padding: 7px 7px 7px 7px;
@@ -970,6 +969,17 @@ body {
     text-align: center;
 }
 
+#individual-entry .section-divider-subtle {
+    border-bottom-color: #DDDDDD;   
+}
+
+#individual-entry .section-divider-invisible {
+    border: 0px;
+    clear: both;
+    height: 10px;
+    margin: 10px 8px;
+}
+
 #individual-entry .commentary-section {
 	background-color: #fdfed5;
 	border: 3px double black;
@@ -1261,6 +1271,7 @@ body {
 
 #individual-entry .metadata-section {
     font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+	padding-top: 10px;
 	margin: 0px 7px;
 	width: 612px;
 }
@@ -2120,6 +2131,32 @@ body {
     display: inline-block;
     float: left;
     width: 50%;
+}
+
+#content-area #rss-box-section {
+	text-align: center;
+}
+
+#content-area #rss-box-section a {
+	color: black;
+    text-decoration: none;
+}
+
+#content-area #rss-box-section a:hover {
+    text-decoration: underline;
+}
+
+#content-area #rss-box-section .rss-entry {
+	display: inline-block;
+	margin: 7px;
+	vertical-align: top;
+}
+
+#content-area #rss-box-section .rss-text {
+	font-size: 8pt;
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    text-transform: uppercase;
+    width: 75px;
 }
 
 /***************************************************************************************

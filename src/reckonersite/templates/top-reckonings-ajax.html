@@ -11,7 +11,7 @@
                           $( data ).find('reckoning').each(function() {
                               var $reckoning = $(this);
                               var question = $(this).find('question').text();
-                              var url = $(this).find('url').text();
+                              var url = $(this).children('url').text();
                               var views = $(this).find('views').text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                               var votes = $(this).find('total_votes').text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                               
@@ -34,10 +34,14 @@
       });
       
       $('#top-reckonings-open-tab').click (function(){
-          getTopReckonings("open");       
+          getTopReckonings("open");
+          $("#top-reckonings-box").find('.reckoning-tab').removeClass('reckoning-tab-selected');
+          $("#top-reckonings-open-tab").addClass('reckoning-tab-selected');       
       });
       
       $('#top-reckonings-closed-tab').click (function(){
-          getTopReckonings("closed");       
+          getTopReckonings("closed");
+          $("#top-reckonings-box").find('.reckoning-tab').removeClass('reckoning-tab-selected');
+          $("#top-reckonings-closed-tab").addClass('reckoning-tab-selected');   
       });
    </script>

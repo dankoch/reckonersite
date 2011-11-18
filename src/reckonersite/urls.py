@@ -39,7 +39,11 @@ urlpatterns = patterns('',
     (r'^about', 'reckonersite.views.site.about_page'),   
     (r'^search', 'reckonersite.views.site.search_page'),
     (r'^generate/sitemap.xml', 'reckonersite.views.sitemap.writeSiteMaps'), 
-    (r'^$', 'reckonersite.views.home.home_page'),  
+    (r'^$', 'reckonersite.views.home.home_page'),
+    
+    (r'^feed/open-reckonings', 'reckonersite.views.feed.latest_open_reckonings_feed'),
+    (r'^feed/finished-reckonings', 'reckonersite.views.feed.latest_closed_reckonings_feed'),
+    (r'^feed/blog', 'reckonersite.views.feed.latest_contents_feed'),
 
     (r'^ajax/comment/content/update', 'reckonersite.views.content.update_content_comment'),
     (r'^ajax/comment/content/delete', 'reckonersite.views.content.delete_content_comment'),    

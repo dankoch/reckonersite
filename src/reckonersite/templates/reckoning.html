@@ -82,6 +82,27 @@
         <div class="voting-section">
             {% include "reckon-two-voting-box.html" %}
         </div>
+        <div class="prev-next-section">
+            {% if prev_reck %}
+            <a href="{{prev_reck.url}}">
+            <div class="prev-wrapper">
+                <img src="{{ STATIC_URL }}images/chevron_prev.png" alt="Previous Reckoning!" class="previous-reck-img"/>
+                <div class="label">PREVIOUS!</div>
+                <div class="question">{{ prev_reck.question|truncatewords:15 }}</div>
+            </div>
+            </a>
+            {% endif %}
+            {% if next_reck %}
+            <a href="{{next_reck.url}}">
+            <div class="next-wrapper">
+                <img src="{{ STATIC_URL }}images/chevron_next.png" alt="Next Reckoning!" class="next-reck-img"/>
+                <div class="label">NEXT!</div>
+                <div class="question">{{ next_reck.question|truncatewords:15 }}</div>            
+            </div>
+            </a>
+            {% endif %}
+        </div>
+        <hr class="section-divider section-divider-subtle">
         <div class="metadata-section">
             <div class="row-wrapper row-wrapper-1">
                  <div class="reckoning-stats">
@@ -201,27 +222,6 @@
                     </div>
                  {% endif %}  
             </div>
-        </div>
-        <hr class="section-divider">
-        <div class="prev-next-section">
-            {% if prev_reck %}
-            <a href="{{prev_reck.url}}">
-            <div class="prev-wrapper">
-                <img src="{{ STATIC_URL }}images/chevron_prev.png" alt="Previous Reckoning!" class="previous-reck-img"/>
-                <div class="label">PREVIOUS!</div>
-                <div class="question">{{ prev_reck.question }}</div>
-            </div>
-            </a>
-            {% endif %}
-            {% if next_reck %}
-            <a href="{{next_reck.url}}">
-            <div class="next-wrapper">
-                <img src="{{ STATIC_URL }}images/chevron_next.png" alt="Next Reckoning!" class="next-reck-img"/>
-                <div class="label">NEXT!</div>
-                <div class="question">{{ next_reck.question }}</div>            
-            </div>
-            </a>
-            {% endif %}
         </div>
         <hr class="section-divider">
         <div id="comment-main" class="comment-section">
