@@ -4,6 +4,20 @@ Created on Oct 1, 2011
 '''
 from datetime import datetime
 
+def convertXmlToDateTime(string_val):
+    if (string_val):
+        time = datetime.strptime(string_val[0:18], "%Y-%m-%dT%H:%M:%S")
+        return time
+    
+    return None
+
+def convertDateTimeToXml(date_val):
+    if (date_val):
+        string = date_val.strftime("%Y-%m-%dT%H:%M:%S")
+        return string
+    
+    return None
+
 def convertFormToDateTime(string_val):
     if (string_val):
         time = datetime.strptime(string_val[0:16], "%m/%d/%Y %H:%M")

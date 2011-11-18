@@ -110,7 +110,7 @@ class ReckonerUser(Base):
             self.bio = xml_root.find('bio').text
             
     def getURL(self):
-        if (self.id and self.first_name):
+        if (self.id and self.first_name and self.last_name):
             return '/user/' + self.id + "/" + slugifyTitle(self.first_name + " " + self.last_name)
         
-        return None
+        return "/"

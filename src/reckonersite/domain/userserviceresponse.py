@@ -13,11 +13,12 @@ class UserServiceResponse(Base):
     '''Object definition of a the authentication-related information provided by the Reckoner Content Services.  
     Maintained to be synchronized with the Reckoner API'''
 
-    def __init__(self, status = None, reckoner_user = None, auth_session = None,
+    def __init__(self, status = None, reckoner_user = None, auth_session = None, reckoner_user_summaries=None,
                  xml_string = None, xml_element = None):
         
         self.status = status
         self.reckoner_user = reckoner_user
+        self.reckoner_user_summaries = reckoner_user_summaries
         self.auth_session = auth_session
         
         if not xml_string is None:
@@ -27,7 +28,7 @@ class UserServiceResponse(Base):
             self.buildFromXMLElement(xml_element)
     
     def getXML(self):
-        return (buildXml(self.__dict__, 'reckonings_service_list'))
+        return (buildXml(self.__dict__, 'authentication_service_response'))
     
     def getXMLString(self):
         return cET.tostring(self.getXML())
@@ -43,6 +44,12 @@ class UserServiceResponse(Base):
         userElement = xml_root.find('user')
         if (not userElement is None):
             self.reckoner_user = ReckonerUser(xml_element = userElement)
+            
+        summariesElement = xml_root.find('user_summaries')
+        if (not summariesElement is None):
+            self.reckoner_user_summaries=[]
+            for summaryElement in summariesElement.findall('user_summary'):
+                self.reckoner_user_summaries.append(ReckonerUser(xml_element=summaryElement))
             
         sessionElement = xml_root.find('auth_session')
         if (not sessionElement is None):

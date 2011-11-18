@@ -50,6 +50,33 @@ def client_logout_user(session_id):
 
     return servResponse 
 
+def client_get_user_summaries(active=None, sort_by=None, ascending=None, 
+                              page=None, size=None, session_id=None):
+    '''
+    Receives user summaries from the Reckoner Services.
+    '''
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/user?"
+    if (active is False):
+        url += "active=false&"
+    if (active is True):
+        url += "active=true&"
+    if (sort_by):
+        url += "sort_by=" + sort_by + "&" 
+    if (ascending):
+        url += "ascending=true" + "&"
+    if (page is not None):
+        url += "page=" + str(page) + "&" 
+    if (size):
+        url += "size=" + str(size) + "&" 
+    if (session_id):
+        url += "session_id=" + session_id + "&"
+    
+    response = urllib2.urlopen(url)
+    content = response.read()
+    servResponse = UserServiceResponse(xml_string = content)
+
+    return servResponse 
+
 def client_get_user_by_session(session_id):
     '''
     Receives the ID for the current session (as originally retrieved from

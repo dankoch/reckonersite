@@ -79,6 +79,9 @@ CAPTCHA_PUBLIC_KEY='6LcPKMoSAAAAANk6sbcYgBuLDR611Fe1xXYanu4c'
 #CAPTCHA_PRIVATE_KEY='6LcQKMoSAAAAAPnslgNlrFeqYtHY9FgeN0fSq_kN' 
 #CAPTCHA_PUBLIC_KEY='6LcQKMoSAAAAAFEu8H-CokaO6V4XETHJGBwuRe_W'
 
+# Settings for creating the Reckoner XML Sitemap
+XML_SITEMAP_LOCATION='/Users/danko/Desktop'
+
 # Miscellaneous Settings
 ## Sentinel used to mark fields as deleted for Reckoning update calls
 RECKONING_UPDATE_DELETE_SENTINEL = "null"
@@ -211,6 +214,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
+    'django.contrib.sitemaps',
     'django.contrib.staticfiles',
     'reckonersite',
     # Uncomment the next line to enable the admin:
