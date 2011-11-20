@@ -1661,7 +1661,7 @@ body {
 
 #content-area .reckonings-list-box {
 	border: 1px solid #9d9d9d;
-	margin: 0px 7px;
+	margin: 20px 7px;
 }
 
 #content-area .reckonings-list-box .reckoning-tabs {
@@ -1907,8 +1907,8 @@ body {
 }
 
 #content-area .reckonings-list-box .reckoning-divider {
-    padding: 8px 0 0 0;
-    margin: 0 0 8px 0;
+    padding: 16px 0 0 0;
+    margin: 0 0 16px 0;
 }
 
 #tag-filter-form {

@@ -42,7 +42,7 @@ def home_page(request):
             reckoning = computeReckoningAnswerPercentages(highlighted_response.reckonings[0])
             user_vote = get_user_reckoning_vote(request, reckoning.id)
 
-        recent_reckoning_response = client_get_open_reckonings(page="0", size="4", 
+        recent_reckoning_response = client_get_open_reckonings(page="0", size="10", 
                                                                session_id=request.user.session_id)
         
         popular_reckoning_response = client_get_open_reckonings(sort_by="views",

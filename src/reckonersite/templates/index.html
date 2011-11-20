@@ -2,7 +2,14 @@
 {% load reckontags %}
 {% load humanize %}
 
-{% block pagetitle %}The Reckoner! - Life's decisions made easy through the power of Democracy!{% endblock %}
+{% block pagetitle %}The Reckoner! Life's Decisions Made Easy!{% endblock %}
+
+{% block fb-title %}"The Reckoner! Life's Decisions Made Easy!"{% endblock %}
+{% block fb-url %}"{{ SITE_ROOT }}"{% endblock %}
+{% block fb-description %}"It's The Reckoner!  Post your binary, yes/no, good/bad question, and get it answered by the world!  Or tune in and vote on the questions of other Reckonauts!"{% endblock %}
+
+{% block gplus-title %}"The Reckoner! Life's Decisions Made Easy!"{% endblock %}
+{% block gplus-description %}"It's The Reckoner!  Post your binary, yes/no, good/bad question, and get it answered by the world!  Or tune in and vote on the questions of other Reckonauts!"{% endblock %}
 
 {% block canon-url %}"{{ SITE_ROOT }}"{% endblock %}
 
@@ -52,7 +59,7 @@
 	       </div>
            <hr class="section-divider">
            <div class="recent-reckonings section">
-               <div class="section-header"><span>HOT RECKONINGS!</span></div>
+               <div class="section-header"><span><a href="/open-reckonings?tab=popular">HOT RECKONINGS!</a></span></div>
                <hr class="reckoning-divider">
                {% for popular_reckoning in popular_reckonings %}
                    <div class="reckoning">
@@ -80,7 +87,7 @@
            </div>
 	       <hr class="section-divider">
 	       <div class="recent-reckonings section">
-               <div class="section-header"><span>RECENT RECKONINGS!</span></div>
+               <div class="section-header"><span><a href="/open-reckonings?tab=newest">RECENT RECKONINGS!</a></span></div>
                <hr class="reckoning-divider">
 	           {% for recent_reckoning in recent_reckonings %}
 	               <div class="reckoning">
@@ -110,7 +117,7 @@
         <hr class="section-divider">
 	    <div class="secondary-area">
 	       <div class="secondary-block block-1 section">
-	           <div class="section-header"><span>LAST CALL RECKONINGS!</span></div>
+	           <div class="section-header"><span><a href="/open-reckonings?tab=lastcall">LAST CALL RECKONINGS!</a></span></div>
                <hr class="reckoning-divider">	           
                {% for last_call_reckoning in last_call_reckonings %}
                    <div class="reckoning">                   
@@ -125,7 +132,7 @@
                <div class="see-more-link"><a href="/open-reckonings?tab=lastcall">(See More!)</a></div>	       
 	       </div>
            <div class="secondary-block block-2 section">
-               <div class="section-header"><span>FINISHED RECKONINGS!</span></div>
+               <div class="section-header"><span><a href="/finished-reckonings?tab=newest">FINISHED RECKONINGS!</a></span></div>
                <hr class="reckoning-divider">               
                {% for finished_reckoning in finished_reckonings %}
                    <div class="reckoning">   
@@ -141,4 +148,27 @@
            </div>
 	    </div>
 	</div>
+{% endblock %}
+
+{% block javascript %}
+  {{ block.super }}
+      <script type="text/javascript">
+	      $(document).ready(function(){ 
+	          var largestHeight = 0;
+	          
+	          // The rendering adjustment compensates for how the button 'table-cells' are rendered.
+	          // Also establishes a minimum size.
+	          var renderAdjustment = 20;
+	     
+	          $('.button-area').find(".reckonbutton > span").each(function() {
+	              if ($(this).height() > largestHeight) {
+	                largestHeight = $(this).height();
+	              }
+	          });
+	          
+	          $('.button-area').find(".reckonbutton > span").each(function() {
+	              $(this).css('height', largestHeight + renderAdjustment);
+	          });
+	      });
+      </script>
 {% endblock %}

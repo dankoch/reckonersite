@@ -1,14 +1,14 @@
-{% extends "base.html" %}
+{% extends "reckoning_list_sidebar.html" %}
 {% load reckontags %}
 
-{% block pagetitle %}The Reckoner! - Reckonings Tagged With {{inlcude_tags}}!{% endblock %}
+{% block pagetitle %}The Reckoner! - Reckonings Tagged With {{include_tags}}!{% endblock %}
 
-{% block fb-title %}"The Reckoner! - Reckonings Tagged With {{inlcude_tags}}!"{% endblock %}
+{% block fb-title %}"The Reckoner! - Reckonings Tagged With {{include_tags}}!"{% endblock %}
 {% block fb-url %}"{{ SITE_ROOT }}{{ page_url }}"{% endblock %}
-{% block fb-description %}"Check out all of the Reckonings tagged with {{inlcude_tags}} over the years/months/days!  It'll wilt your eyebrows!"{% endblock %}
+{% block fb-description %}"Check out all of the Reckonings tagged with {{include_tags}} over the years/months/days!  It'll wilt your eyebrows!"{% endblock %}
 
-{% block gplus-title %}"The Reckoner! - Reckonings Tagged With {{inlcude_tags}}!"{% endblock %}
-{% block gplus-description %}"Check out all of the Reckonings tagged with {{inlcude_tags}} over the years/months/days!  It'll wilt your eyebrows!"{% endblock %}
+{% block gplus-title %}"The Reckoner! - Reckonings Tagged With {{include_tags}}!"{% endblock %}
+{% block gplus-description %}"Check out all of the Reckonings tagged with {{include_tags}} over the years/months/days!  It'll wilt your eyebrows!"{% endblock %}
 
 {% block canon-url %}"{{ SITE_ROOT }}{{ page_url }}"{% endblock %}
 

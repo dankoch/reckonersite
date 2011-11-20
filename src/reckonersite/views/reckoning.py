@@ -570,7 +570,6 @@ def get_top_reckonings(request):
                 if (service_response.status.success):
                     site_response = ReckoningAjaxResponse(reckonings=service_response.reckonings,
                                                           success=service_response.status.success)
-                    print "Top Reckonings: " + site_response.getXMLString()
                 else:
                     logger.error("Error when retrieving top reckonings: " + service_response.status.message)
                             
