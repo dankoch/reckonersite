@@ -597,9 +597,13 @@ def get_related_reckonings(request, id = None):
                 type = request.GET.get('type', 'open')
                 
                 if (type == 'closed'):
-                    service_response = client_get_related_closed_reckonings(id, 4, request.user.session_id)
+                    service_response = client_get_related_closed_reckonings(reckoning_id=id, 
+                                                                            size=4, 
+                                                                            session_id=request.user.session_id)
                 else:
-                    service_response = client_get_related_open_reckonings(id, 4, request.user.session_id)
+                    service_response = client_get_related_open_reckonings(reckoning_id=id, 
+                                                                          size=4, 
+                                                                          session_id=request.user.session_id)
                                         
                 if (service_response.status.success):
                     site_response = ReckoningAjaxResponse(reckonings=service_response.reckonings,

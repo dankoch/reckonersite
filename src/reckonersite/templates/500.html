@@ -1,1 +1,15 @@
-<h1>Gosh darn it to heck!  ReckonBot 3000 is on the fritz again.  Standby!</h1>
+{% extends "standard_sidebar.html" %}
+{% load reckontags %}
+{% load humanize %}
+
+{% block pagetitle %}The Reckoner! Life's Decisions Made Easy!{% endblock %}
+
+{% block main %}
+    <div id="404-page" class="static-page error-page">
+        <h1>Gosh Darn it to Heck!</h1>
+        <h3>Reckonbot is having some issues!</h3>
+        <div class="error-image-wrapper"><img class="error-image" src="{{ STATIC_URL }}images/Reckonbot-500-Image.png" alt="Reckonbot says 500!"></div>
+        <p>We're trying to get this sorted out, ASAP.  Apologies for the inconvenience!</p>
+        <p>If this keeps popping up, shoot us a ping via our <a href="/contact-us">Contact Us form</a> page and that'll light a match under us!</p>        
+    </div>
+{% endblock %}

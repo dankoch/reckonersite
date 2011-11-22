@@ -1,1 +1,15 @@
-<h1>Bummer!  The Reckoner doesn't recognize this URL.</h1>
+{% extends "standard_sidebar.html" %}
+{% load reckontags %}
+{% load humanize %}
+
+{% block pagetitle %}The Reckoner! Life's Decisions Made Easy!{% endblock %}
+
+{% block main %}
+    <div id="404-page" class="static-page error-page">
+		<h1>Sorry! It's a 404!</h1>
+		<h3>Reckonbot didn't recognize this URL!</h3>
+		<div class="error-image-wrapper"><img class="error-image" src="{{ STATIC_URL }}images/Reckonbot-404-Image.png" alt="Reckonbot says 404!"></div>
+		<p>Stop by The Reckoner <a href="/">main page</a> -- we're always happy to see you!</p>
+		<p>Also, if you were expecting something to be at this URL, ping us on the <a href="/contact-us">Contact Us</a> page and we'll get this sorted out.</p>        
+    </div>
+{% endblock %}

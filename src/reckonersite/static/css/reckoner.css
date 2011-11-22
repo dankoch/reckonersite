@@ -185,6 +185,7 @@ body {
 #content-area p {
     font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
     font-size: 16px;
+
 }
 
 #main-section {
@@ -506,6 +507,14 @@ body {
 
 #privacy-policy-page li {
     margin: 10px 0px;  
+}
+
+.error-page .error-image-wrapper {
+    text-align: center;
+}
+
+.error-page .error-image {
+	border: 2px solid black;
 }
 
 /***************************************************************************************
@@ -1030,7 +1039,7 @@ body {
 }
 
 #individual-entry .question-section p {
-    margin: .5em 0;
+    margin: 0 0 1.2em 0;
 }
 
 #individual-entry .title-section {
