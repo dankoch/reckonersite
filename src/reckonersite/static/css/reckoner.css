@@ -253,7 +253,7 @@ body {
 }
 
 #content-area .section-header {
-    background: transparent url('../images/reckoner-section-label_left.png') no-repeat scroll left;
+    background: transparent url('../images/reckoner-section-label_01.png') no-repeat scroll left;
 	color: #f9f4f4;
 	display: inline-block;
     font-family: Futura, "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
@@ -267,10 +267,10 @@ body {
 }
 
 #content-area .section-header span {
-    background: transparent url('../images/reckoner-section-label_right.png') no-repeat scroll right;
+    background: transparent url('../images/reckoner-section-label_02.png') no-repeat scroll right;
 	display: block;
 	line-height: 42px;
-	padding: 0 30px 0 0;
+	padding: 0 36px 0 0;
 	vertical-align: middle;
 }
 
@@ -1196,19 +1196,19 @@ body {
 }
 
 #individual-entry .voting-section .button-area .button-1 {
-    background: transparent url('../images/reckon-button-red_02.png') no-repeat scroll bottom;
+    background: transparent url('../images/reckon-button-red-alt_02.png') no-repeat scroll bottom;
 }
 
 #individual-entry .voting-section .button-area .button-1 span {
-    background: transparent url('../images/reckon-button-red_01.png') no-repeat center top;
+    background: transparent url('../images/reckon-button-red-alt_01.png') no-repeat center top;
 }
 
 #individual-entry .voting-section .button-area .button-2 {
-    background: transparent url('../images/reckon-button-green_02.png') no-repeat scroll bottom;
+    background: transparent url('../images/reckon-button-green-alt_02.png') no-repeat scroll bottom;
 }
 
 #individual-entry .voting-section .button-area .button-2 span {
-    background: transparent url('../images/reckon-button-green_01.png') no-repeat center top;
+    background: transparent url('../images/reckon-button-green-alt_01.png') no-repeat center top;
 }
 
 #individual-entry .voting-section .subtitle-area {
