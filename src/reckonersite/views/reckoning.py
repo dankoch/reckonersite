@@ -16,6 +16,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.views.decorators.cache import cache_page
 
 from reckonersite.client.commentclient import client_post_reckoning_comment, \
                                               client_update_reckoning_comment, \
@@ -545,6 +546,7 @@ def get_random_reckoning(request):
 # (used for AJAX calls)
 ###############################################################################################
 
+@cache_page(60 * 15)
 def get_top_reckonings(request):     
     site_response = AjaxServiceResponse(success=False,
                                         message="whoops", 
@@ -586,6 +588,7 @@ def get_top_reckonings(request):
 # (used for AJAX calls)
 ###############################################################################################
 
+@cache_page(60 * 15)
 def get_related_reckonings(request, id = None):     
     site_response = AjaxServiceResponse(success=False,
                                         message="whoops", 

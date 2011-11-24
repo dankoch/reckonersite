@@ -49,9 +49,11 @@ GOOGLE_API_TOKEN_URL="https://accounts.google.com/o/oauth2/token"
 
 GOOGLE_SCOPE = "https://www.googleapis.com/auth/plus.me"
 
-# Connect to MongoDB.  The database is only used for session persistence.
-connect ('session')
+# Session Persistence
+connect ('reckoner', host='localhost', port=27017)
 SESSION_ENGINE = 'mongoengine.django.sessions'
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_AGE = 1209600
 
 # Information used to configure logging settings
 FILE_LOG_LOCATION = '/Users/danko/Documents/development/logs'
@@ -85,6 +87,17 @@ XML_SITEMAP_LOCATION='/Users/danko/Desktop'
 # Miscellaneous Settings
 ## Sentinel used to mark fields as deleted for Reckoning update calls
 RECKONING_UPDATE_DELETE_SENTINEL = "null"
+
+# Caching Configuration
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+        'TIMEOUT': 10,
+        'KEY_PREFIX': 'reckonsite'
+    }
+}
+TEMPLATE_CACHE_LIFESPAN = 600
 
 #==========================END CUSTOM SETTINGS==================================
 

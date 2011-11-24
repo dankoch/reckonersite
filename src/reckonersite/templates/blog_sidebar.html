@@ -1,51 +1,56 @@
 {% extends "base.html" %}
 {% load reckontags %}
+{% load cache %}
 
-{% block sitecolumnclass %}
-    blog-site-column
-{% endblock %}
+{% cache TEMPLATE_CACHE_LIFESPAN blog_sidebar %}
 
-{% block rightsidebar %}
-    <div id="standard-sidebar" class="sidebar-content">
-       <div id="blog-label-button"><a href="/blog"><img src="{{STATIC_URL}}images/reckoner-blog-bubble.png"></a></div>
-       <div class="sidebar-background-box">
-           <div id="cast-of-characters"><img src="{{STATIC_URL}}images/cast-of-characters.png"></div>
-           <div class="character-row">
-                <div class="character-portrait"><img src="{{STATIC_URL}}images/Dan-Koch-Reckon_Blog.png"></div>
-                <div class="character-text person-character-text">
-                    <div class="name">Dan Koch</div>
-                    <div class="title">Proprietor, ReckonLabs</div>
-                </div>
-           </div>
-           <div class="character-row">
-                <div class="character-portrait"><img src="{{STATIC_URL}}images/reckonbot-reckon-blog.png"></div>
-                <div class="character-text">
-                    <div class="name">Reckonbot 3000</div>
-                    <div class="title">Pit Boss</div>
-                </div>
-           </div>
-       </div>
-       <div class="sidebar-background-box">
-           <div class="head-label">Tags</div>
-           <ul>
-           {% for tag in nav_tags %}
-              <li><a href="{{page_url}}?tag={{tag.tag}}">{{tag.tag}} ({{tag.count}})</a></li>
-           {% endfor %}
-           </ul>
-       </div>
-       <div class="sidebar-background-box">
-           <div class="head-label">Archive</div>
-           <ul>
-           {% for month in content_months %}
-              <li><a href="{{page_url}}?month={{month.month}}&year={{month.year}}">{{month|date:"b Y"}}</a></li>
-           {% endfor %}
-           </ul>
-       </div>
-    </div>
-{% endblock %}
+	{% block sitecolumnclass %}
+	    blog-site-column
+	{% endblock %}
+	
+	{% block rightsidebar %}
+	    <div id="standard-sidebar" class="sidebar-content">
+	       <div id="blog-label-button"><a href="/blog"><img src="{{STATIC_URL}}images/reckoner-blog-bubble.png"></a></div>
+	       <div class="sidebar-background-box">
+	           <div id="cast-of-characters"><img src="{{STATIC_URL}}images/cast-of-characters.png"></div>
+	           <div class="character-row">
+	                <div class="character-portrait"><img src="{{STATIC_URL}}images/Dan-Koch-Reckon_Blog.png"></div>
+	                <div class="character-text person-character-text">
+	                    <div class="name">Dan Koch</div>
+	                    <div class="title">Proprietor, ReckonLabs</div>
+	                </div>
+	           </div>
+	           <div class="character-row">
+	                <div class="character-portrait"><img src="{{STATIC_URL}}images/reckonbot-reckon-blog.png"></div>
+	                <div class="character-text">
+	                    <div class="name">Reckonbot 3000</div>
+	                    <div class="title">Pit Boss</div>
+	                </div>
+	           </div>
+	       </div>
+	       <div class="sidebar-background-box">
+	           <div class="head-label">Tags</div>
+	           <ul>
+	           {% for tag in nav_tags %}
+	              <li><a href="{{page_url}}?tag={{tag.tag}}">{{tag.tag}} ({{tag.count}})</a></li>
+	           {% endfor %}
+	           </ul>
+	       </div>
+	       <div class="sidebar-background-box">
+	           <div class="head-label">Archive</div>
+	           <ul>
+	           {% for month in content_months %}
+	              <li><a href="{{page_url}}?month={{month.month}}&year={{month.year}}">{{month|date:"b Y"}}</a></li>
+	           {% endfor %}
+	           </ul>
+	       </div>
+	    </div>
+	{% endblock %}
+	
+	{% block javascript %}
+	  {{ block.super }}
+	  {% include "top-reckonings-ajax.html" %}
+	  {% include "related-reckonings-ajax.html" %} 
+	{% endblock %}
 
-{% block javascript %}
-  {{ block.super }}
-  {% include "top-reckonings-ajax.html" %}
-  {% include "related-reckonings-ajax.html" %} 
-{% endblock %}
+{% endcache %}

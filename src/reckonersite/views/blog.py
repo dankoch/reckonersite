@@ -3,32 +3,19 @@ Created on Aug 23, 2011
 @author: danko
 '''
 import logging
-import sys
 import traceback
 
-from urllib import unquote_plus
-
-from django import forms
 from django.conf import settings
-from django.contrib import messages
-from django.http import Http404
 from django.http import HttpResponse
-from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-
-from reckonersite.client.commentclient import client_post_content_comment, \
-                                              client_update_content_comment, \
-                                              client_delete_content_comment
+from django.views.decorators.cache import cache_page
 
 from reckonersite.client.contentclient import client_get_contents
 
 from reckonersite.domain.ajaxserviceresponse import AjaxServiceResponse
 from reckonersite.domain.contentajaxresponse import ContentAjaxResponse
-from reckonersite.domain.comment import Comment
-from reckonersite.domain.content import Content
 from reckonersite.util.dateutil import convertFormToDateTime
-from reckonersite.util.validation import purgeHtml, sanitizeCommentHtml, sanitizeDescriptionHtml
 from reckonersite.util.pagination import pageDisplay
 
 from reckonersite.views.content import getContentTagContext, getContentMonthContext
@@ -104,6 +91,7 @@ def blog_list_page(request):
 #  (as used primarily for AJAX calls)
 ###############################################################################################
 
+@cache_page(60 * 15)
 def get_recent_blog_ajax(request, id = None):
     site_response = AjaxServiceResponse(success=False,
                                         message="whoops", 

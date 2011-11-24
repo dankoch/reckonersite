@@ -4,10 +4,7 @@ Created on Aug 23, 2011
 '''
 import datetime
 import logging
-import sys
 import traceback
-
-from urllib import unquote_plus
 
 from django import forms
 from django.conf import settings
@@ -32,7 +29,6 @@ from reckonersite.client.contentclient import client_post_content, \
 from reckonersite.domain.ajaxserviceresponse import AjaxServiceResponse
 from reckonersite.domain.comment import Comment
 from reckonersite.domain.content import Content
-from reckonersite.util.dateutil import convertFormToDateTime
 from reckonersite.util.validation import purgeHtml, sanitizeCommentHtml, sanitizeDescriptionHtml
 
 logger = logging.getLogger(settings.STANDARD_LOGGER)

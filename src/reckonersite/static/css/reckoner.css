@@ -36,9 +36,10 @@ body {
 
 #top-bar .search-wrapper {
     float: right;
+    height: 28px;
     position: relative;
-    top: 3px;
     right: 7px;
+    top: 3px;
     width: 200px;
 }
 

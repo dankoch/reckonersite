@@ -1,20 +1,25 @@
 {% extends "base.html" %}
 {% load reckontags %}
+{% load cache %}
 
-{% block sitecolumnclass %}
-    regular-site-column
-{% endblock %}
+{% cache TEMPLATE_CACHE_LIFESPAN reckoning_sidebar %}
 
-{% block rightsidebar %}
-    <div id="standard-sidebar" class="sidebar-content">
-       {% include "top-reckonings.html" %}
-       {% include "related-reckonings.html" %}
-       {% include "social-sidebar-box.html" %}
-    </div>
-{% endblock %}
+	{% block sitecolumnclass %}
+	    regular-site-column
+	{% endblock %}
+	
+	{% block rightsidebar %}
+	    <div id="standard-sidebar" class="sidebar-content">
+	       {% include "top-reckonings.html" %}
+	       {% include "related-reckonings.html" %}
+	       {% include "social-sidebar-box.html" %}
+	    </div>
+	{% endblock %}
+	
+	{% block javascript %}
+	  {{ block.super }}
+	  {% include "related-reckonings-ajax.html" %}
+	  {% include "top-reckonings-ajax.html" %}
+	{% endblock %}
 
-{% block javascript %}
-  {{ block.super }}
-  {% include "related-reckonings-ajax.html" %}
-  {% include "top-reckonings-ajax.html" %}
-{% endblock %}
+{% endcache %}

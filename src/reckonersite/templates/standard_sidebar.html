@@ -1,22 +1,27 @@
 {% extends "base.html" %}
 {% load reckontags %}
+{% load cache %}
 
-{% block sitecolumnclass %}
-    regular-site-column
-{% endblock %}
+{% cache TEMPLATE_CACHE_LIFESPAN standard_sidebar %}
 
-{% block rightsidebar %}
-    <div id="standard-sidebar" class="sidebar-content">
-       {% include "how-it-works-box.html" %}
-       {% include "blog-box.html" %}
-       {% include "top-reckonings.html" %}
-       {% include "social-sidebar-box.html" %}
-       {% include "rss-sidebar-box.html" %}
-    </div>
-{% endblock %}
+	{% block sitecolumnclass %}
+	    regular-site-column
+	{% endblock %}
+	
+	{% block rightsidebar %}
+	    <div id="standard-sidebar" class="sidebar-content">
+	       {% include "how-it-works-box.html" %}
+	       {% include "blog-box.html" %}
+	       {% include "top-reckonings.html" %}
+	       {% include "social-sidebar-box.html" %}
+	       {% include "rss-sidebar-box.html" %}
+	    </div>
+	{% endblock %}
+	
+	{% block javascript %}
+	  {{ block.super }}
+	  {% include "top-reckonings-ajax.html" %}
+	  {% include "blog-box-ajax.html" %}
+	{% endblock %}
 
-{% block javascript %}
-  {{ block.super }}
-  {% include "top-reckonings-ajax.html" %}
-  {% include "blog-box-ajax.html" %}
-{% endblock %}
+{% endcache %}
