@@ -695,6 +695,7 @@ body {
     font-size: 8px;
     padding: 5px 10px 10px 10px;
     width: 300px;
+    z-index: 2;
 }
 
 #content-area .edit-content-form .tooltip p
