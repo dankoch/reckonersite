@@ -28,19 +28,19 @@
 	                </div>
 	           </div>
 	       </div>
+           <div class="section-header"><span>TAGS!</span></div>	       
 	       <div class="sidebar-background-box">
-	           <div class="head-label">Tags</div>
 	           <ul>
 	           {% for tag in nav_tags %}
-	              <li><a href="{{page_url}}?tag={{tag.tag}}">{{tag.tag}} ({{tag.count}})</a></li>
+	              <li><a href="/blog?tag={{tag.tag}}">{{tag.tag}} ({{tag.count}})</a></li>
 	           {% endfor %}
 	           </ul>
 	       </div>
+            <div class="section-header"><span>ARCHIVE!</span></div>	       
 	       <div class="sidebar-background-box">
-	           <div class="head-label">Archive</div>
 	           <ul>
 	           {% for month in content_months %}
-	              <li><a href="{{page_url}}?month={{month.month}}&year={{month.year}}">{{month|date:"b Y"}}</a></li>
+	              <li><a href="/blog?month={{month.month}}&year={{month.year}}">{{month|date:"b Y"}}</a></li>
 	           {% endfor %}
 	           </ul>
 	       </div>

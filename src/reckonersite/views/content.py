@@ -101,6 +101,7 @@ class PostContentForm(forms.Form):
 ###############################################################################################
 
 def get_content(request, id = None, title = None):
+    page_url = "/content"
     commentFormPrefix="commentform"
     redirect = False
         
@@ -131,7 +132,8 @@ def get_content(request, id = None, title = None):
             request.session['errors'] = None
             
             context = {'content' : content,
-                       'errors' : errors  }
+                       'errors' : errors,
+                       'page_url' : page_url  }
             context.update(getContentTagContext(request))
             context.update(getContentMonthContext(request))
 

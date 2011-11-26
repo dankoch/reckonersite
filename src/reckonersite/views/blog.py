@@ -33,8 +33,8 @@ def blog_list_page(request):
     
     try:    
         if request.method == 'GET':
-            page = request.GET.get('page', '1')
-            size = request.GET.get('size', '5')
+            page = request.GET.get('page', None)
+            size = request.GET.get('size', None)
             tag = request.GET.get('tag', None)
             month = request.GET.get('month', None)
             year = request.GET.get('year', None)
@@ -50,17 +50,22 @@ def blog_list_page(request):
             # Persist the filter information.  Keep it if we're moving across pages.
             if (tag is not None):
                 request.session['blog-include-tags'] = tag
-            elif (page):
+            elif (page is not None):
                 tag = request.session.get('blog-include-tags', None)
                 
             if (posted_after is not None):
                 request.session['blog-posted-after'] = posted_after
-            elif (page):
+            elif (page is not None):
                 posted_after = request.session.get('blog-posted-after', None)
             if (posted_before is not None):
                 request.session['blog-posted-before'] = posted_before
-            elif (page):
+            elif (page is not None):
                 posted_before = request.session.get('blog-posted-before', None)
+            
+            if not page:
+                page = '1'
+            if not size:
+                size = '5'
                 
             content_list_response = client_get_contents(page=(int(page)-1), size=int(size), 
                                                         include_tags = tag,

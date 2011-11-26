@@ -188,4 +188,4 @@ class Tag(Base):
     
     def getURL(self):
         if (self.tag):
-            return '/reckonings/tag/' + quote_plus(self.tag)
+            return '/blog?tag=' + self.tag
