@@ -30,7 +30,7 @@ def writeSiteMaps(request):
             f.write(createOpenReckoningSitemap(request).getXMLString())
             f.close()
             
-            siteMapDocs.append(SiteMapDoc(loc=settings.XML_SITEMAP_LOCATION + '/sitemap_open_reckonings.xml.gz',
+            siteMapDocs.append(SiteMapDoc(loc=settings.XML_SITEMAP_ROOT_URL + '/sitemap_open_reckonings.xml.gz',
                                           lastmod=getCurrentDateTime()))
             
             # Closed Reckonings
@@ -38,7 +38,7 @@ def writeSiteMaps(request):
             f.write(createClosedReckoningSitemap(request).getXMLString())
             f.close()
             
-            siteMapDocs.append(SiteMapDoc(loc=settings.XML_SITEMAP_LOCATION + '/sitemap_closed_reckonings.xml.gz',
+            siteMapDocs.append(SiteMapDoc(loc=settings.XML_SITEMAP_ROOT_URL + '/sitemap_closed_reckonings.xml.gz',
                                           lastmod=getCurrentDateTime()))
             
             # Contents
@@ -46,7 +46,7 @@ def writeSiteMaps(request):
             f.write(createContentsSitemap(request).getXMLString())
             f.close()
             
-            siteMapDocs.append(SiteMapDoc(loc=settings.XML_SITEMAP_LOCATION + '/sitemap_contents.xml.gz',
+            siteMapDocs.append(SiteMapDoc(loc=settings.XML_SITEMAP_ROOT_URL + '/sitemap_contents.xml.gz',
                                           lastmod=getCurrentDateTime()))
             
             # User Profiles
@@ -54,7 +54,7 @@ def writeSiteMaps(request):
             f.write(createUsersSitemap(request).getXMLString())
             f.close()
             
-            siteMapDocs.append(SiteMapDoc(loc=settings.XML_SITEMAP_LOCATION + '/sitemap_profiles.xml.gz',
+            siteMapDocs.append(SiteMapDoc(loc=settings.XML_SITEMAP_ROOT_URL + '/sitemap_profiles.xml.gz',
                                           lastmod=getCurrentDateTime()))
             
             # Site Pages
@@ -62,7 +62,7 @@ def writeSiteMaps(request):
             f.write(createSitePagesSitemap(request).getXMLString())
             f.close()
             
-            siteMapDocs.append(SiteMapDoc(loc=settings.XML_SITEMAP_LOCATION + '/sitemap_sites.xml.gz',
+            siteMapDocs.append(SiteMapDoc(loc=settings.XML_SITEMAP_ROOT_URL + '/sitemap_sites.xml.gz',
                                           lastmod=getCurrentDateTime()))
             
             # Index Page

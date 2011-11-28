@@ -1,7 +1,13 @@
-{% extends "base.html" %}
+{% extends "standard_sidebar.html" %}
 
-{% block title %}Login!{% endblock %}
+{% block pagetitle %}The Reckoner! - No Problem!{% endblock %}
+
+{% block canon-url %}"{{ SITE_ROOT }}/no-sweat"{% endblock %}
 
 {% block main %}
-<h1>No sweat.  We'll catch you later.</h1>
+    <div id="about-page" class="static-page">
+        <div class="page-header"><h1>No Sweat!</h1></div>
+        <h3><span class="highlight">We'll be here if you change your mind!</span></h3>
+        <h3>In the meantime, you can head on <a href="/">back to The Reckoner</a> anonymously for more good times!</h3>
+    </div>
 {% endblock %}

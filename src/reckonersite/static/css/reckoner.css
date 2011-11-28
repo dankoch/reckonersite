@@ -357,7 +357,7 @@ body {
 }
 
 .regular-site-column {
-    background-image: url(../images/main-background.png);
+    background-image: url(../images/Main-Background.png);
     background-repeat: repeat-y;	
 }
 
@@ -2367,7 +2367,7 @@ body {
 }
 
 .blog-site-column {
-    background-image: url(../images/blog-background.png);
+    background-image: url(../images/Blog-Background.png);
     background-repeat: repeat-y;
 }
 
