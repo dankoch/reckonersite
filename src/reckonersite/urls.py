@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import patterns, include, url
+from django.views.generic.simple import direct_to_template
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -44,6 +45,9 @@ urlpatterns = patterns('',
     (r'^feed/open-reckonings', 'reckonersite.views.feed.latest_open_reckonings_feed'),
     (r'^feed/finished-reckonings', 'reckonersite.views.feed.latest_closed_reckonings_feed'),
     (r'^feed/blog', 'reckonersite.views.feed.latest_contents_feed'),
+    
+    (r'^404.html', direct_to_template, {'template': '404.html'}),
+    (r'^500.html', direct_to_template, {'template': '500.html'}),    
 
     (r'^ajax/comment/content/update', 'reckonersite.views.content.update_content_comment'),
     (r'^ajax/comment/content/delete', 'reckonersite.views.content.delete_content_comment'),    

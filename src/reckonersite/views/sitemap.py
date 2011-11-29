@@ -26,7 +26,7 @@ def writeSiteMaps(request):
             siteMapDocs = []
             
             # Open Reckonings
-            f = gzip.open(settings.XML_SITEMAP_LOCATION + '/sitemap_open_reckonings.xml.gz', 'wb')
+            f = gzip.open(settings.XML_SITEMAP_FILE_LOCATION + '/sitemap_open_reckonings.xml.gz', 'wb')
             f.write(createOpenReckoningSitemap(request).getXMLString())
             f.close()
             
@@ -34,7 +34,7 @@ def writeSiteMaps(request):
                                           lastmod=getCurrentDateTime()))
             
             # Closed Reckonings
-            f = gzip.open(settings.XML_SITEMAP_LOCATION + '/sitemap_closed_reckonings.xml.gz', 'wb')
+            f = gzip.open(settings.XML_SITEMAP_FILE_LOCATION + '/sitemap_closed_reckonings.xml.gz', 'wb')
             f.write(createClosedReckoningSitemap(request).getXMLString())
             f.close()
             
@@ -42,7 +42,7 @@ def writeSiteMaps(request):
                                           lastmod=getCurrentDateTime()))
             
             # Contents
-            f = gzip.open(settings.XML_SITEMAP_LOCATION + '/sitemap_contents.xml.gz', 'wb')
+            f = gzip.open(settings.XML_SITEMAP_FILE_LOCATION + '/sitemap_contents.xml.gz', 'wb')
             f.write(createContentsSitemap(request).getXMLString())
             f.close()
             
@@ -50,7 +50,7 @@ def writeSiteMaps(request):
                                           lastmod=getCurrentDateTime()))
             
             # User Profiles
-            f = gzip.open(settings.XML_SITEMAP_LOCATION + '/sitemap_profiles.xml.gz', 'wb')
+            f = gzip.open(settings.XML_SITEMAP_FILE_LOCATION + '/sitemap_profiles.xml.gz', 'wb')
             f.write(createUsersSitemap(request).getXMLString())
             f.close()
             
@@ -58,7 +58,7 @@ def writeSiteMaps(request):
                                           lastmod=getCurrentDateTime()))
             
             # Site Pages
-            f = gzip.open(settings.XML_SITEMAP_LOCATION + '/sitemap_sites.xml.gz', 'wb')
+            f = gzip.open(settings.XML_SITEMAP_FILE_LOCATION + '/sitemap_sites.xml.gz', 'wb')
             f.write(createSitePagesSitemap(request).getXMLString())
             f.close()
             
@@ -67,7 +67,7 @@ def writeSiteMaps(request):
             
             # Index Page
             siteMapIndex = SiteMapIndex(sitemaps=siteMapDocs)
-            f = open(settings.XML_SITEMAP_LOCATION + '/sitemap.xml', 'wb')
+            f = open(settings.XML_SITEMAP_FILE_LOCATION + '/sitemap.xml', 'wb')
             f.write(siteMapIndex.getXMLString())
             f.close()
             

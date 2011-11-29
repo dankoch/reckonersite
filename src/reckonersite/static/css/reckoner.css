@@ -4,7 +4,7 @@
  * These reflect the basic styles used for the Reckoner master template and layout.
  ***************************************************************************************/
 body {
-    background-color: #f6f6f6;
+    background-image: url(../images/reckoner-fabric-background.jpg);
     margin: 0;
 }
 
@@ -12,6 +12,7 @@ body {
     margin: 0 auto;
     border-left: 1px dotted black;
     border-right: 1px dotted black;
+    border-bottom: 1px dotted black;
     width: 960px;
 }
 
@@ -525,6 +526,10 @@ body {
 
 .gsc-search-box table {
 	margin: 0;
+}
+
+td.gsc-search-button {
+    padding-left: 5px;
 }
 
 #search-results-page table {
@@ -2169,6 +2174,37 @@ body {
     text-transform: uppercase;
     width: 75px;
 }
+
+#content-area #beta-sidebar-box {
+	background-color: #fdfed5;
+	border: 3px solid black;
+    padding: 7px;
+}
+
+#content-area #beta-sidebar-box h1 {
+    font-family: Futura, "Century Gothic", Futura, "Tw Cen MT", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 32px;
+    text-align: center;
+}
+
+#content-area #beta-sidebar-box h3 {
+    font-size: 16px;
+    font-style: italic;
+    margin: 1em 0;
+    text-align: center;
+}
+
+#content-area #beta-sidebar-box h4 {
+    font-size: 16px;
+    margin: 1em 0;
+    text-align: center;
+}
+
+#content-area #beta-sidebar-box p {
+    font-size: 14px;
+    margin: .5em 0;
+}
+
 
 /***************************************************************************************
  * PROFILE STYLES

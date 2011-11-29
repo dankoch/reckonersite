@@ -1,15 +1,46 @@
-{% extends "standard_sidebar.html" %}
-{% load reckontags %}
-{% load humanize %}
+ <style type="text/css">
+    body {
+        background-color: #f6f6f6;
+        text-align: center;
+    }
+    
+	h1 {
+	    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+	    font-size: 36px;
+	    font-weight: bold;
+	    text-transform: uppercase;
+	    text-align: center;  
+	}
 
-{% block pagetitle %}The Reckoner! Life's Decisions Made Easy!{% endblock %}
-
-{% block main %}
-    <div id="404-page" class="static-page error-page">
-        <h1>Gosh Darn it to Heck!</h1>
-        <h3>Reckonbot is having some issues!</h3>
-        <div class="error-image-wrapper"><img class="error-image" src="{{ STATIC_URL }}images/Reckonbot-500-Image.png" alt="Reckonbot says 500!"></div>
-        <p>We're trying to get this sorted out, ASAP.  Apologies for the inconvenience!</p>
-        <p>If this keeps popping up, shoot us a ping via our <a href="/contact-us">Contact Us form</a> page and that'll light a match under us!</p>        
-    </div>
-{% endblock %}
+	h3 {
+	    font-family: Futura, "Tw Cen MT", "Century Gothic", "URW Gothic L", Tahoma, sans-serif;
+	    font-size: 24px;
+	    font-style: italic;
+	    font-weight: normal;
+	    text-transform: uppercase;
+	}
+	
+	p {
+	    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+	    font-size: 16px;
+	
+	}
+	
+	#content {
+	   background-color: white;
+	   border: 1px dotted black;
+	   padding: 50px;
+	   margin: 50px auto;
+	   width: 600px;
+	}
+}    
+ 
+ </style>
+ <div id="content" class="static-page error-page">
+     <div class="error-image-wrapper"><img class="error-image" src="http://static.thereckoner.net/images/Reckonbot-500-Image.png" alt="Reckonbot says 500!"></div>
+     <h1>Gosh Darn it to Heck!</h1>
+     <h3>Reckonbot is on the fritz again!</h3>
+     <p>We're trying to get this sorted out, ASAP.  Apologies for the inconvenience!</p>
+     <p>If you shoot us a ping on our <a href="/contact-us">Contact Us form</a> page about how you got here, we'll be much obliged!</p>        
+     <p>You can also give <a href="http://www.facebook.com/people/Dan-Koch/613012">Dan Koch</a> a kick in the seat -- this is his baby, so give him a shout!</p>  
+ </div>
