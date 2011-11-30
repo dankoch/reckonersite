@@ -63,7 +63,7 @@ def post_content(request):
                         logger.error("Error from post attempt: " + response.message)
                         raise Exception
                     else:                    
-                        return HttpResponseRedirect('/thanks-for-playing')
+                        return HttpResponseRedirect('/blog')
             else:
                 form = PostContentForm(content_types=client_get_content_types(request.user.session_id).data)
             

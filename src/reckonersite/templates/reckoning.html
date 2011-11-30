@@ -70,14 +70,14 @@
             {% if 'UPDATE_ALL_RECKONINGS' in perms %}
             <div class="edit-description-section">
                 <form id="description-edit-form" class="description-edit-form" style="display: none">{% csrf_token %}        
-                    <textarea maxlength=150 id="description-edit-field" class="text-edit-field ckedit-field" name="description">{{reckoning.description|safe}}</textarea>
+                    <textarea maxlength=150 id="description-edit-field" class="text-edit-field ckedit-field" name="description">{{reckoning.description|default:""|safe}}</textarea>
                     <input type="hidden" name="reckoning-id" value="{{reckoning.id}}">
                     <input type="submit" name="save" value="Save" class="button save-button"/>                
                 </form>
                 <span id="description-edit-button" class="reckon-edit-button show-hide-button" data-hide=".description-wrapper" data-show="#description-edit-form">Edit!</span> <span id="description-edit-form-message" class="ajax-message"></span>
             </div>
             {% endif %}  
-            <div class="description-wrapper"><p>{{reckoning.description|safe}}</p></div>           
+            <div class="description-wrapper"><p>{{reckoning.description|default:""|safe}}</p></div>           
         </div>
         <div class="voting-section">
             {% include "reckon-two-voting-box.html" %}

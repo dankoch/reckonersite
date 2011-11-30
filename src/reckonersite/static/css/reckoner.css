@@ -190,6 +190,11 @@ body {
 
 }
 
+#content-area .button {
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif; 
+    font-size: 8pt;
+}
+
 #main-section {
 	/* Total width here should add up to 640px - horiz padding + border + width */
     float: left;
@@ -523,6 +528,19 @@ body {
  * SEARCH STYLES
  * Styles used to display Google Custom Search
  ***************************************************************************************/
+
+.search-text-box {
+    font-family: Verdana, Tahoma, sans-serif;
+    font-size: 8pt;
+	height: 13px;
+	width: 120px;
+}
+
+.search-button {
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif; 
+    font-size: 8pt;
+    margin-left: 3px;
+}
 
 .gsc-search-box table {
 	margin: 0;
