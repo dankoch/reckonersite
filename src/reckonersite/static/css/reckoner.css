@@ -1067,6 +1067,16 @@ td.gsc-search-button {
     margin: 0 0 1.2em 0;
 }
 
+#individual-entry .question-section ul {
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+}
+
+#individual-entry .question-section li {
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+}
+
 #individual-entry .title-section {
     margin: 7px;
 }
@@ -1098,7 +1108,17 @@ td.gsc-search-button {
 #individual-entry .body-section p {
     font-family: Cambria, Georgia, "New Century Schoolbook", "Century Schoolbook L", "Times New Roman", serif;
     font-size: 13pt;
-    margin: .5em 0;
+    margin: 1.2em 0;
+}
+
+#individual-entry .body-section ul {
+    font-family: Cambria, Georgia, "New Century Schoolbook", "Century Schoolbook L", "Times New Roman", serif;
+    font-size: 13pt;
+}
+
+#individual-entry .body-section li {
+    font-family: Cambria, Georgia, "New Century Schoolbook", "Century Schoolbook L", "Times New Roman", serif;
+    font-size: 13pt;
 }
 
 #individual-entry .voting-section {

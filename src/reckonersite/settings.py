@@ -2,11 +2,11 @@
 from mongoengine import connect
 
 #### Version (used for internal tracking purposes) ############################################
-SITE_VERSION="0.9.11-SNAPSHOT"
+SITE_VERSION="0.9.11"
 
 
 #### Environment Version (determines which settings to use, based on the specified environment)
-ENVIRONMENT="local"
+ENVIRONMENT="prod"
 
 
 #### Application Name -- used for identifying permissions and other labeling ##################
@@ -292,6 +292,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'reckonersite.middleware.reckonerauth.ReckonerAuthMiddleware',
     'reckonersite.middleware.breadcrumb.BreadcrumbMiddleware',
+    'reckonersite.middleware.http.SetRemoteAddrFromForwardedFor',    
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 

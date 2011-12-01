@@ -38,6 +38,9 @@ def getTimeDelta(startDate, endDate):
 def getCurrentDateTime():
     return datetime.now()
 
+def getCurrentDateTimeXmlString():
+    return convertDateTimeToXml(datetime.now())
+
 def timeDeltaFormatter(timeDelta):
     returnString = ""
     

@@ -16,11 +16,23 @@ from reckonersite.domain.sitemap import SiteMap
 from reckonersite.domain.sitemapdoc import SiteMapDoc
 from reckonersite.domain.sitemapindex import SiteMapIndex
 from reckonersite.domain.sitemapurl import SiteMapUrl
-from reckonersite.util.dateutil import getCurrentDateTime
+from reckonersite.util.dateutil import getCurrentDateTimeXmlString
 
 logger = logging.getLogger(settings.STANDARD_LOGGER)  
 
 def writeSiteMaps(request):
+    '''
+    Calls necessary functions to create the sitemap files.
+    '''
+    
+    # Important KLUDGE NOTE:
+    # The getCurrentDateTimeString function returns local time, but we're artificially marking everything as
+    # UTC via the XML string (using the 'Z' suffix).  Why?  Because for what we're using the date for, it's mostly
+    # harmless to do this, and a heck of a lot easier than futzing with pytz to get the time zones correct.
+    #
+    # BEWARE IN THE FUTURE.
+    
+    
     if request.user.has_perm('SITEMAP'):
         try:
             siteMapDocs = []
@@ -31,7 +43,7 @@ def writeSiteMaps(request):
             f.close()
             
             siteMapDocs.append(SiteMapDoc(loc=settings.XML_SITEMAP_ROOT_URL + '/sitemap_open_reckonings.xml.gz',
-                                          lastmod=getCurrentDateTime()))
+                                          lastmod="".join((getCurrentDateTimeXmlString(), "Z"))))
             
             # Closed Reckonings
             f = gzip.open(settings.XML_SITEMAP_FILE_LOCATION + '/sitemap_closed_reckonings.xml.gz', 'wb')
@@ -39,7 +51,7 @@ def writeSiteMaps(request):
             f.close()
             
             siteMapDocs.append(SiteMapDoc(loc=settings.XML_SITEMAP_ROOT_URL + '/sitemap_closed_reckonings.xml.gz',
-                                          lastmod=getCurrentDateTime()))
+                                          lastmod="".join((getCurrentDateTimeXmlString(), "Z"))))
             
             # Contents
             f = gzip.open(settings.XML_SITEMAP_FILE_LOCATION + '/sitemap_contents.xml.gz', 'wb')
@@ -47,7 +59,7 @@ def writeSiteMaps(request):
             f.close()
             
             siteMapDocs.append(SiteMapDoc(loc=settings.XML_SITEMAP_ROOT_URL + '/sitemap_contents.xml.gz',
-                                          lastmod=getCurrentDateTime()))
+                                          lastmod="".join((getCurrentDateTimeXmlString(), "Z"))))
             
             # User Profiles
             f = gzip.open(settings.XML_SITEMAP_FILE_LOCATION + '/sitemap_profiles.xml.gz', 'wb')
@@ -55,7 +67,7 @@ def writeSiteMaps(request):
             f.close()
             
             siteMapDocs.append(SiteMapDoc(loc=settings.XML_SITEMAP_ROOT_URL + '/sitemap_profiles.xml.gz',
-                                          lastmod=getCurrentDateTime()))
+                                          lastmod="".join((getCurrentDateTimeXmlString(), "Z"))))
             
             # Site Pages
             f = gzip.open(settings.XML_SITEMAP_FILE_LOCATION + '/sitemap_sites.xml.gz', 'wb')
@@ -63,7 +75,7 @@ def writeSiteMaps(request):
             f.close()
             
             siteMapDocs.append(SiteMapDoc(loc=settings.XML_SITEMAP_ROOT_URL + '/sitemap_sites.xml.gz',
-                                          lastmod=getCurrentDateTime()))
+                                          lastmod="".join((getCurrentDateTimeXmlString(), "Z"))))
             
             # Index Page
             siteMapIndex = SiteMapIndex(sitemaps=siteMapDocs)
@@ -176,13 +188,13 @@ def createSitePagesSitemap(request):
     
     # Home Page
     siteMapUrlList.append(SiteMapUrl(loc="".join((settings.SITE_ROOT,)), 
-                                     lastmod=getCurrentDateTime(),
+                                     lastmod="".join((getCurrentDateTimeXmlString(), "Z")),
                                      changefreq='always',
                                      priority='0.8'))
     
     # Blog Home Page
     siteMapUrlList.append(SiteMapUrl(loc="".join((settings.SITE_ROOT,"/blog",)), 
-                                     lastmod=getCurrentDateTime(),
+                                     lastmod="".join((getCurrentDateTimeXmlString(), "Z")),
                                      changefreq='always',
                                      priority='0.8'))
     
@@ -206,13 +218,13 @@ def createSitePagesSitemap(request):
     
     # Open Reckonings Page
     siteMapUrlList.append(SiteMapUrl(loc="".join((settings.SITE_ROOT,"/open-reckonings",)), 
-                                     lastmod=getCurrentDateTime(),
+                                     lastmod="".join((getCurrentDateTimeXmlString(), "Z")),
                                      changefreq='always',
                                      priority='0.6'))    
     
     # Closed Reckonings Page
     siteMapUrlList.append(SiteMapUrl(loc="".join((settings.SITE_ROOT,"/closed-reckonings",)), 
-                                     lastmod=getCurrentDateTime(),
+                                     lastmod="".join((getCurrentDateTimeXmlString(), "Z")),
                                      changefreq='always',
                                      priority='0.6'))  
     
