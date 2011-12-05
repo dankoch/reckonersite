@@ -179,7 +179,7 @@ def post_content_comment(request):
                         messages.error(request, "Sorry!  Reckonbot choked on that last comment!  I'm looking into it, ASAP.  - DK")
                 else:
                     for attr, value in commentForm.errors.iteritems():
-                        logger.info("Invalid comment submitted: " + str(attr) + ": " + str(value))
+                        logger.info("Invalid comment submitted: " + unicode(attr) + ": " + unicode(value))
                         errors[attr] = value
                             
         request.session['errors'] = errors 

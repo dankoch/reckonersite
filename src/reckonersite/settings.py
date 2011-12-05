@@ -2,11 +2,11 @@
 from mongoengine import connect
 
 #### Version (used for internal tracking purposes) ############################################
-SITE_VERSION="0.9.12-SNAPSHOT"
+SITE_VERSION="0.9.12"
 
 
 #### Environment Version (determines which settings to use, based on the specified environment)
-ENVIRONMENT="local"
+ENVIRONMENT="prod"
 
 
 #### Application Name -- used for identifying permissions and other labeling ##################

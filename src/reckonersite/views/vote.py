@@ -45,7 +45,7 @@ def post_reckoning_vote(request):
                             errors["phony_vote"]=True
 
                         logger.info("Invalid vote submitted: " + request.POST.get('id') + " " + request.POST.get('answer') + \
-                                    " " + request.user.reckoner_id + " " + str(request.META.get('REMOTE_ADDR', None)) +
+                                    " " + request.user.reckoner_id + " " + unicode(request.META.get('REMOTE_ADDR', None)) +
                                     " " + vote_service_response.message)
                     else:
                         errors['vote_error'] = False

@@ -273,7 +273,7 @@ class ReckoningQueueForm(forms.Form):
         reckoningChoices = []
         if (reckonings):
             for reckoning in reckonings:
-                reckoningChoices.append((reckoning.id, str(reckoning.submission_date) + " " + str(reckoning.question)))
+                reckoningChoices.append((reckoning.id, unicode(reckoning.submission_date) + " " + unicode(reckoning.question)))
         
         self.fields["pendingselect"] = forms.ChoiceField(label="Pending Reckonings", choices=reckoningChoices)
 

@@ -569,7 +569,7 @@ td.gsc-search-button {
 }
 
 #post-reckoning-intro-page .sign-up-box {
-    margin: 48px 0px;
+    margin: 32px 0px;
 }
 
 #content-area .sign-up-box h2 {
@@ -1601,19 +1601,16 @@ td.gsc-search-button {
 ***************************************************************************************/
  
  #content-area .comment {
+    background-color: white;
     font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
-    font-size: 14px;
+    font-size: 10pt;
+    margin: 10px 30px;
     word-wrap: break-word;  
 }
 
 #content-area .comment .comment-data {
     float: right;
     width: 450px;
-}
-
-#content-area .comment {
-    background-color: white;
-    margin: 10px 30px;
 }
 
 #content-area .comment p {

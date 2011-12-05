@@ -51,7 +51,7 @@ def buildXml(object, root):
         else:
             root_node.text='true'
     else:
-        root_node.text=str(object)      
+        root_node.text=unicode(object)      
         
     return root_node
 

@@ -43,9 +43,15 @@ def blog_list_page(request):
             posted_before = None
             
             if (month and year):
-                next_month = str(int(month) + 1)
-                posted_after = convertFormToDateTime("".join((month,"/01/",year," 00:01")))
-                posted_before = convertFormToDateTime("".join((next_month,"/01/",year," 00:01")))
+                if (int(month) > 11):
+                    next_month = '1'
+                    next_year = str(int(year) + 1)
+                    posted_after = convertFormToDateTime("".join((month,"/01/",year," 00:01")))
+                    posted_before = convertFormToDateTime("".join((next_month,"/01/",next_year," 00:01")))
+                else:
+                    next_month = str(int(month) + 1)     
+                    posted_after = convertFormToDateTime("".join((month,"/01/",year," 00:01")))
+                    posted_before = convertFormToDateTime("".join((next_month,"/01/",year," 00:01")))
                 
             # Persist the filter information.  Keep it if we're moving across pages.
             if (tag is not None):
@@ -71,6 +77,8 @@ def blog_list_page(request):
                                                         include_tags = tag,
                                                         posted_before=posted_before, posted_after=posted_after,
                                                         sort_by="postingDate", ascending=False)
+            
+            print "Content List Response: " + content_list_response.getXMLString()
             
             context = {'page': int(page),
                        'size': int(size),

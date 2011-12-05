@@ -76,7 +76,7 @@ def submit_contact_us_page(request):
                     return HttpResponseRedirect('/contact-us-success')
                 else:
                     for attr, value in contactUsForm.errors.iteritems():
-                        logger.info("Invalid contact-us form submitted: " + str(attr) + ": " + str(value))
+                        logger.info("Invalid contact-us form submitted: " + unicode(attr) + ": " + unicode(value))
                         errors[attr] = value                
 
     except smtplib.SMTPException:
