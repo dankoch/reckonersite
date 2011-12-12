@@ -40,6 +40,7 @@ urlpatterns = patterns('',
     (r'^about', 'reckonersite.views.site.about_page'),   
     (r'^search', 'reckonersite.views.site.search_page'),
     (r'^generate/sitemap.xml', 'reckonersite.views.sitemap.writeSiteMaps'), 
+    (r'^anonybot-3000', 'reckonersite.views.home.home_page'),
     (r'^$', 'reckonersite.views.home.home_page'),
     
     (r'^feed/open-reckonings', 'reckonersite.views.feed.latest_open_reckonings_feed'),
