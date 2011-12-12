@@ -76,7 +76,8 @@ def post_reckoning(request):
                                         description=sanitizeDescriptionHtml(form.cleaned_data['description']),
                                         answers=answers,
                                         tag_csv=purgeHtml(form.cleaned_data['tags']),
-                                        submitter_id=request.user.reckoner_id)
+                                        submitter_id=request.user.reckoner_id,
+                                        anonymous_requested=(form.cleaned_data['request_anonymous']))
                 
                     # Submit to the API
                     response = client_post_reckoning(reckoning, request.user.session_id)
@@ -109,6 +110,7 @@ class PostReckoningForm(forms.Form):
     subtitle_2 = forms.CharField(max_length=25, label="Subtitle 2", required=False)
 
     tags = forms.CharField(max_length=200, label="Tags", required=False)
+    request_anonymous = forms.BooleanField(label="Post as Anonymous", initial=False, required=False)
 
 
 ###############################################################################################

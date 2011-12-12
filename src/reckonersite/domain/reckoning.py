@@ -218,11 +218,12 @@ class Reckoning(Base):
         highVal=0
         
         for answer in self.answers:
-            if (answer.vote_total > highVal):
-                highVal = answer.vote_total
-                index = answer.index
-            elif (answer.vote_total == highVal):
-                index = -1
+            if (answer.vote_total):
+                if (int(answer.vote_total) > highVal):
+                    highVal = int(answer.vote_total)
+                    index = answer.index
+                elif (int(answer.vote_total) == highVal):
+                    index = -1
 
         return index
         

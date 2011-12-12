@@ -668,6 +668,14 @@ td.gsc-search-button {
     font-size: 8px;    
  }
  
+.edit-content-form .field-warning
+ {
+    color: #cc0000;
+    margin: 0;
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 10px;    
+ }
+ 
  .edit-content-form .field-notation .free-text
  {
     margin: 3px 0 0 0;   
