@@ -40,8 +40,8 @@
 		                        <div class="box-label">VIEW{% if content.views != 1 %}S{%endif%}</div> 
 		                     </div> 
 		                     <div class="stat-box views-stat-box">
-		                        <div class="count">{{ content.comments|length|condense_int }}</div>
-		                        <div class="box-label-small">COMMENT{% if content.comments|length != 1 %}S{%endif%}</div> 
+		                        <div class="count">{{ content.comment_index|condense_int }}</div>
+		                        <div class="box-label-small">COMMENT{% if content.comment_index|length != 1 %}S{%endif%}</div> 
 		                     </div>   
 		                     <div class="stat-box favorites-stat-box">
 		                        <div id="favorite-count-{{content.id}}" class="count">{{ content.favorites|length|condense_int }}</div>

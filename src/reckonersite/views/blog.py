@@ -78,8 +78,6 @@ def blog_list_page(request):
                                                         posted_before=posted_before, posted_after=posted_after,
                                                         sort_by="postingDate", ascending=False)
             
-            print "Content List Response: " + content_list_response.getXMLString()
-            
             context = {'page': int(page),
                        'size': int(size),
                        'contents' : content_list_response.contents,
