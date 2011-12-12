@@ -11,7 +11,7 @@
                           $( data ).find('content').each(function() {
                               var $content = $(this);
                               var title = $(this).find('title').text();
-                              var body = $(this).find('body').text();
+                              var summary = $(this).find('summary').text();
                               var postingDate = $(this).find('posting_date').text().replace("T"," ");
                               var firstName = $(this).find('user > first_name').text();
                               var lastName = $(this).find('user > last_name').text();
@@ -21,7 +21,7 @@
                               var html = '<div class="blog-list-item">';
                               html += '<div class="blog-title">' + '<a href="' + postURL + '">' + title + '</a></div>';
                               html += '<div class="blog-subtitle">' + 'Posted By <a href="' + userURL + '">' + firstName + ' ' + lastName + '</a> &middot; ' + postingDate + '</div>';
-                              html += '<div class="blog-content">' + body.substring(0, 300)+ '...</div>';
+                              html += '<div class="blog-content">' + summary.substring(0, 300).replace(/(<([^>]+)>)/ig,"") + '...</div>';
                               html += '<div class="blog-read-more">' + '<a href="' + postURL + '"> Read More! </a></div>';
                               html += '</div>';
                               html += '<hr class="reckoning-divider">'

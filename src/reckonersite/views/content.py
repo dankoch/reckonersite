@@ -285,17 +285,19 @@ def update_content_ajax(request):
                 
                 title = purgeHtml(request.POST.get('title', None))
                 body = request.POST.get('body', None)
+                summary = request.POST.get('summary', None)
                 tag_csv = purgeHtml(request.POST.get('tags', None))
                 
                 if ((commentary and len(commentary) > 3000) or (title and len(title) > 300) or 
-                    (body and len(body) > 50000) or (tag_csv and len(tag_csv) > 200)):
+                    (body and len(body) > 50000) or (tag_csv and len(tag_csv) > 200) or
+                    (summary and len(summary) > 500)):
                     site_response = AjaxServiceResponse(success=False,
                                                         message="too_long",
                                                         message_description="Saved field is too long.")  
                     
                 elif (content_id): 
                     contentUpdate = Content(id=content_id, commentary=commentary, commentary_user_id=commentary_user_id,
-                                                title=title, body=body, tag_csv=tag_csv)
+                                                summary=summary, title=title, body=body, tag_csv=tag_csv)
                     
                     service_response = client_update_content(contentUpdate,
                                                           request.user.session_id)                    

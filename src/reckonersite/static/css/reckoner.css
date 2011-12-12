@@ -2062,8 +2062,8 @@ td.gsc-search-button {
     font-size: 12px;
 }
 
-#content-area .sidebar-box #blog-box-content .blog-content p {
-    font-size: 13px;
+#content-area .sidebar-box #blog-box-content .blog-content {
+    font-size: 12px;
     margin: 1em 0;
 }
 

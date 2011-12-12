@@ -156,6 +156,15 @@
 			</div>
             <div class="bottom-wrapper">
                  {% if 'UPDATE_ALL_RECKONINGS' in perms %}
+                    <div class="edit-summary-section">
+                        <div id="summary-edit-button" class="reckon-edit-button show-hide-button" data-hide=".summary-wrapper" data-show="#summary-edit-form">Edit Summary!</div>
+		                <form id="summary-edit-form" class="summary-edit-form" style="display: none">{% csrf_token %}        
+		                    <textarea maxlength=500 id="summary-edit-field" class="text-edit-field" name="summary">{{content.summary|safe}}</textarea>
+		                    <input type="hidden" name="content-id" value="{{content.id}}">
+		                    <input type="submit" name="save" value="Save" class="button save-button"/>                
+		                </form>
+                        <div id="edit-summary-message" class="ajax-message"></div>
+                    </div>
                     <div class="reject-content-section">
                         <form id="reject-content-form">{% csrf_token %}        
                             <input type="hidden" name="content-id" value="{{content.id}}">
@@ -432,6 +441,28 @@
 	                     } 
 	                     , "xml")
               }
+          }); 
+       }); 
+      
+      $(function(){ 
+          $("#summary-edit-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  contentId = $form.find("input[name=content-id]").val(),
+                  summary = $form.find("input[name=summary]").val(); 
+              
+              $.post("/ajax/content/update", $form.serialize(),
+                     function(data) {                 
+                        var message = $( data ).find( 'message_description' ),
+                            success = $( data ).find( 'success' ).text();                   
+                        $("#edit-summary-message").empty().append(message);
+                        
+                        if (success.toLowerCase() === 'true') {
+                            $("#summary-edit-form").hide();
+                            $(".show-hide-button").show();
+                        }
+                     } 
+                     , "xml")
           }); 
        }); 
       

@@ -51,7 +51,7 @@
         <div class="commentary-section">
             <div id="commentary-profile-picture" class="profile-picture-wrapper"><img src="{{reckoning.commentary_user.profile_picture_url}}" class="profile-picture"></div>
             <div class="profile-name"><a href="{{reckoning.commentary_user.getURL}}">{{reckoning.commentary_user.first_name}} {{reckoning.commentary_user.last_name}}</a></div>
-            <div class="commentary-text">{{reckoning.commentary}}</div>
+            <div class="commentary-text">{{reckoning.commentary|safe}}</div>
         </div>      
         {% endif %}
         
