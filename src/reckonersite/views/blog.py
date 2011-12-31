@@ -7,94 +7,14 @@ import traceback
 
 from django.conf import settings
 from django.http import HttpResponse
-from django.shortcuts import render_to_response
-from django.template import RequestContext
 from django.views.decorators.cache import cache_page
 
 from reckonersite.client.contentclient import client_get_contents
 
 from reckonersite.domain.ajaxserviceresponse import AjaxServiceResponse
 from reckonersite.domain.contentajaxresponse import ContentAjaxResponse
-from reckonersite.util.dateutil import convertFormToDateTime
-from reckonersite.util.pagination import pageDisplay
-
-from reckonersite.views.content import getContentTagContext, getContentMonthContext
 
 logger = logging.getLogger(settings.STANDARD_LOGGER)
-
-
-###############################################################################################
-# Page responsible for listing blog content.  With no arguments, this is the blog main page.
-###############################################################################################
-
-def blog_list_page(request):
-    page_url = "/blog"
-    errors={}
-    
-    try:    
-        if request.method == 'GET':
-            page = request.GET.get('page', None)
-            size = request.GET.get('size', None)
-            tag = request.GET.get('tag', None)
-            month = request.GET.get('month', None)
-            year = request.GET.get('year', None)
-            
-            posted_after = None
-            posted_before = None
-            
-            if (month and year):
-                if (int(month) > 11):
-                    next_month = '1'
-                    next_year = str(int(year) + 1)
-                    posted_after = convertFormToDateTime("".join((month,"/01/",year," 00:01")))
-                    posted_before = convertFormToDateTime("".join((next_month,"/01/",next_year," 00:01")))
-                else:
-                    next_month = str(int(month) + 1)     
-                    posted_after = convertFormToDateTime("".join((month,"/01/",year," 00:01")))
-                    posted_before = convertFormToDateTime("".join((next_month,"/01/",year," 00:01")))
-                
-            # Persist the filter information.  Keep it if we're moving across pages.
-            if (tag is not None):
-                request.session['blog-include-tags'] = tag
-            elif (page is not None):
-                tag = request.session.get('blog-include-tags', None)
-                
-            if (posted_after is not None):
-                request.session['blog-posted-after'] = posted_after
-            elif (page is not None):
-                posted_after = request.session.get('blog-posted-after', None)
-            if (posted_before is not None):
-                request.session['blog-posted-before'] = posted_before
-            elif (page is not None):
-                posted_before = request.session.get('blog-posted-before', None)
-            
-            if not page:
-                page = '1'
-            if not size:
-                size = '5'
-                
-            content_list_response = client_get_contents(page=(int(page)-1), size=int(size), 
-                                                        include_tags = tag,
-                                                        posted_before=posted_before, posted_after=posted_after,
-                                                        sort_by="postingDate", ascending=False)
-            
-            context = {'page': int(page),
-                       'size': int(size),
-                       'contents' : content_list_response.contents,
-                       'page_url' : page_url,
-                       'errors' : errors}
-            context.update(pageDisplay(page, size, content_list_response.count))
-            context.update(getContentTagContext(request))
-            context.update(getContentMonthContext(request))
-            
-            c = RequestContext(request, context)
-            
-            return render_to_response('blog_list.html', c)
-            
-    except Exception:      
-        logger.error("Exception when rending blog list page:") 
-        logger.error(traceback.print_exc(8))
-        raise Exception
     
     
 ###############################################################################################
@@ -113,7 +33,7 @@ def get_recent_blog_ajax(request, id = None):
             if request.method == 'GET':          
                 size = request.GET.get("size", "1")
                 
-                service_response = client_get_contents(content_type="BLOG", page=0, size=int(size),
+                service_response = client_get_contents(type="BLOG", page=0, size=int(size),
                                                     sort_by="postingDate", ascending=False)
                                        
                 if (service_response.status.success):

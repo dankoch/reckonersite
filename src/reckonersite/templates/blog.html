@@ -1,0 +1,513 @@
+{% extends "blog_sidebar.html" %}
+{% load reckontags %}
+
+{% block pagetitle %}{{ SITE_NAME }} - {{ content.title|truncatewords:15 }}{% endblock %}
+
+{% block fb-title %}"{{ SITE_NAME }} - {{ content.title|truncatewords:15 }}"{% endblock %}
+{% block fb-url %}"{{ SITE_ROOT }}{{ content.getURL }}"{% endblock %}
+{% block fb-description %}"{{ content.summary|striptags|truncatewords_html:50 }}"{% endblock %}
+
+{% block gplus-title %}"{{ SITE_NAME }} - {{ content.title|truncatewords:15 }}"{% endblock %}
+{% block gplus-description %}"{{ content.summary|striptags|truncatewords_html:50 }}"{% endblock %}
+
+{% block canon-url %}"{{ SITE_ROOT }}{{ content.getURL }}"{% endblock %}
+
+{% block extraheader %}
+      <script src="{{ STATIC_URL }}js/ajax-post.js"></script>
+      <script src="{{ STATIC_URL }}ckeditor/ckeditor.js"></script>
+      <script src="{{ STATIC_URL }}ckeditor/adapters/jquery.js"></script>
+{% endblock %}
+
+{% block main %}
+    <div id="individual-entry" class="{{ content.content_type }}-page content-page">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                 <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if 'UPDATE_ALL_CONTENT' in perms %}
+        <div class="edit-commentary-section">
+            <form id="commentary-edit-form" class="content-edit-form" style="display: none">{% csrf_token %}        
+                <textarea maxlength=3000 id="commentary-edit-field" class="text-edit-field" name="commentary">{% if content.commentary %}{{content.commentary}}{% endif%}</textarea>
+                <input type="hidden" name="content-id" value="{{content.id}}">
+                <input type="submit" name="save" value="Save" class="button save-button"/>                
+            </form>
+            <div id="commentary-edit-form-message" class="ajax-message"></div>
+            {% if content.commentary and content.commentary|length > 0 %}
+                <span id="commentary-edit-button" class="reckon-edit-button show-hide-button" data-hide=".commentary-section" data-show="#commentary-edit-form">Update!&nbsp;&nbsp;</span><span class="reckon-edit-button" id="commentary-delete-button">Delete! &middot; </span>
+            {% else %}
+                <div id="commentary-add-button" class="reckon-edit-button commentary-add-button show-hide-button" data-hide=".commentary-section" data-show="#commentary-edit-form" >Add Commentary!</div>
+            {% endif %}
+        </div>
+        {% endif %}   
+        {% if content.commentary and content.commentary|length > 0 %}
+        <div class="commentary-section">
+            <div id="commentary-profile-picture" class="profile-picture-wrapper"><img src="{{content.commentary_user.profile_picture_url}}" class="profile-picture"></div>
+            <div class="profile-name"><a href="{{content.commentary_user.getURL}}">{{content.commentary_user.first_name}} {{content.commentary_user.last_name}}</a></div>
+            <div class="commentary-text">{{content.commentary}}</div>
+        </div>      
+        {% endif %}
+        
+        <div class="title-section">
+            {% if 'UPDATE_ALL_CONTENT' in perms %}
+            <div class="edit-title-section">
+                <form id="title-edit-form" class="title-edit-form" style="display: none">{% csrf_token %}        
+                    <textarea maxlength=150 id="title-edit-field" class="text-edit-field" name="title">{{content.title}}</textarea>
+                    <input type="hidden" name="content-id" value="{{content.id}}">
+                    <input type="submit" name="save" value="Save" class="button save-button"/>                
+                </form>
+                <span id="title-edit-button" class="reckon-edit-button show-hide-button" data-hide=".title-wrapper" data-show="#title-edit-form">Edit!</span> <span id="title-edit-form-message" class="ajax-message"></span>
+            </div>
+            {% endif %}  
+            <div class="title-wrapper"><h2>{{content.title}}</h2></div> 
+         </div>
+         <div class="body-section">
+            {% if 'UPDATE_ALL_CONTENT' in perms %}
+            <div class="edit-body-section">
+                <form id="body-edit-form" class="body-edit-form" style="display: none">{% csrf_token %}        
+                    <textarea maxlength=50000 id="body-edit-field" class="text-edit-field ckedit-field" name="body">{{content.body|safe}}</textarea>
+                    <input type="hidden" name="content-id" value="{{content.id}}">
+                    <input type="submit" name="save" value="Save" class="button save-button"/>                
+                </form>
+                <span id="body-edit-button" class="reckon-edit-button show-hide-button" data-hide=".body-wrapper" data-show="#body-edit-form">Edit!</span> <span id="body-edit-form-message" class="ajax-message"></span>
+            </div>
+            {% endif %} 
+            <div class="body-wrapper"><p>{{content.body|safe}}</p></div>           
+        </div>
+        <div class="metadata-section">
+            <div class="row-wrapper row-wrapper-1">
+                 <div class="reckoning-stats">
+                     <div class="stat-box views-stat-box">
+                        <div class="count">{{ content.views|condense_int }}</div>
+                        <div class="box-label">VIEW{% if content.views != 1 %}S{%endif%}</div> 
+                     </div> 
+                     <div class="stat-box views-stat-box">
+                        <div class="count">{{ content.comments|length|condense_int }}</div>
+                        <div class="box-label-small">COMMENT{% if content.comments|length != 1 %}S{%endif%}</div> 
+                     </div>   
+                     <div class="stat-box favorites-stat-box">
+                        <div id="favorite-count-{{content.id}}" class="count">{{ content.favorites|length|condense_int }}</div>
+                        <div class="box-label-small">TRACKING</div> 
+                     </div>
+	                 <div class="favorite-flag">
+	                     {% if 'FAVORITE' in perms %}
+	                     <span class="favorite">
+	                         <form id="content-favorite-form-{{content.id}}" class="content-favorite-form favorite-form form">
+	                                  <input type="hidden" name="data-type" value="content"> 
+	                                  <input type="hidden" name="content-id" value="{{content.id}}">
+	                                  <input class="button favorite-button" type="submit" name="favorite-submit" value="Track">
+	                         </form> 
+	                     </span>    
+	                     <br>                                 
+	                     {% endif %}      
+	                     {% if 'FLAG' in perms %}
+	                     <span class="flag">
+	                         <form id="content-flag-form-{{content.id}}" class="content-flag-form flag-form form">
+	                                  <input type="hidden" name="data-type" value="content"> 
+	                                  <input type="hidden" name="content-id" value="{{content.id}}">
+	                                  <input class="button flag-button" type="submit" name="flag-submit" value="Flag">
+	                         </form> 
+	                     </span> 
+	                     {% endif %} 
+	                 </div>      
+                </div>   
+				<div class="poster-wrapper">
+				     <div class="profile-picture-wrapper"><img src="{{content.posting_user.profile_picture_url}}" class="profile-picture"></div>
+				     <div class="label">Posted By:</div>
+				     <div class="poster-name">{{content.posting_user|print_user_name}}</div>
+				     <div class="poster-date">{{content.posting_date}}</div>
+				</div>
+				<div style="clear: both;"></div>
+            </div>
+			<div class="row-wrapper row-wrapper-2">
+                <div class="spec-wrapper">
+                     <div class="tags-wrapper"> 
+                         <span class="label">Tags:</span>
+                         {% if 'UPDATE_ALL_CONTENT' in perms %}
+                            <span id="tag-edit-button" class="reckon-edit-button show-hide-button" data-hide=".tags" data-show="#tag-edit-form">Edit!</span> <span id="tag-edit-form-message" class="ajax-message"></span>
+                            <div class="edit-tag-section">
+                                <form id="tag-edit-form" class="tag-edit-form" style="display: none">{% csrf_token %}        
+                                    <input type="text" maxlength=150 id="tag-edit-field" class="input-edit-field" name="tags" value="{{content.getTagCSV}}">
+                                    <input type="hidden" name="content-id" value="{{content.id}}">
+                                    <input type="submit" name="save" value="Save" class="button save-button"/>                
+                                </form>
+                            </div>
+                         {% endif %} 
+                         <div class="tags">
+                             {% for tag in content.tags %}
+                                {{tag|print_tag_link}}{% if not forloop.last %}, {% endif %}
+                             {% endfor %}
+                         </div>
+                     </div>
+                </div>
+			     <div class="social-options">
+                    <div class="fblike-wrapper like-button">
+                        <div class="fb-like" data-send="false" data-layout="box_count" data-width="50" data-show-faces="false" data-font="lucida grande"></div>
+                    </div>
+                    <div class="plusone-wrapper like-button">
+                        <div class="g-plusone" data-size="tall" expandto="top"></div>  
+                    </div>
+			        <div class="tweet-wrapper like-button">
+			            <a href="https://twitter.com/share" class="twitter-share-button" data-text="{{ content.title|truncatewords:15 }}" data-count="vertical" data-via="TheReckonerSite">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>       
+			        </div>
+			     </div>
+			</div>
+            <div class="bottom-wrapper">
+                 {% if 'UPDATE_ALL_RECKONINGS' in perms %}
+                    <div class="edit-summary-section">
+                        <div id="summary-edit-button" class="reckon-edit-button show-hide-button" data-hide=".summary-wrapper" data-show="#summary-edit-form">Edit Summary!</div>
+		                <form id="summary-edit-form" class="summary-edit-form" style="display: none">{% csrf_token %}        
+		                    <textarea maxlength=4000 id="summary-edit-field" class="text-edit-field" name="summary">{{content.summary|safe}}</textarea>
+		                    <input type="hidden" name="content-id" value="{{content.id}}">
+		                    <input type="submit" name="save" value="Save" class="button save-button"/>                
+		                </form>
+                        <div id="edit-summary-message" class="ajax-message"></div>
+                    </div>
+                    <div class="reject-content-section">
+                        <form id="reject-content-form">{% csrf_token %}        
+                            <input type="hidden" name="content-id" value="{{content.id}}">
+                            <input type="submit" name="reject" value="DELETE POST!" class="button save-button"/>                
+                        </form>
+                        <div id="reject-content-form-message" class="ajax-message"></div>
+                    </div>
+                 {% endif %}  
+            </div>
+        </div>
+        <hr class="section-divider">
+        <div id="comment-main" class="comment-section">
+             <div class="comment-label"><img src="{{ STATIC_URL }}images/reckoning-comment-label.png" alt="Reckoning Comments!"></div>
+             <div class="comment-box">
+                <div class="inner-comment-box">
+	                {% if content.comments %}
+	                    {% for comment in content.comments %}
+	                       {% if forloop.last %} <div id="comment-last"> {% endif %}
+                           {% include "comment.html" with data_type="content" %}
+                           {% if forloop.last %} </div> {% endif %}
+	                       <hr class="comment-divider">
+	                    {% endfor %}
+	                {% else %}
+	                    <div class="no-comment-text">No comments yet!  Be the first!
+	                        <div class="subtitle">(And don't say 'first!')</div>
+	                    </div>
+	                {% endif %}
+                </div>
+                {% if 'COMMENT' in perms %}
+                <div class="post-comment-box inner-comment-box">
+                    <h4>Post a Comment!
+                        <div class="subtitle">Add your two cents!</div>
+                    </h4>
+                    <div class="comment">
+	                    <div class="profile-picture-wrapper"><img src="{{ user.profile_picture_url }}" alt="You!" class="profile-picture"></div>
+	                    <div class="comment-data">
+                            <form id="comment-form" action="/comment/content/post" method="post">{% csrf_token %}	                    
+		                        <div class="comment-header">
+                                   {{errors.comment}}		                        
+			                       <div class="profile-name">{{user.first_name}} {{user.last_name}}</div>
+			                    </div>
+                                <div class="comment-field">
+                                     <label for="id_commentform-comment" class="comment-form-label"><h5>Comment!</h5></label>
+                                     <input type="hidden" name="redirect" value="{{ content.getURL }}?redirect=true#comment-last"/>
+                                     <input type="hidden" name="content-id" value="{{ content.id }}"/>
+                                     <textarea maxlength=5000 id="id_commentform-comment" name="commentform-comment" class="comment-edit-field"></textarea>
+                                     <div class="field-notation">(5000 Character Max)<noscript> Allowed Tags: &lt;p&gt; &lt;i&gt; &lt;strong&gt; &lt;b&gt; &lt;u&gt; &lt;a&gt; &lt;pre&gt; &lt;br&gt; &lt;img&gt; &lt;ul&gt; &lt;li&gt;</noscript></div>
+                                </div>
+                                <div class="comment-footer">
+                                     <span class="date">Posted &lt;now!&gt; - </span>
+                                     <span class="favorite">Favorite &lt;of course!&gt;</span> -
+                                     <span class="flag">Flag &lt;no way!&gt;</span>                              
+                                </div>	
+                                <div class="comment-post-options">
+                                    <input type="submit" name="postcomment" value="Comment!" class="button comment-button"/> 
+                                </div>		                    
+		                    </form>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+             </div> 
+        </div>
+        <div class="post-comment-section">
+            {% if not 'COMMENT' in perms %}
+		        <div class="sign-up-box">
+		            <h4>Want to post a comment?</h4>
+		            <h2>Sign up or log in!</h2>
+		            <h3>It's easy!</h3>
+		            <div class="login-buttons">
+		                 <div class="login-button login-button-1">    
+		                     <a href="{{ FACEBOOK_OAUTH_URL }}?client_id={{ FACEBOOK_APP_ID }}&redirect_uri={{ FACEBOOK_REDIRECT_URL }}&scope={{ FACEBOOK_SCOPE }}">
+		                     <img src="{{ STATIC_URL }}images/big-facebook-login-button.png" alt="Login with Facebook!">
+		                     </a>     
+		                 </div>
+		                 <div class="login-button login-button-2">
+		                     <a href="{{ GOOGLE_API_OAUTH_URL }}?client_id={{ GOOGLE_APP_ID }}&redirect_uri={{ GOOGLE_REDIRECT_URL }}&scope={{ GOOGLE_SCOPE }}&response_type=code">
+		                     <img src="{{ STATIC_URL }}images/big-google-login-button.png">     
+		                     </a>
+		                 </div>                
+		            </div>
+		        </div>               
+            {% endif %}
+        </div>
+    </div>        
+{% endblock %}
+
+{% block javascript %}
+  {{ block.super }}
+	  <script type="text/javascript">
+	  $(document).ready(function(){ 
+	      var largestHeight = 0;
+	      
+	      // Substitutes a CKEditor field for new comments
+	      $(".comment-edit-field").ckeditor(
+	              function () { /* Callback code */}, {
+	            	  forcePasteAsPlainText: true,
+	                  skin: 'v2',
+	                  toolbar: 'Basic'
+	              }             
+	            );
+	  });
+	  
+      $(function(){ 
+         $(".show-hide-button").click(function(e) {
+             e.preventDefault();
+             
+             var hideElement = $(this).attr("data-hide")
+             var showElement = $(this).attr("data-show")
+             
+             $(this).hide();
+             $(hideElement).hide();
+             $(showElement).show();
+                       
+             $(".ckedit-field").ckeditor(
+                     function () { /* Callback code */}, {
+                         forcePasteAsPlainText: true,
+                         skin: 'v2',
+                         toolbar: 'Full' 
+                     }             
+               );   
+         }); 
+       });  
+      
+      {% if 'UPDATE_ALL_CONTENT' in perms %}
+      
+      $(function(){ 
+          $("#commentary-edit-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  contentId = $form.find("input[name=content-id]").val(),
+                  commentary = $form.find("textarea[name=commentary]").val(); 
+              
+              $.post("/ajax/content/update", $form.serialize(),
+                     function(data) {                 
+                        var message = $( data ).find( 'message_description' ),
+                            success = $( data ).find( 'success' ).text();                   
+                        $("#commentary-edit-form-message").empty().append(message);
+                        
+                        if (success.toLowerCase() === 'true') {
+                        	$('.commentary-text').html(commentary);
+                        	
+                        	$.get("/ajax/user/{{user.reckoner_id}}", null, 
+                        		function(data) {
+	                                var user_message = $( data ).find( 'message_description' ),
+	                                user_success = $( data ).find( 'success' ).text();
+	                                
+	                                $("#commentary-edit-form-message").empty().append(message);
+	                                if (user_success.toLowerCase() === 'true') {
+	                                    location.reload();
+	                                }	                                
+                        		}
+                        	, "xml")
+
+                            $(".commentary-section").show();  
+                        	$(".show-hide-button").show();
+                            $("#commentary-edit-form").hide();                           
+                        }
+                     } 
+                     , "xml")
+          }); 
+       });   
+      
+      $(function(){
+          $("#commentary-delete-button").click(function(e) {
+              e.preventDefault();
+              contentId = "{{content.id}}";
+                  
+              var accepted = confirm('Delete commentary for this content?');
+                        
+              if (accepted) {        
+                  $.post("/ajax/content/commentary/delete", "content-id=" + contentId,
+                       function(data) {                 
+                          var message = $( data ).find( 'message_description' ),
+                              success = $( data ).find( 'success' ).text();                   
+                          $("#commentary-edit-form-message").empty().append(message);
+                          
+                          if (success.toLowerCase() === 'true') {
+                              location.reload();
+                          }
+                       } 
+                       , "xml")
+              }
+          }); 
+       });
+      
+      $(function(){ 
+          $("#title-edit-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  contentId = $form.find("input[name=content-id]").val(),
+                  title = $form.find("textarea[name=title]").val(); 
+              
+              $.post("/ajax/content/update", $form.serialize(),
+                     function(data) {                 
+                        var message = $( data ).find( 'message_description' ),
+                            success = $( data ).find( 'success' ).text();                   
+                        $("#title-edit-form-message").empty().append(message);
+                        
+                        if (success.toLowerCase() === 'true') {
+                            $('.title-wrapper').html('<h2>' + title + '</h2>');
+                            $('.title-wrapper').show();  
+                            $('#title-edit-form').hide();
+                            $(".show-hide-button").show();
+                        }
+                     } 
+                     , "xml")
+          }); 
+       }); 
+      
+      $(function(){ 
+          $("#media-edit-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  contentId = $form.find("input[name=content-id]").val(),
+                  mediaId = $form.find("input[name=media-id]").val(),
+                  mediaType = $form.find("input[name=media-type]").val(),
+                  
+                  name = $form.find("input[name=name]").val()
+                  url = $form.find("input[name=url]").val()
+                  duration = $form.find("input[name=duration]").val()
+              
+              $.post("/ajax/content/update", $form.serialize(),
+                     function(data) {                 
+                        var message = $( data ).find( 'message_description' ),
+                            success = $( data ).find( 'success' ).text();                   
+                        $("#media-edit-form-message").empty().append(message);
+                        
+                        if (success.toLowerCase() === 'true') {
+                        	$().html(name);
+                        	$().html(url);
+                        	$().html(duration);
+                        	
+                            $('#media-edit-form').hide();
+                            $(".media-wrapper").show();
+                            $(".show-hide-button").show();
+                        }
+                     } 
+                     , "xml")
+          }); 
+       });
+      
+      $(function(){ 
+          $("#body-edit-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  contentId = $form.find("input[name=content-id]").val(),
+                  body = $form.find("textarea[name=body]").val(); 
+              
+              $.post("/ajax/content/update", $form.serialize(),
+                     function(data) {                 
+                        var message = $( data ).find( 'message_description' ),
+                            success = $( data ).find( 'success' ).text();                   
+                        $("#body-edit-form-message").empty().append(message);
+                        
+                        if (success.toLowerCase() === 'true') {
+                            $('.body-wrapper').html(body);
+                            $('.body-wrapper').show();  
+                            $('#body-edit-form').hide();
+                            $(".show-hide-button").show();
+                        }
+                     } 
+                     , "xml")
+          }); 
+       });
+      
+       $(function(){ 
+          $("#tag-edit-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  contentId = $form.find("input[name=content-id]").val(),
+                  tags = $form.find("input[name=tags]").val(); 
+              
+              $.post("/ajax/content/update", $form.serialize(),
+                     function(data) {                 
+                        var message = $( data ).find( 'message_description' ),
+                            success = $( data ).find( 'success' ).text();                   
+                        $("#tag-edit-form-message").empty().append(message);
+                        
+                        if (success.toLowerCase() === 'true') {
+                            $('.tags').html(tags);
+                            $('.tags').show();  
+                            $('#tag-edit-form').hide();
+                            $(".show-hide-button").show();
+                        }
+                     } 
+                     , "xml")
+          }); 
+       }); 
+      
+      $(function(){ 
+          $("#reject-content-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  contentId = $form.find("input[name=content-id]").val(); 
+
+              var accepted = confirm('Reject this Content?');
+              
+              if (accepted) {
+	              $.post("/ajax/content/reject", $form.serialize(),
+	                     function(data) {                 
+	                        var message = $( data ).find( 'message_description' ),
+	                            success = $( data ).find( 'success' ).text();                   
+	                        $("#reject-content-form-message").empty().append(message);
+	                        
+	                     } 
+	                     , "xml")
+              }
+          }); 
+       }); 
+      
+      $(function(){ 
+          $("#summary-edit-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  contentId = $form.find("input[name=content-id]").val(),
+                  summary = $form.find("input[name=summary]").val(); 
+              
+              $.post("/ajax/content/update", $form.serialize(),
+                     function(data) {                 
+                        var message = $( data ).find( 'message_description' ),
+                            success = $( data ).find( 'success' ).text();                   
+                        $("#edit-summary-message").empty().append(message);
+                        
+                        if (success.toLowerCase() === 'true') {
+                            $("#summary-edit-form").hide();
+                            $(".show-hide-button").show();
+                        }
+                     } 
+                     , "xml")
+          }); 
+       }); 
+      
+      {% endif %}
+	
+	  // This disables the submit button on the comment form to block double-submits
+      $(function(){ 
+          $("#comment-form").submit(function(e) {
+        	  $('input[type=submit]', this).attr('disabled', 'disabled');
+          }); 
+       });   
+	  
+	  </script>
+	  
+	  {% include "flag-favorite-edit-ajax.html" %}
+{% endblock %}

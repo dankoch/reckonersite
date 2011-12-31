@@ -1,4 +1,4 @@
-{% extends "blog_sidebar.html" %}
+{% extends "podcast_sidebar.html" %}
 {% load reckontags %}
 
 {% block pagetitle %}{{ SITE_NAME }} - {{ content.title|truncatewords:15 }}{% endblock %}
@@ -63,6 +63,46 @@
             {% endif %}  
             <div class="title-wrapper"><h2>{{content.title}}</h2></div> 
          </div>
+         {% if content.content_type == 'PODCAST' %}
+         <div class="media-section">
+            {% if 'UPDATE_ALL_CONTENT' in perms %}
+            <div class="edit-media-section">
+                {% for media in content.media_items %}
+                    {% if media.media_type == 'AUDIO' %}
+		                <form id="media-edit-form" class="media-edit-form" style="display: none">{% csrf_token %}        
+		                    <div class="field-wrapper">                                         
+		                         <div class="label">Name!</div>
+		                         <input type="text" maxlength=200 id="id_name" name="name" class="name-edit-field input-edit-field" value="{{media.name}}"></input>                                   
+		                    </div> <div class="field-wrapper">                                         
+		                         <div class="label">URL!</div>
+		                         <input type="text" maxlength=300 id="id_url" name="url" class="url-edit-field input-edit-field" value="{{media.url}}"></input>                                   
+		                    </div> <div class="field-wrapper">                                         
+		                         <div class="label">Duration!</div>
+		                         <input type="text" maxlength=10 id="id_duration" name="duration" class="duration-edit-field input-edit-field" value="{{media.duration}}"></input>
+		                         <div class="field-notation">In the following format: hh:mm:ss</div>                                      
+		                    </div>   
+		                    <input type="hidden" name="content-id" value="{{content.id}}"/>
+		                    <input type="hidden" name="media-id" value="{{media.id}}"/>
+		                    <input type="hidden" name="media-type" value="AUDIO"/>
+		                    <input type="submit" name="save" value="Save" class="button save-button"/>                
+		                </form>
+	                    <span id="media-edit-button" class="reckon-edit-button show-hide-button" data-hide=".media-wrapper" data-show="#media-edit-form">Edit!</span> <span id="media-edit-form-message" class="ajax-message"></span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %} 
+            <div class="media-wrapper">
+                {% for media in content.media_items %}
+                    {% if media.media_type == 'AUDIO' %}
+                        {% include "jplayer-widget.html" with jplayer_id="jplayer-podcast" name=media.name %}
+                        <div class="podcast-download-link">
+                            Download: <a href="{{media.url}}">MP3</a>
+                        </div>    
+                    {% endif %}
+                {% endfor %}   
+            </div>       
+         </div>
+         {% endif %}  
          <div class="body-section">
             {% if 'UPDATE_ALL_CONTENT' in perms %}
             <div class="edit-body-section">
@@ -73,7 +113,7 @@
                 </form>
                 <span id="body-edit-button" class="reckon-edit-button show-hide-button" data-hide=".body-wrapper" data-show="#body-edit-form">Edit!</span> <span id="body-edit-form-message" class="ajax-message"></span>
             </div>
-            {% endif %}  
+            {% endif %} 
             <div class="body-wrapper"><p>{{content.body|safe}}</p></div>           
         </div>
         <div class="metadata-section">
@@ -159,7 +199,7 @@
                     <div class="edit-summary-section">
                         <div id="summary-edit-button" class="reckon-edit-button show-hide-button" data-hide=".summary-wrapper" data-show="#summary-edit-form">Edit Summary!</div>
 		                <form id="summary-edit-form" class="summary-edit-form" style="display: none">{% csrf_token %}        
-		                    <textarea maxlength=500 id="summary-edit-field" class="text-edit-field" name="summary">{{content.summary|safe}}</textarea>
+		                    <textarea maxlength=4000 id="summary-edit-field" class="text-edit-field" name="summary">{{content.summary|safe}}</textarea>
 		                    <input type="hidden" name="content-id" value="{{content.id}}">
 		                    <input type="submit" name="save" value="Save" class="button save-button"/>                
 		                </form>
@@ -376,6 +416,38 @@
        }); 
       
       $(function(){ 
+          $("#media-edit-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+                  contentId = $form.find("input[name=content-id]").val(),
+                  mediaId = $form.find("input[name=media-id]").val(),
+                  mediaType = $form.find("input[name=media-type]").val(),
+                  
+                  name = $form.find("input[name=name]").val()
+                  url = $form.find("input[name=url]").val()
+                  duration = $form.find("input[name=duration]").val()
+              
+              $.post("/ajax/content/update", $form.serialize(),
+                     function(data) {                 
+                        var message = $( data ).find( 'message_description' ),
+                            success = $( data ).find( 'success' ).text();                   
+                        $("#media-edit-form-message").empty().append(message);
+                        
+                        if (success.toLowerCase() === 'true') {
+                        	$().html(name);
+                        	$().html(url);
+                        	$().html(duration);
+                        	
+                            $('#media-edit-form').hide();
+                            $(".media-wrapper").show();
+                            $(".show-hide-button").show();
+                        }
+                     } 
+                     , "xml")
+          }); 
+       });
+      
+      $(function(){ 
           $("#body-edit-form").submit(function(e) {
               e.preventDefault();
               var $form = $( this ),
@@ -478,4 +550,10 @@
 	  </script>
 	  
 	  {% include "flag-favorite-edit-ajax.html" %}
+	  
+      {% for media in content.media_items %}
+          {% if media.media_type == 'AUDIO' %}
+	          {% include "jplayer-jquery.html" with jplayer_id="jplayer-podcast" music_file=media.url %}
+	      {% endif %}
+	  {% endfor %}
 {% endblock %}

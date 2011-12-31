@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load reckontags %}
+{% load cache %}
+
+{% cache TEMPLATE_CACHE_LIFESPAN blog_sidebar %}
+
+	{% block sitecolumnclass %}
+	    podcast-site-column content-site-column
+	{% endblock %}
+	
+	{% block rightsidebar %}
+	    <div id="standard-sidebar" class="sidebar-content">
+	       <div id="podcast-label-button"><a href="/podcast"><img src="{{STATIC_URL}}images/reckoner-podcast-bubble.png"></a></div>
+           <div class="section-header"><span>SUBSCRIBE!</span></div> 
+           <div class="sidebar-background-box podcast-subscription-box">
+               <div class="podcast-subscription-row podcast-subscription-row-1">
+                    <div class="rss-text">iTunes Subscription Feed Coming Soon!</div>
+                    <div class="rss-image-wrapper"><img src="{{STATIC_URL}}images/itunes_feed_logo_small.png" alt="The Reckoner RSS! Podcast!"></div>
+               </div> <div class="podcast-subscription-row podcast-subscription-row-2">
+		            <a href="http://feeds.feedburner.com/TheReckonerPodcastFeed">
+                        <div class="rss-text">Click Here to Subscribe Using Another Podcatcher!</div>
+			            <div class="rss-image-wrapper"><img src="{{STATIC_URL}}images/rss-button.png" alt="The Reckoner RSS! Podcast!"></div>
+		            </a>
+	           </div>               
+           </div>
+	       {% include "cast-of-characters.html" %}
+           <div class="section-header"><span>TAGS!</span></div>	       
+	       <div class="sidebar-background-box">
+	           <ul>
+	           {% for tag in nav_tags %}
+	              <li><a href="/podcast?tag={{tag.tag}}">{{tag.tag}} ({{tag.count}})</a></li>
+	           {% endfor %}
+	           </ul>
+	       </div>
+           <div class="section-header"><span>ARCHIVE!</span></div>	       
+	       <div class="sidebar-background-box">
+	           <ul>
+	           {% for month in content_months %}
+	              <li><a href="/podcast?month={{month.month}}&year={{month.year}}">{{month|date:"b Y"}}</a></li>
+	           {% endfor %}
+	           </ul>
+	       </div>
+	    </div>
+	{% endblock %}
+	
+	{% block javascript %}
+	  {{ block.super }}
+	{% endblock %}
+
+{% endcache %}

@@ -772,18 +772,25 @@ td.gsc-search-button {
     width: 600px;
  }
  
-.edit-content-form .interval-edit-field
+.edit-content-form .name-edit-field
+ {
+    height: 1.2em;
+    padding: 5px;
+    width: 600px;
+ }
+ 
+.edit-content-form .url-edit-field
+ {
+    height: 1.2em;
+    padding: 5px;
+    width: 600px;
+ }
+ 
+.edit-content-form .duration-edit-field
  {
     height: 1.2em;
     padding: 5px;
     width: 200px;
- }
-
-.edit-content-form .commentary-edit-field
- {
-    height: 12.5em;
-    padding: 5px;
-    width: 600px;
  }
  
 .edit-content-form .reckoning-form-options {
@@ -1107,6 +1114,37 @@ td.gsc-search-button {
 
 #individual-entry .title-section p {
     margin: .5em 0;
+}
+
+#individual-entry .media-section {
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    margin: 0 7px 1.2em 7px;
+}
+
+#individual-entry .media-section .label {
+    font-weight: bold;
+    font-size: 14px;
+    margin: 8px 0 0 0;
+}
+
+#individual-entry .media-section .field-notation {
+    font-size: 10px;
+}
+
+#individual-entry .media-wrapper .podcast-download-link {
+	font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 8px 0;
+}
+
+#individual-entry .media-wrapper .podcast-download-link a {
+    text-decoration: none;
+}
+
+#individual-entry .media-wrapper .podcast-download-link a:hover {
+    color: #cc0000;
+    text-decoration: underline;
 }
 
 #individual-entry .body-section {
@@ -2248,6 +2286,84 @@ td.gsc-search-button {
     margin: .5em 0;
 }
 
+#content-area #podcast-sidebar-box {
+    background-color: #ffcfcf;
+    border: 1px solid #555555;
+}
+
+#content-area #podcast-sidebar-box .podcast-playnow-row {
+    margin: 0 5px;
+    height: 104px;
+}
+
+#content-area #podcast-sidebar-box .podcast-playnow-row-text {
+    position: relative;
+    top: 5px;
+}
+
+#content-area #podcast-sidebar-box .podcast-standard-row {
+    margin: 0 25px;
+    height: 60px;
+}
+
+#content-area #podcast-sidebar-box .podcast-standard-row-text {
+	display: inline-block;
+    position: relative;
+    bottom: 8px;
+    text-align: center;
+    line-height: 14px;
+}
+
+#content-area #podcast-sidebar-box h1 {
+    font-family: Futura, "Century Gothic", Futura, "Tw Cen MT", "URW Gothic L", Tahoma, sans-serif;
+    font-size: 32px;
+    text-align: center;
+}
+
+#content-area #podcast-sidebar-box h3 {
+    font-size: 16px;
+    font-style: italic;
+    margin: 1em 0;
+    text-align: center;
+}
+
+#content-area #podcast-sidebar-box h4 {
+    font-size: 16px;
+    margin: 0 0 .5em 0;
+    text-align: left;
+}
+
+#content-area #podcast-sidebar-box p {
+    font-size: 14px;
+    line-height: 14px;
+    margin: .5em 0;
+}
+
+#content-area #podcast-sidebar-box .play-podcast-button {
+    float: left;
+    margin: 0 10px 0 0;
+}
+
+#content-area #podcast-sidebar-box .subscribe-buttons {
+    display: inline-block;
+    margin: 0 0 0 50px;
+}
+
+#content-area #podcast-sidebar-box .subscribe-buttons a {
+    height: 50px;
+}
+
+#content-area #podcast-sidebar-box .subscribe-button-wrapper {
+    display: inline-bo
+}
+
+#content-area #podcast-sidebar-box hr {
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    margin: .5em;
+}
+
 
 /***************************************************************************************
  * PROFILE STYLES
@@ -2450,21 +2566,54 @@ td.gsc-search-button {
     background-repeat: repeat-y;
 }
 
+.podcast-site-column {
+    background-image: url(../images/Podcast-Background.png);
+    background-repeat: repeat-y;
+}
+
 #post-content-page
  {
     margin: 0 7px 0 7px;
  }
+ 
+#post-content-page .messages
+{
+   background-color: #f1fee9;
+   border: 4px solid black;
+   color: #cc0000;
+   margin: 15px 0 15px 0;
+}
  
 #blog-label-button {
     margin: 7px auto;
     text-align: center;
  }
  
-.blog-site-column .sidebar-background-box {
+#podcast-label-button {
+    margin: 7px auto;
+    text-align: center;
+ }
+ 
+.content-site-column .sidebar-background-box {
     background-color: #f6f6f6;
     border: 1px solid #9d9d9d;
     margin: 10px 0;
     padding: 7px 14px;
+}
+
+.content-site-column .podcast-subscription-row {
+    margin: 3px 0 3px 0;
+}
+
+.content-site-column .podcast-subscription-row-1 {
+    margin: 3px 0 9px 0;
+}
+
+.content-site-column .podcast-subscription-row .rss-text {
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+	float: right;
+	font-size: 14px;
+	width: 210px;
 }
  
 #cast-of-characters {
@@ -2472,14 +2621,14 @@ td.gsc-search-button {
     text-align: center;
 }
 
-.blog-site-column .sidebar-background-box .head-label {
+.content-site-column .sidebar-background-box .head-label {
     font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
 	font-weight: bold;
 	text-decoration: underline;
 	text-transform: uppercase;
 }
 
-.blog-site-column .sidebar-background-box ul {
+.content-site-column .sidebar-background-box ul {
 	font-size: 12px;
 	line-height: 20px;
 	list-style-type: none;
@@ -2488,12 +2637,12 @@ td.gsc-search-button {
     text-transform: capitalize;
 }
 
-.blog-site-column .sidebar-background-box a {
+.content-site-column .sidebar-background-box a {
 	color: #0161c3;
     text-decoration: none;
 }
 
-.blog-site-column .sidebar-background-box a:hover {
+.content-site-column .sidebar-background-box a:hover {
     text-decoration: underline;
 }
 

@@ -13,6 +13,7 @@ def set_reckoning_context(request):
     
     site_context = {'SITE_ROOT' : settings.SITE_ROOT,
                     'SITE_NAME' : settings.SITE_NAME,
+                    'PODCAST_FEED' : settings.PODCAST_FEED_URL,
                     'TEMPLATE_CACHE_LIFESPAN' : settings.TEMPLATE_CACHE_LIFESPAN}
     
     return site_context

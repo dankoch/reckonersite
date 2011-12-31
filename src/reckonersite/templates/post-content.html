@@ -39,13 +39,36 @@
                     </div><div class="field-wrapper">
                          {{form.summary.errors}}                     
                          <p><label for="id_summary"><h5>Summary!</h5></label></p>
-                         <p><textarea maxlength=500 id="id_summary" name="summary" class="summary-edit-field"></textarea></p>
-                         <div class="field-notation">(500 Character Max)</div>
+                         <p><textarea maxlength=4000 id="id_summary" name="summary" class="summary-edit-field"></textarea></p>
+                         <div class="field-notation">(4000 Character Max)</div>
                     </div><div class="field-wrapper">                
                          {{form.tags.errors}}                          
                          <p><label for="id_tags"><h5>Tags!</h5></label></p>
                          <p><input type="text" maxlength=200 id="id_tags" name="tags" class="tags-edit-field"></input></p>
                          <div class="field-notation">(Separated by commas - e.g. 'Relationships, Video Games, Television, Jobs', etc.)</div>                                      
+                    </div>
+                    
+                    <div id="media-fields" style="display: none">
+	                    <div class="field-wrapper">
+	                         {{form.media_type.errors}}                     
+	                         <p><label for="id_media_type"><h5>Media Type!</h5></label></p>
+	                         <p>{{form.media_type}}</p>
+	                    </div> <div class="field-wrapper">                
+	                         {{form.name.errors}}                          
+	                         <p><label for="id_name"><h5>Name!</h5></label></p>
+	                         <p><input type="text" maxlength=200 id="id_name" name="name" class="name-edit-field"></input></p>
+	                         <div class="field-notation"></div>                                      
+	                    </div> <div class="field-wrapper">                
+                             {{form.url.errors}}                          
+                             <p><label for="id_url"><h5>URL!</h5></label></p>
+                             <p><input type="text" maxlength=300 id="id_url" name="url" class="url-edit-field"></input></p>
+                             <div class="field-notation"></div>                                      
+                        </div> <div class="field-wrapper">                
+                             {{form.duration.errors}}                          
+                             <p><label for="id_duration"><h5>Duration!</h5></label></p>
+                             <p><input type="text" maxlength=10 id="id_duration" name="duration" class="duration-edit-field"></input></p>
+                             <div class="field-notation">In the following format: hh:mm:ss</div>                                      
+                        </div>                           
                     </div>         
                     
                     <div class="form-buttons">
@@ -84,6 +107,25 @@
                 skin: 'v2',
                 toolbar: 'Full'
             }             
+    );
+    
+    $(document).ready(
+        function () {
+            if ($("#id_content_type").val() === 'PODCAST') {
+                $("#media-fields").show();            	
+            }
+        }
+    );
+    
+    // This enables the media attachment fields when uploading a PODCAST
+    $("#id_content_type").change(
+   		function () {
+   			if ($(this).val() === 'PODCAST') {
+   				$("#media-fields").show();
+   			} else {
+   				$("#media-fields").hide();
+   			}
+   		}	
     );
   </script>
 {% endblock %}

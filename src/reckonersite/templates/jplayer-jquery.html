@@ -1,0 +1,35 @@
+
+{% if button %}
+	<script type="text/javascript">
+	$(document).ready(function(){
+	
+	    var myCirclePlayer = new CirclePlayer("#{{jplayer_id|default:"#jplayer-id-1"}}",
+	    {
+	        mp3: "{{music_file}}"
+	    }, {
+            cssSelectorAncestor: "#{{jplayer_container_id|default:"cp_container_1"}}",
+            solution: "flash,html",
+            swfPath: "{{ STATIC_URL }}swf",
+            supplied: "mp3",
+            wmode: "window"
+	    });
+	});
+	</script>
+{% else %}
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $("#{{jplayer_id|default:"#jplayer-id-1"}}").jPlayer({
+          ready: function () {
+            $(this).jPlayer("setMedia", {
+              mp3: "{{music_file}}"
+            });
+          },
+          cssSelectorAncestor: "#{{jplayer_container_id|default:"jp_container_1"}}",
+          solution: "flash,html",
+          swfPath: "{{ STATIC_URL }}swf",
+          supplied: "mp3",
+          wmode: "window"
+        });
+      });
+    </script>
+{% endif %}

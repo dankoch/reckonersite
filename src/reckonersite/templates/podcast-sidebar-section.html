@@ -1,0 +1,31 @@
+        <div id="podcast-sidebar-section" class="sidebar-section">
+            <div id="podcast-sidebar-box" class="sidebar-text-box sidebar-box">
+                <h1><a href="/podcast"><img src="{{STATIC_URL}}images/Podcast-Logo-Small.png" alt="The Reckoner Podcast!"></a></h1>
+                <hr>
+                <div class = "podcast-playnow-row">
+	                {% for media in last_podcast.media_items %}
+	                    {% if media.media_type == 'AUDIO' %}
+	                        <div class="play-podcast-button">
+	                            {% include "jplayer-button-widget.html" with jplayer_id="jplayer-podcast-sidebar" podcast=media %} 
+                            </div>
+                            <div class="podcast-playnow-row-text">
+	                            <h4>NOW PLAYING!</h4>
+	                            <p>{{media.name}}</p>
+	                            <p><a href="{{last_podcast.getURL}}">Read More!</a></p> 
+                            </div>                   
+	                    {% endif %}
+	                {% endfor %}
+	            </div>
+	            <hr>
+                <div class = "podcast-standard-row">  
+		            <div class="podcast-standard-row-text">
+                        <h4><a href="/podcast">Archive!</a></h4>		            
+		                <h4><a href="http://feeds.feedburner.com/TheReckonerPodcastFeed">Subscribe!</a></h4>
+		            </div>
+                    <div class="subscribe-buttons">
+                        <a href="/podcast"><img src="{{STATIC_URL}}images/rss-button.png"></a>
+                        <img src="{{STATIC_URL}}images/itunes_feed_logo_small.png">
+                    </div>                 
+                </div>              
+            </div>    
+        </div>

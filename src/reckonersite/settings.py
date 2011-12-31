@@ -198,6 +198,24 @@ STATICFILES_DIRS = (
     "/Users/danko/Documents/development/reckonersite/src/reckonersite/static",
 )
 
+#### RSS Feed Settings ###############################################################
+
+PODCAST_FEED_URL="/feed/podcast"
+
+PODCAST_TITLE="The Reckoner! Podcast!"
+PODCAST_DESCRIPTION="Listen as Dan Koch and his faithful companion, Reckonbot 3000, take an odyssey through the results of The Reckoner! (www.thereckoner.net). The Reckoner dares to take any binary decision you have -- take a job or leave it, stay in a relationship or bail out, watch Happy Days reruns or sit quietly alone -- and answer it through the awesome power of Democracy and crowdsourcing!"
+PODCAST_SUBTITLE="The brains behind The Reckoner! answer the world's toughest questions, with your help!"
+
+PODCAST_AUTHOR="Dan Koch, ReckonLabs"
+PODCAST_AUTHOR_NAME="Dan Koch"
+PODCAST_ITUNES_CATEGORY="Comedy"
+PODCAST_ITUNES_EXPLICIT="no"
+
+PODCAST_ITUNES_IMAGE="http://static.thereckoner.net/images/The-Reckoner-Icon-Alternate-Big.jpg"
+PODCAST_ITUNES_KEYWORDS="The Reckoner, Reckoner, Polls, Votes, Democracy, Crowdsourcing, Social Media, Technology, Robots, Decisions"
+PODCAST_ITUNES_ID=""
+
+PODCAST_BLOCKED="no"
 
 #### Miscellaneous Settings ###################################################################
 
@@ -264,7 +282,8 @@ TEMPLATE_CONTEXT_PROCESSORS = ("django.core.context_processors.debug",
                                "django.core.context_processors.static",
                                "django.contrib.messages.context_processors.messages",
                                'reckonersite.context_processors.reckonerauth.set_user_info', 
-                               'reckonersite.context_processors.reckoningcontext.set_reckoning_context',            
+                               'reckonersite.context_processors.reckoningcontext.set_reckoning_context',
+                               'reckonersite.context_processors.sidebarcontext.set_podcast_info',            
                                'reckonersite.context_processors.socialconnections.set_social_info',)
 
 # List of finder classes that know how to find static files in

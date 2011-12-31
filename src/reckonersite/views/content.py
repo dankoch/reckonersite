@@ -21,15 +21,25 @@ from reckonersite.client.commentclient import client_post_content_comment, \
 
 from reckonersite.client.contentclient import client_post_content, \
                                               client_get_content, \
+                                              client_get_contents, \
                                               client_get_content_types, \
+                                              client_get_media_types, \
                                               client_update_content, \
                                               client_reject_content, \
-                                              client_get_content_tags
+                                              client_get_content_tags \
 
 from reckonersite.domain.ajaxserviceresponse import AjaxServiceResponse
 from reckonersite.domain.comment import Comment
 from reckonersite.domain.content import Content
-from reckonersite.util.validation import purgeHtml, sanitizeCommentHtml, sanitizeDescriptionHtml
+from reckonersite.domain.media import Media
+from reckonersite.util.dateutil import convertFormToDateTime
+from reckonersite.util.pagination import pageDisplay
+from reckonersite.util.validation import purgeHtml, \
+                                         sanitizeCommentHtml, \
+                                         sanitizeDescriptionHtml, \
+                                         verifyUrl, \
+                                         getUrlMimeType, \
+                                         getUrlDownloadSize
 
 logger = logging.getLogger(settings.STANDARD_LOGGER)
 
@@ -44,28 +54,53 @@ def post_content(request):
         try:
             # Check to see if we're coming here from a POST.  If so, process it.  If not, give 'em a fresh form.
             if request.method == 'POST' :
-                form = PostContentForm(request.POST, content_types=client_get_content_types(request.user.session_id).data)
+                form = PostContentForm(request.POST, content_types=client_get_content_types(request.user.session_id).data,
+                                                     media_types=client_get_media_types(request.user.session_id).data)
                 
                 # Check form validation -- kick the form back out with error messages if failed.
-                if form.is_valid():
-                    content=Content(content_type=(form.cleaned_data['content_type']),
-                                        title=purgeHtml(form.cleaned_data['title']),
-                                        body=(form.cleaned_data['body']),
-                                        summary=(form.cleaned_data['summary']),
-                                        tag_csv=purgeHtml(form.cleaned_data['tags']),
-                                        submitter_id=request.user.reckoner_id)
-                
-                    # Submit to the API
-                    response = client_post_content(content, request.user.session_id)
+                valid = form.is_valid()
+                if valid:
+                    if (form.cleaned_data['content_type'] == "PODCAST"):
+                        valid = False
+                        media = Media(media_type=form.cleaned_data['media_type'],
+                                      name=form.cleaned_data['name'],
+                                      url=form.cleaned_data['url'],
+                                      duration=form.cleaned_data['duration'])
+                        
+                        if (not media.url or not verifyUrl(media.url)):
+                            messages.error(request, "Invalid or nonexistent podcast URL specified.", extra_tags='validation')
+                        elif (not media.media_type and not media.media_type == 'AUDIO'):
+                            messages.error(request, "Attached content needs to be audio.", extra_tags='validation')
+                        elif (not media.name):
+                            messages.error(request, "Podcast name needs to be specified.", extra_tags='validation')
+                        elif (not media.duration):
+                            messages.error(request, "Podcast duration needs to be specified.", extra_tags='validation')
+                        else:
+                            media.size = getUrlDownloadSize(media.url)
+                            media.file_type = getUrlMimeType(media.url)
+                            valid = True
+                            
+                    if valid:
+                        content=Content(content_type=(form.cleaned_data['content_type']),
+                                            title=purgeHtml(form.cleaned_data['title']),
+                                            body=(form.cleaned_data['body']),
+                                            summary=(form.cleaned_data['summary']),
+                                            tag_csv=purgeHtml(form.cleaned_data['tags']),
+                                            submitter_id=request.user.reckoner_id,
+                                            media_items=[media])
                     
-                    # Check to see if the API submission was a success.  If not, clean the error and display.  Otherwise, great!
-                    if not response.success:
-                        logger.error("Error from post attempt: " + response.message)
-                        raise Exception
-                    else:                    
-                        return HttpResponseRedirect('/blog')
+                        # Submit to the API
+                        response = client_post_content(content, request.user.session_id)
+                        
+                        # Check to see if the API submission was a success.  If not, clean the error and display.  Otherwise, great!
+                        if not response.success:
+                            logger.error("Error from post attempt: " + response.message)
+                            raise Exception
+                        else:                    
+                            return HttpResponseRedirect('/blog')
             else:
-                form = PostContentForm(content_types=client_get_content_types(request.user.session_id).data)
+                form = PostContentForm(content_types=client_get_content_types(request.user.session_id).data,
+                                       media_types=client_get_media_types(request.user.session_id).data)
             
             c = RequestContext(request,{'form' : form,})
             return render_to_response('post-content.html', c)
@@ -81,20 +116,33 @@ class PostContentForm(forms.Form):
         content_types = None
         if ("content_types" in kwargs):
             content_types = kwargs.pop("content_types")
+        media_types = None
+        if ("media_types" in kwargs):
+            media_types = kwargs.pop("media_types")
             
         super(PostContentForm, self).__init__(*args, **kwargs)
         
         content_choices = []
+        media_choices = []
+        
         if (content_types):
             for content_type in content_types:
                 content_choices.append((content_type, content_type))
+                
+        if (media_types):
+            for media_type in media_types:
+                media_choices.append((media_type, media_type))
 
         self.fields["content_type"] = forms.ChoiceField(label="Content Type", choices=content_choices, required=True)        
         self.fields["title"] = forms.CharField(max_length=300, label="Title", required=True, widget=forms.Textarea)
         self.fields["body"] = forms.CharField(max_length=50000, label="Body", required=True, widget=forms.Textarea)
-        self.fields["summary"] = forms.CharField(max_length=500, label="Summary", required=False, widget=forms.Textarea)
+        self.fields["summary"] = forms.CharField(max_length=4000, label="Summary", required=False, widget=forms.Textarea)
         self.fields["tags"] = forms.CharField(max_length=200, label="Tags", required=False)
         
+        self.fields["media_type"] = forms.ChoiceField(label="Media Type", choices=media_choices, required=False)
+        self.fields["name"] = forms.CharField(max_length=200, label="Name", required=False)
+        self.fields["url"] = forms.CharField(max_length=300, label="URL", required=False)
+        self.fields["duration"] = forms.CharField(max_length=10, label="Duration", required=False)
 
 ###############################################################################################
 # The page responsible for retrieving a particular piece of content.
@@ -134,19 +182,101 @@ def get_content(request, id = None, title = None):
             context = {'content' : content,
                        'errors' : errors,
                        'page_url' : page_url  }
-            context.update(getContentTagContext(request))
+            context.update(getContentTagContext(request, content.content_type))
             context.update(getContentMonthContext(request))
 
             c = RequestContext(request, context)
             
-            return render_to_response('content.html', c)
+            if (content.content_type == "PODCAST"):
+                return render_to_response('podcast.html', c)
+            
+            return render_to_response('blog.html', c)
     except Http404:
         logger.debug("Received 404 looking for page: " + request.get_full_path())
         raise Http404
     except Exception:
         logger.error("Exception when showing a reckoning:") 
         logger.error(traceback.print_exc(8))
-        raise Exception     
+        raise Exception   
+    
+###############################################################################################
+# Page responsible for listing content.
+###############################################################################################
+    
+def content_list_page(request, content_type="blog"):
+    page_url = "".join(("/", content_type))
+    errors={}
+    
+    try:    
+        if request.method == 'GET':
+            page = request.GET.get('page', None)
+            size = request.GET.get('size', None)
+            tag = request.GET.get('tag', None)
+            month = request.GET.get('month', None)
+            year = request.GET.get('year', None)
+            
+            posted_after = None
+            posted_before = None
+            
+            if (month and year):
+                if (int(month) > 11):
+                    next_month = '1'
+                    next_year = str(int(year) + 1)
+                    posted_after = convertFormToDateTime("".join((month,"/01/",year," 00:01")))
+                    posted_before = convertFormToDateTime("".join((next_month,"/01/",next_year," 00:01")))
+                else:
+                    next_month = str(int(month) + 1)     
+                    posted_after = convertFormToDateTime("".join((month,"/01/",year," 00:01")))
+                    posted_before = convertFormToDateTime("".join((next_month,"/01/",year," 00:01")))
+                
+            # Persist the filter information.  Keep it if we're moving across pages.
+            if (tag is not None):
+                request.session[content_type + '-include-tags'] = tag
+            elif (page is not None):
+                tag = request.session.get(content_type + '-include-tags', None)
+                
+            if (posted_after is not None):
+                request.session[content_type + '-posted-after'] = posted_after
+            elif (page is not None):
+                posted_after = request.session.get(content_type + '-posted-after', None)
+            if (posted_before is not None):
+                request.session[content_type + '-posted-before'] = posted_before
+            elif (page is not None):
+                posted_before = request.session.get(content_type + '-posted-before', None)
+            
+            if not page:
+                page = '1'
+            if not size:
+                size = '5'
+                
+            content_list_response = client_get_contents(type = content_type,
+                                                        page=(int(page)-1), size=int(size), 
+                                                        include_tags = tag,
+                                                        posted_before=posted_before, posted_after=posted_after,
+                                                        sort_by="postingDate", ascending=False)
+            
+            context = {'page': int(page),
+                       'size': int(size),
+                       'contents' : content_list_response.contents,
+                       'page_url' : page_url,
+                       'errors' : errors}
+            context.update(pageDisplay(page, size, content_list_response.count))
+            context.update(getContentTagContext(request, content_type))
+            context.update(getContentMonthContext(request))
+            
+            c = RequestContext(request, context)
+            
+            if (content_type == "podcast"):
+                return render_to_response('podcast_list.html', c)
+            elif (content_type == "video"):
+                return render_to_response('video_list.html', c)
+            
+            return render_to_response('blog_list.html', c)
+            
+    except Exception:      
+        logger.error("Exception when rending content list page:") 
+        logger.error(traceback.print_exc(8))
+        raise Exception  
 
 ###############################################################################################
 # The page responsible for processing a POST of a page comment.
@@ -288,15 +418,41 @@ def update_content_ajax(request):
                 summary = request.POST.get('summary', None)
                 tag_csv = purgeHtml(request.POST.get('tags', None))
                 
+                media_id = (request.POST.get('media-id', None))
+                media_url = (request.POST.get('url', None))
+                media_type = (request.POST.get('media-type', None))
+                name = (request.POST.get('name', None))
+                url = (request.POST.get('url', None))
+                duration = (request.POST.get('duration', None))
+                
                 if ((commentary and len(commentary) > 3000) or (title and len(title) > 300) or 
                     (body and len(body) > 50000) or (tag_csv and len(tag_csv) > 200) or
-                    (summary and len(summary) > 500)):
+                    (summary and len(summary) > 4000)):
                     site_response = AjaxServiceResponse(success=False,
                                                         message="too_long",
                                                         message_description="Saved field is too long.")  
+                elif (url is not None) and not verifyUrl(url):
+                    site_response = AjaxServiceResponse(success=False,
+                                                        message="bad_media_url",
+                                                        message_description="Specified Media URL is invalid.")  
+                elif ((name is not None and name == "") or (duration is not None and duration == "")):
+                    site_response = AjaxServiceResponse(success=False,
+                                                        message="missing_required_field",
+                                                        message_description="Missing Required Field.")                      
                     
                 elif (content_id): 
-                    contentUpdate = Content(id=content_id, commentary=commentary, commentary_user_id=commentary_user_id,
+                    if (media_id and url):
+                        media_items = [Media(id = media_id,
+                                      media_type=media_type,
+                                      name=name,
+                                      url=url,
+                                      file_type=getUrlMimeType(url),
+                                      duration=duration,
+                                      size=getUrlDownloadSize(url))]
+                    else:
+                        media_items = None
+                        
+                    contentUpdate = Content(id=content_id, commentary=commentary, commentary_user_id=commentary_user_id, media_items=media_items,
                                                 summary=summary, title=title, body=body, tag_csv=tag_csv)
                     
                     service_response = client_update_content(contentUpdate,
@@ -384,14 +540,14 @@ def reject_content_ajax(request):
 #  Utility used to add tags to the request context for the blog sidebar
 ###############################################################################################
 
-def getContentTagContext(request):
+def getContentTagContext(request, content_type):
     '''
     Calls the service necessary to pull all of the tags used for content and prepares them
     for the display context.
     '''
     nav_tags=[]
 
-    service_response = client_get_content_tags(request.user.session_id)
+    service_response = client_get_content_tags(request.user.session_id, content_type)
     if (service_response.status.success):
         nav_tags = service_response.tags
 

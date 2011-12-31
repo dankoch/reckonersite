@@ -2,8 +2,10 @@
 Created on Oct 1, 2011
 @author: danko
 '''
+import mimetypes
 import re
 import logging
+import urllib2
 
 from BeautifulSoup import BeautifulSoup, Comment
 from django.conf import settings
@@ -80,3 +82,35 @@ def slugifyTitle(value):
 def tidyTextInput(document):
     tidy_doc, errors = tidy_document(document, options={'show-body-only' : 1})
     return tidy_doc
+
+
+def verifyUrl(url):
+    '''Verifies that a specified URL exists and can be opened'''
+    try:
+        handle = urllib2.urlopen(url, None, timeout=10)
+        handle.close()
+    except:
+        logger.warn("Url not found during verification: " + url)
+        return False
+
+    return True
+
+def getUrlMimeType(url):
+    '''Determines the MIME Type associated with a URL'''
+    try:
+        return mimetypes.guess_type(url, False)[0]
+    except:
+        logger.warn("Error when determining the MIME type for url: " + url)
+    
+    return None
+
+def getUrlDownloadSize(url):
+    '''Determines the size of a file at the specified URL'''
+    try:
+        site = urllib2.urlopen(url)
+        meta = site.info()
+        return meta.getheaders("Content-Length")[0]
+    except:
+        logger.warn("Unable to get size for object at url: " + url)
+        
+    return None

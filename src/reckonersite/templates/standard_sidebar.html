@@ -10,7 +10,7 @@
 	
 	{% block rightsidebar %}
 	    <div id="standard-sidebar" class="sidebar-content">
-	       {% include "beta-sidebar-section.html" %}
+	       {% include "podcast-sidebar-section.html" with jplayer_id="jplayer-podcast-sidebar" %}
            {% include "social-sidebar-box.html" %}
 	       {% include "how-it-works-box.html" %}
 	       {% include "blog-box.html" %}
@@ -23,6 +23,12 @@
 	  {{ block.super }}
 	  {% include "top-reckonings-ajax.html" %}
 	  {% include "blog-box-ajax.html" %}
+	  
+      {% for media in last_podcast.media_items %}
+          {% if media.media_type == 'AUDIO' %}
+              {% include "jplayer-jquery.html" with button="true" jplayer_id="jplayer-podcast-sidebar" music_file=media.url %}
+          {% endif %}
+      {% endfor %}
 	{% endblock %}
 
 {% endcache %}

@@ -5,29 +5,13 @@
 {% cache TEMPLATE_CACHE_LIFESPAN blog_sidebar %}
 
 	{% block sitecolumnclass %}
-	    blog-site-column
+	    blog-site-column content-site-column
 	{% endblock %}
 	
 	{% block rightsidebar %}
 	    <div id="standard-sidebar" class="sidebar-content">
 	       <div id="blog-label-button"><a href="/blog"><img src="{{STATIC_URL}}images/reckoner-blog-bubble.png"></a></div>
-	       <div class="sidebar-background-box">
-	           <div id="cast-of-characters"><img src="{{STATIC_URL}}images/cast-of-characters.png"></div>
-	           <div class="character-row">
-	                <div class="character-portrait"><img src="{{STATIC_URL}}images/Dan-Koch-Reckon_Blog.png"></div>
-	                <div class="character-text person-character-text">
-	                    <div class="name">Dan Koch</div>
-	                    <div class="title">Proprietor, ReckonLabs</div>
-	                </div>
-	           </div>
-	           <div class="character-row">
-	                <div class="character-portrait"><img src="{{STATIC_URL}}images/reckonbot-reckon-blog.png"></div>
-	                <div class="character-text">
-	                    <div class="name">Reckonbot 3000</div>
-	                    <div class="title">Pit Boss</div>
-	                </div>
-	           </div>
-	       </div>
+	       {% include "cast-of-characters.html" %}
            <div class="section-header"><span>TAGS!</span></div>	       
 	       <div class="sidebar-background-box">
 	           <ul>
@@ -36,7 +20,7 @@
 	           {% endfor %}
 	           </ul>
 	       </div>
-            <div class="section-header"><span>ARCHIVE!</span></div>	       
+           <div class="section-header"><span>ARCHIVE!</span></div>	       
 	       <div class="sidebar-background-box">
 	           <ul>
 	           {% for month in content_months %}
@@ -49,8 +33,6 @@
 	
 	{% block javascript %}
 	  {{ block.super }}
-	  {% include "top-reckonings-ajax.html" %}
-	  {% include "related-reckonings-ajax.html" %} 
 	{% endblock %}
 
 {% endcache %}

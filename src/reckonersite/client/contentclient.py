@@ -57,13 +57,13 @@ def client_get_content(id, session_id, include_unaccepted=False, page_visit=Fals
     return contentList   
 
 
-def client_get_contents(content_type=None, posted_before=None, posted_after=None,
+def client_get_contents(type=None, posted_before=None, posted_after=None,
                           include_tags=None, submitted_by=None,
                           sort_by=None, ascending=False, page=None, size=None, randomize=None, count_only=None,
                           session_id=None):
     url = settings.RECKON_CONTENT_SERVICES_HOST + "/content" + "?"
-    if (content_type):
-        url += "content_type=" + content_type + "&"  
+    if (type):
+        url += "type=" + type + "&"  
     if (posted_before):
         url += "posted_before=" + posted_before.isoformat() + "&"    
     if (posted_after):
@@ -96,9 +96,21 @@ def client_get_contents(content_type=None, posted_before=None, posted_after=None
 
 def client_get_content_types(session_id):
     '''
-    Receives the list of permissions the Reckoner currently uses.
+    Receives the list of content types the Reckoner currently uses.
     '''
-    url = settings.RECKON_CONTENT_SERVICES_HOST + "/list/user/contenttypes?" + session_id
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/list/contenttypes?" + session_id
+    
+    response = urllib2.urlopen(url)
+    content = response.read()
+    servResponse = DataServiceList(xml_string = content)
+
+    return servResponse    
+
+def client_get_media_types(session_id):
+    '''
+    Receives the list of media types the Reckoner currently uses.
+    '''
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/list/mediatypes?" + session_id
     
     response = urllib2.urlopen(url)
     content = response.read()
@@ -117,10 +129,12 @@ def client_reject_content(content_id, session_id):
     
     return servResponse    
 
-def client_get_content_tags(session_id):
-    url = settings.RECKON_CONTENT_SERVICES_HOST + "/content/tags"
+def client_get_content_tags(session_id, type=None):
+    url = settings.RECKON_CONTENT_SERVICES_HOST + "/content/tags?"
+    if (type):
+        url += "type=" + type + "&" 
     if (session_id):
-        url += "?session_id=" + session_id
+        url += "session_id=" + session_id + "&"
     
     response = urllib2.urlopen(url)
     content = response.read()
