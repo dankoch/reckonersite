@@ -1,3 +1,4 @@
+{% load reckontags %}
 
 {% if button %}
 	<script type="text/javascript">
@@ -5,7 +6,7 @@
 	
 	    var myCirclePlayer = new CirclePlayer("#{{jplayer_id|default:"#jplayer-id-1"}}",
 	    {
-	        mp3: "{{music_file}}"
+	        mp3: "{{music_file|print_podcast_link}}"
 	    }, {
             cssSelectorAncestor: "#{{jplayer_container_id|default:"cp_container_1"}}",
             solution: "flash,html",
@@ -21,7 +22,7 @@
         $("#{{jplayer_id|default:"#jplayer-id-1"}}").jPlayer({
           ready: function () {
             $(this).jPlayer("setMedia", {
-              mp3: "{{music_file}}"
+              mp3: "{{music_file|print_podcast_link}}"
             });
           },
           cssSelectorAncestor: "#{{jplayer_container_id|default:"jp_container_1"}}",

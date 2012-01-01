@@ -6,6 +6,7 @@ Created on Oct 16, 2011
 import datetime
 
 from django import template
+from django.conf import settings
 from django.utils.safestring import mark_safe
 
 from reckonersite.util.dateutil import getTimeDelta, getCurrentDateTime, timeDeltaFormatter, convertDateTimeToForm
@@ -111,5 +112,22 @@ def print_tag_link(value):
         returnString= "".join(("<a href=\"", value.getURL(), "\">",
                                    value.tag,
                                    "</a>"))
+    finally:
+        return mark_safe(returnString)
+    
+@register.filter
+def print_podcast_link(value):
+    '''
+    Accepts a url and automatically adds the Podcast tracking prefix.
+    '''
+    returnString=value
+
+    try:
+        # Add in tracking prefix to URL by splitting off the http prefix and adding the prefix string.
+        url_seq = value.split("//", 1)
+        if (len(url_seq) == 2):
+            returnString = "".join((settings.PODCAST_TRACKING_PREFIX, url_seq[1],))
+        else:
+            returnString = "".join((settings.PODCAST_TRACKING_PREFIX, url_seq[0],))
     finally:
         return mark_safe(returnString)

@@ -96,7 +96,7 @@
                     {% if media.media_type == 'AUDIO' %}
                         {% include "jplayer-widget.html" with jplayer_id="jplayer-podcast" name=media.name %}
                         <div class="podcast-download-link">
-                            Download: <a href="{{media.url}}">MP3</a>
+                            Download: <a href="{{media.url|print_podcast_link}}">MP3</a>
                         </div>    
                     {% endif %}
                 {% endfor %}   

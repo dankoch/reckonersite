@@ -217,6 +217,8 @@ PODCAST_ITUNES_ID=""
 
 PODCAST_BLOCKED="no"
 
+PODCAST_TRACKING_PREFIX="http://www.podtrac.com/pts/redirect.mp3/"
+
 #### Miscellaneous Settings ###################################################################
 
 ## Sentinel used to mark fields as deleted for Reckoning update calls

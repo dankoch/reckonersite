@@ -2304,6 +2304,7 @@ td.gsc-search-button {
 #content-area #podcast-sidebar-box .podcast-standard-row {
     margin: 0 25px;
     height: 60px;
+    text-align: center;
 }
 
 #content-area #podcast-sidebar-box .podcast-standard-row-text {
@@ -2346,7 +2347,8 @@ td.gsc-search-button {
 
 #content-area #podcast-sidebar-box .subscribe-buttons {
     display: inline-block;
-    margin: 0 0 0 50px;
+    position: relative;
+    margin: 0 0 0 15px;
 }
 
 #content-area #podcast-sidebar-box .subscribe-buttons a {

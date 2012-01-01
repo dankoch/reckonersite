@@ -26,7 +26,7 @@ class iTunesPodcastsFeedGenerator(Rss201rev2Feed):
         handler.addQuickElement(u'itunes:email', self.feed['itunes_email'])
         handler.endElement(u"itunes:owner")
         
-        handler.addQuickElement(u'itunes:image', self.feed['itunes_image_url'])
+        handler.addQuickElement(u'itunes:image', None, {'href' : self.feed['itunes_image_url']})
         handler.addQuickElement(u'itunes:block', self.feed['itunes_block'])
         handler.addQuickElement(u'itunes:keywords', self.feed['itunes_keywords'])
         
@@ -44,7 +44,7 @@ class iTunesPodcastsFeedGenerator(Rss201rev2Feed):
                                                      'length' : item['bytes'], 
                                                      'type' : item['type']})
         
-        handler.addQuickElement(u'itunes:image', item['itunes_image_url'])
+        handler.addQuickElement(u'itunes:image', None, {'href' : self.feed['itunes_image_url']})
         handler.addQuickElement(u'itunes:keywords', item['itunes_keywords'])
         handler.addQuickElement(u'podtrac:episodeimage', item['itunes_image_url'])
         handler.addQuickElement(u'guid',item['guid'])

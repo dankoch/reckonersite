@@ -155,6 +155,13 @@ def latest_podcasts_feed(request):
                                 podcast = media
                             elif (media.media_type == "IMAGE"):
                                 image_url = media.url
+                                
+                        # Add in tracking prefix to URL by splitting off the http prefix and adding the prefix string.
+                        url_seq = media.url.split("//", 1)
+                        if (len(url_seq) == 2):
+                            url = "".join((settings.PODCAST_TRACKING_PREFIX, url_seq[1],))
+                        else:
+                            url = "".join((settings.PODCAST_TRACKING_PREFIX, url_seq[0],))
                         
                         if (podcast):
                             syndicationFeed.add_item(title=media.name,
@@ -164,7 +171,7 @@ def latest_podcasts_feed(request):
                                                      subtitle=content.summary,
                                                      summary=content.summary,
                                                      duration=media.duration,
-                                                     url=media.url,
+                                                     url=url,
                                                      type=media.file_type,
                                                      bytes=media.size,
                                                      guid=media.media_id,
