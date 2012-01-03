@@ -79,6 +79,8 @@ def post_content(request):
                             media.size = getUrlDownloadSize(media.url)
                             media.file_type = getUrlMimeType(media.url)
                             valid = True
+                    else:
+                        media = None
                             
                     if valid:
                         content=Content(content_type=(form.cleaned_data['content_type']),

@@ -213,7 +213,7 @@ PODCAST_ITUNES_EXPLICIT="no"
 
 PODCAST_ITUNES_IMAGE="http://static.thereckoner.net/images/The-Reckoner-Icon-Alternate-Big.jpg"
 PODCAST_ITUNES_KEYWORDS="The Reckoner, Reckoner, Polls, Votes, Democracy, Crowdsourcing, Social Media, Technology, Robots, Decisions"
-PODCAST_ITUNES_ID=""
+PODCAST_ITUNES_ID="492501185"
 
 PODCAST_BLOCKED="no"
 
