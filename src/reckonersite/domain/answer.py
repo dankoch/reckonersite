@@ -51,8 +51,9 @@ class Answer(Base):
         votesElement = xml_root.find('votes')
         if (not votesElement is None):
             self.votes = []
-            for voteElement in votesElement.findall('vote'):
-                self.votes.append(Vote(xml_elemnt=voteElement))
+            for voteEntry in votesElement.findall('entry'):
+                for voteValue in voteEntry.findall('value'):
+                    self.votes.append(Vote(xml_element=voteValue))
                 
         if (not xml_root.find('percentage') is None):  
             self.percentage = xml_root.find('percentage').text

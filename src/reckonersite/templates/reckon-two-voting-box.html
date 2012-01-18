@@ -53,9 +53,10 @@
               <div class="votes">({{ reckoning.answers.1.vote_total|intcomma }})</div>
             </div>
         </div>   
-        <div class="bottom-area"></div>           
+        <div class="bottom-area">
+        </div>           
      </div>
- {% else %} {% if user_vote or errors.phony_vote or user.reckoner_id == reckoning.submitter_id %}
+ {% else %} {% if user_vote or errors.phony_vote or user.reckoner_id == reckoning.submitter_id or result_display %}
      <div class="vote-label"><img src="{{ STATIC_URL }}images/reckoning-status-label.png" alt="Reckoning Status!"></div>
      <div class="vote-box vote-box-open">
         <div class="top-note-area">

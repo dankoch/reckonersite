@@ -4,6 +4,7 @@
     <div class="vote-boxes">
         <div class="vote-box vote-box-1 {% if reckoning.answers.0.vote_total > '0' %} vote-box-selected {% endif %}">{{ reckoning.answers.0.text }}</div>
         <div class="vote-box vote-box-2 {% if reckoning.answers.1.vote_total > '0' %} vote-box-selected {% endif %}">{{ reckoning.answers.1.text }}</div>
+        <div class="anonymous-label">{% if reckoning.answers.0.votes.0.anonymous or reckoning.answers.1.votes.0.anonymous %}Anonymized!{% endif %}</div>
     </div>
     <div class="content-wrapper">
         <div class="question">

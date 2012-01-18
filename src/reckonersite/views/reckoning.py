@@ -32,6 +32,7 @@ from reckonersite.client.reckoningclient import client_get_reckoning, \
                                                 client_reject_reckoning, \
                                                 client_get_open_reckonings, \
                                                 client_get_closed_reckonings
+from reckonersite.client.voteclient import client_get_reckoning_answer_votes
 
 from reckonersite.domain.ajaxserviceresponse import AjaxServiceResponse
 from reckonersite.domain.answer import Answer
@@ -130,6 +131,9 @@ def post_reckoning_thanks(request):
     
     return render_to_response('post-reckoning-thanks.html', RequestContext(request, None))
 
+###############################################################################################
+# Displays the full contents of a standard Reckoning.
+###############################################################################################
 
 def get_reckoning(request, id = None, title = None):
     commentFormPrefix="commentform"
@@ -193,6 +197,57 @@ def get_reckoning(request, id = None, title = None):
         raise Http404
     except Exception:
         logger.error("Exception when showing a reckoning:") 
+        logger.error(traceback.print_exc(8))
+        raise Exception     
+    
+###############################################################################################
+# Displays the detailed results of a specific Reckoning.
+###############################################################################################
+    
+def get_reckoning_results(request, id = None, title = None):
+        
+    try:         
+        # Fetch the Reckoning. Don't count it as a view.   
+        service_response = client_get_reckoning(id, request.user.session_id, page_visit=True)
+        
+        # Check to see if the API submission was a success.  If not, straight to the fail-page!
+        # If the Reckoning list is empty, there's no Reckoning by that ID.  Straight to the 404 page!
+        # If the passed title doesn't match the slugified question matching the ID, redirect so that it does.
+        if (not service_response.status.success):
+            logger.warning("Error when retrieving reckoning results: " + service_response.status.message)
+            raise BaseException() 
+        elif (not service_response.reckonings):
+            raise Http404
+        elif (request.path != service_response.reckonings[0].results_url):
+            return HttpResponseRedirect(service_response.reckonings[0].results_url)
+        else:        
+            reckoning = computeReckoningAnswerPercentages(service_response.reckonings[0])
+            vote_lists = []
+            vote_counts = []
+            for answer in reckoning.answers:
+                vote_service_response = client_get_reckoning_answer_votes(id, answer.index, page=0, size=100, session_id = request.user.session_id)
+                vote_lists.append(vote_service_response.votes)
+                
+                # Counts reflect number of votes besides what's in the vote lists
+                vote_counts.append(int(vote_service_response.count) - len(vote_service_response.votes))
+            
+            # Pull the user's vote for this reckoning and add it to the context.
+            user_vote = get_user_reckoning_vote(request, id=id)
+
+            errors = request.session.get('errors', {})
+            request.session['errors'] = None
+
+            c = RequestContext(request, {'reckoning' : reckoning,
+                                         'vote_lists' : vote_lists,
+                                         'vote_counts' : vote_counts,
+                                         'errors' : errors})
+            
+            return render_to_response('reckoning-results.html', c)
+    except Http404:
+        logger.debug("Received 404 looking for page: " + request.get_full_path())
+        raise Http404
+    except Exception:
+        logger.error("Exception when showing reckoning results:") 
         logger.error(traceback.print_exc(8))
         raise Exception     
 

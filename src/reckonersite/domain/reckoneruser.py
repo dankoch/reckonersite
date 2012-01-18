@@ -15,6 +15,7 @@ class ReckonerUser(Base):
                  auth_provider=None, auth_provider_id=None, first_login=None, last_login=None, 
                  profile_picture_url=None, profile_url=None, groups=None, permissions=None,
                  bio=None, active=True, 
+                 hide_profile=None, hide_votes=None,
                  xml_string=None, xml_element=None):
         
         # Note: Since we're building the XML nodes off of the names of the attributes,
@@ -34,6 +35,8 @@ class ReckonerUser(Base):
         self.permissions = permissions
         self.active = active
         self.bio = bio
+        self.hide_profile = hide_profile
+        self.hide_votes = hide_votes
         
         if not xml_string is None:
             self.buildFromXMLString(xml_string)
@@ -108,6 +111,11 @@ class ReckonerUser(Base):
             self.active = (xml_root.find('active').text == 'true')    
         if (not xml_root.find('bio') is None):
             self.bio = xml_root.find('bio').text
+            
+        if (not xml_root.find('hide_profile') is None):
+            self.hide_profile = (xml_root.find('hide_profile').text == 'true')  
+        if (not xml_root.find('hide_votes') is None):
+            self.hide_votes = (xml_root.find('hide_votes').text == 'true')  
             
     def getURL(self):
         if (self.id and self.first_name and self.last_name):

@@ -1,0 +1,126 @@
+{% extends "reckoning_sidebar.html" %}
+{% load reckontags %}
+{% load humanize %}
+
+{% block pagetitle %}The Reckoner! - {{ reckoning.question }} - Detailed Results{% endblock %}
+
+{% block fb-title %}"{{ reckoning.question }} - Detailed Results"{% endblock %}
+{% block fb-url %}"{{ SITE_ROOT }}{{ reckoning.getResultsURL }}"{% endblock %}
+{% block fb-description %}"{{ reckoning.description|striptags|truncatewords_html:50 }}"{% endblock %}
+
+{% block gplus-title %}"{{ SITE_NAME }} - {{ reckoning.question }} - Detailed Results"{% endblock %}
+{% block gplus-description %}"{{ reckoning.description|striptags|truncatewords_html:50 }}"{% endblock %}
+
+{% block canon-url %}"{{ SITE_ROOT }}{{ reckoning.getResultsURL }}"{% endblock %}
+
+{% block extraheader %}
+      <script src="{{ STATIC_URL }}js/ajax-post.js"></script>
+      <script src="{{ STATIC_URL }}ckeditor/ckeditor.js"></script>
+      <script src="{{ STATIC_URL }}ckeditor/adapters/jquery.js"></script>
+{% endblock %}
+
+{% block main %}
+    <div id="individual-entry">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                 <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <div class="question-section">
+            <div class="question-wrapper"><h2>{{reckoning.question}}</h2></div>      
+        </div>
+        <div class="voting-section">
+            {% include "reckon-two-voting-box.html" with result_display="true" %}
+            <div class="detailed-results-link">
+                 <a href="{{reckoning.getURL}}">Return to Reckoning</a>                
+            </div> 
+        </div>
+        <div class="voter-section
+            {% if reckoning.getLeadingAnswer == '0' and not reckoning.open %}
+                voter-section-winner-1
+            {% else %} {% if reckoning.getLeadingAnswer == '1' and not reckoning.open %}
+                voter-section-winner-2
+            {% else %} {% if not reckoning.open %}
+                voter-section-tie
+            {% else %} 
+                voter-section-open
+            {% endif %} {% endif %} {% endif %}
+        ">
+            <div class="voter-section-heading">
+                <div class="voter-column-heading voter-column-heading-1">
+                    Voted for <span class="voter-box-heading-answer">{{ reckoning.answers.0.text}}</span>
+                </div>
+                <div class="voter-column-heading voter-column-heading-2">
+                    Voted for <span class="voter-box-heading-answer">{{ reckoning.answers.1.text}}</span>
+                </div>                
+            </div>
+            <div class="voter-section-body">
+                <div class="voter-column-body voter-column-body-1">
+	                {% for vote in vote_lists.0 %}
+	                    <div class="voter-box-voter">
+	                     <img src="{{ vote.voting_user.profile_picture_url}}" class="voter-picture-wrapper">
+	                     <div class="voter-name-text">{{ vote.voting_user|print_user_name}}</div>
+	                    </div>
+	                    {% if not forloop.last %}<hr>{% endif %}                 
+	                {% endfor %}
+	                <div class="other-votes-wrapper">
+	                 {% if vote_counts.0 > 0 %} And {{vote_counts.0|intcomma}} other vote{% if vote_counts.0 != 1 %}s{%endif%}... {% endif %}
+	                </div>   
+                </div>
+                <div class="voter-column-body voter-column-body-2">
+                    {% for vote in vote_lists.1 %}
+                        <div class="voter-box-voter">
+                         <img src="{{ vote.voting_user.profile_picture_url}}" class="voter-picture-wrapper">
+                         <div class="voter-name-text">{{ vote.voting_user|print_user_name}}</div>
+                        </div>   
+                        {% if not forloop.last %}<hr>{% endif %}          
+                    {% endfor %}
+                    <div class="other-votes-wrapper">
+                     {% if vote_counts.1 > 0 %} And {{vote_counts.1|intcomma}} other vote{% if vote_counts.1 != 1 %}s{%endif%}... {% endif %}
+                    </div>   
+                </div>                 
+            </div>
+        </div>
+    </div>        
+{% endblock %}
+
+{% block javascript %}
+  {{ block.super }}
+	  <script type="text/javascript">
+		  $(document).ready(function(){ 
+		      var largestHeight = 0;
+		      
+		      // The rendering adjustment compensates for how the button 'table-cells' are rendered.
+		      // Also establishes a minimum size.
+		      var renderAdjustment = 20;
+		 
+		      $('.button-area').find(".reckonbutton > span").each(function() {
+		          if ($(this).height() > largestHeight) {
+		            largestHeight = $(this).height();
+		          }
+		      });
+		      
+		      $('.button-area').find(".reckonbutton > span").each(function() {
+		          $(this).css('height', largestHeight + renderAdjustment);
+		      });
+		      
+		      // Substitutes a CKEditor field for new comments
+		      $(".comment-edit-field").ckeditor(
+		              function () { /* Callback code */}, {
+		            	  forcePasteAsPlainText: true,
+		                  skin: 'v2',
+		                  toolbar: 'Basic'
+		              }             
+		            );
+		      
+		      {% if 'UPDATE_ALL_RECKONINGS' in perms %}
+	          // Creates a jQuery Calendar for the Closing Date (if the user can edit it)
+	          $("#time-edit-field").datetimepicker();
+	          {% endif %}
+		  });
+	  </script>
+	  
+{% endblock %}

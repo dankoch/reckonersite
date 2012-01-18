@@ -81,6 +81,20 @@
         </div>
         <div class="voting-section">
             {% include "reckon-two-voting-box.html" %}
+            <div class="detailed-results-link">
+                 <a href="{{reckoning.getResultsURL}}">Results Breakdown</a>                
+            </div>   
+            {% if user_vote and not user.is_anonymous %}
+                <div class="anonymize-vote">
+                    <form id="anonymize-vote-form-{{reckoning.id}}" class="anonymize-vote-form form">
+                         <input type="hidden" name="user-id" value="{{user.reckoner_id}}">                
+                         <input type="hidden" name="reckoning-id" value="{{reckoning.id}}">
+                         <input type="hidden" name="answer-index" value="{{user_vote.answer_index}}">
+                         <input type="hidden" name="current-status" value="{{user_vote.anonymous}}">
+                         <input class="button anonymize-vote-button" type="submit" name="anonymize-vote-submit" value="({% if user_vote.anonymous %}De-Anonymize Your Vote!{% else %}Anonymize Your Vote!{% endif %})">
+                    </form>
+                </div>                         
+            {% endif %}    
         </div>
         <div class="prev-next-section">
             {% if prev_reck %}

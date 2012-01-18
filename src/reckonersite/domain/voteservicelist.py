@@ -14,10 +14,12 @@ class VoteServiceList(Base):
     Maintained to be synchronized with the Reckoner API'''
 
     def __init__(self, status = None, votes = None, success = False, 
+                 count = None,
                  xml_string = None, xml_element = None):
         
         self.status = status
         self.votes = votes
+        self.count = count
         
         if not xml_string is None:
             self.buildFromXMLString(xml_string)
@@ -44,3 +46,5 @@ class VoteServiceList(Base):
             self.votes = []
             for voteElement in votesElement.findall('vote'):
                 self.votes.append(Vote(xml_element=voteElement))
+        if (not xml_root.find('count') is None):
+            self.count=xml_root.find('count').text

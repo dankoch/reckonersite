@@ -30,6 +30,7 @@
 	            <div class="profile-picture-wrapper"><img src="{{profile_user.profile_picture_url}}" alt="Reckonaut {{profile_user.first_name}} {{profile_user.last_name}}"></div>
 	            <div class="poster-name">{{profile_user.first_name}} {{profile_user.last_name}}</div>
 	            <div class="poster-links">
+                    {% if profile_user.id == user.reckoner_id %}<div class="poster-link">(<span id="privacy-settings-link"><a href="">Privacy Settings</a></span>) <span class="profile-privacy-edit-message"></span></div>{% endif %}    	            
 	                <div class="poster-link">(<a href="{{profile_user.profile_url}}">{{profile_user.auth_provider|lower}} Profile</a>)</div>
 	            </div>
 	            <div class="poster-dates">
@@ -76,6 +77,7 @@
                {% endif %}   	           
 	        </div>
         </div>
+        {% if profile_user.id == user.reckoner_id or not profile_user.hide_profile %}
         <div class="reckonings-list-box tab-box">
             <div class="reckoning-tabs">
                 <div class="reckoning-tab reckoning-tab-left {% if tab == "reckonings" %}reckoning-tab-selected{% endif %}">
@@ -99,10 +101,16 @@
 	                    <hr class="reckoning-divider">
 	                {% endfor %}
 	            {% else %} {% if tab == "votes" %}
-                    {% for reckoning in reckonings %}
-                        {% include "reckoning_vote_list_item.html" %}
-                        <hr class="reckoning-divider">
-                    {% endfor %}    	            
+	                {% if profile_user.id == user.reckoner_id or not profile_user.hide_votes %} 
+	                    {% for reckoning in reckonings %}
+	                        {% include "reckoning_vote_list_item.html" %}
+	                        <hr class="reckoning-divider">
+	                    {% endfor %}
+	                {% else %}
+				        <div class="private-account-notice">
+				            This user's voting activity is private.
+				        </div>	                    
+	                {% endif %}  	            
 	            {% else %} {% if tab == "comments" %}
                     {% for reckoning in reckonings %}
                         {% include "comment_list_item.html" %}
@@ -118,7 +126,38 @@
                 {% include "paging_widget.html" %}
             </div>
         </div>
-    </div>        
+        {% else %}
+        <div class="private-account-notice">
+            This user's account activity is private.
+        </div>
+        {% endif %}
+    </div>
+    
+	<div id="privacy-dialog-form" title="The Reckoner! Privacy Settings!">
+	    <div class="privacy-description">
+	       <p><b>Here you can control what is visible to other users, Google, and Reckonbot.</b></p>
+	       <p>You can still view hidden profile data, but it will be hidden from other site users (and the world at large).</p>
+	    </div>
+	
+	    <form>
+	    <fieldset>
+	        <div class="privacy-field">
+                <input type="checkbox" name="privacy_hide_votes" id="privacy_hide_votes" class="privacy-checkbox privacy-field" />
+		        <label for="privacy_hide_votes">Hide your voting record from the public.</label>
+            </div> <div class="privacy-field">
+                <input type="checkbox" name="privacy_hide_profile" id="privacy_hide_profile" class="privacy-checkbox privacy-field" />
+	            <label for="privacy_hide_profile">Hide your entire Reckoner history from the public.</label>
+            </div>
+            <input type="hidden" name="user-id" id="privacy_user_id" value="{{profile_user.id}}">
+	    </fieldset>
+	    </form>
+	    
+        <div class="privacy-description">
+           <p>You can also hide individual votes using the 'Votes' tab in your profile page.
+              If you have any questions on your privacy settings, don't hesitate to <a href="/contact-us">contact us</a>!
+           </p>
+        </div>
+	</div>        
 {% endblock %}
 
 {% block javascript %}
@@ -152,7 +191,7 @@
                   userId = $form.find("input[name=user-id]").val(),
                   bio = $form.find("textarea[name=user-bio]"); 
               
-              $.post("/ajax/user/bio/" + userId, bio.serialize(),
+              $.post("/ajax/user/update/" + userId, bio.serialize(),
                      function(data) {                 
                         var message = $( data ).find( 'message_description' ),
                             success = $( data ).find( 'success' ).text();                   
@@ -167,7 +206,54 @@
                      } 
                      , "xml")
           }); 
-       });   
+       }); 
+      
+       $(document).ready(function() {
+    	    var current_hide_votes = {% if profile_user.hide_votes %}true{% else %}false{% endif %};
+    	    var current_hide_profile = {% if profile_user.hide_profile %}true{% else %}false{% endif %};
+    	   
+    	    var $dialog = $('#privacy-dialog-form')
+    	        .dialog({
+    	            autoOpen: false,
+    	            height: 400,
+    	            width: 400,
+    	            modal: true,
+    	            title: 'The Reckoner! Privacy Settings!',
+    	            buttons: {
+    	                "Save": function() {
+    	                	userId = $('#privacy_user_id').val();
+    	                	hide_votes = $('#privacy_hide_votes').is(':checked');
+                            hide_profile = $('#privacy_hide_profile').is(':checked');
+    	                	
+    	                    $.post("/ajax/user/update/" + userId, "hide_votes=" + hide_votes.toString() + "&hide_profile=" + hide_profile.toString(),
+    	                            function(data) {                 
+    	                               var message = $( data ).find( 'message_description' ),
+    	                                   success = $( data ).find( 'success' ).text();  
+                                       $(".profile-privacy-edit-message").empty().append(message);    
+    	                               
+    	                               if (success.toLowerCase() === 'true') {	                            	   
+    	                                   current_hide_votes = hide_votes;
+    	                                   current_hide_profile = hide_profile;
+    	                               }
+    	                            } 
+    	                            , "xml")    	                	
+    	                	
+    	                    $( this ).dialog( "close" );  	                    
+    	                },
+    	                Cancel: function() {                	
+    	                    $( this ).dialog( "close" );
+    	                }
+    	            },
+    	        });
+
+    	    $('#privacy-settings-link').click(function() {
+                $('#privacy_hide_votes').attr('checked', current_hide_votes);
+                $('#privacy_hide_profile').attr('checked', current_hide_profile);   
+    	        $dialog.dialog('open');
+    	        // prevent the default action, e.g., following a link
+    	        return false;
+    	    });
+    	});
 </script>
 {% endblock %}
 

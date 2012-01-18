@@ -116,7 +116,7 @@ def get_user_profile(request, id = None, name = None):
 #  (as used primarily for AJAX calls)
 ###############################################################################################
 
-def update_reckoning_bio(request, id = None):
+def update_reckoning_profile(request, id = None):
     site_response = AjaxServiceResponse(success=False,
                                         message="whoops", 
                                         message_description='No go. Try again later.')
@@ -124,14 +124,17 @@ def update_reckoning_bio(request, id = None):
     if (request.user.has_perm('UPDATE_PROFILE_INFO') or id == request.user.reckoner_id):
         try:
             if request.method == 'POST':
-                bio = sanitizeBioHtml(request.POST.get("user-bio", ""))
+                bio = sanitizeBioHtml(request.POST.get("user-bio", None))
                 
-                if (len(bio) > 1000):
+                if (bio and len(bio) > 1000):
                     site_response = AjaxServiceResponse(success=False,
                                                         message="too_long",
                                                         message_description="Maximum Length is 1000 Characters (minus markup)")
                 else: 
-                    userUpdate = ReckonerUser(id=id, bio=bio)
+                    userUpdate = ReckonerUser(id=id, bio=bio,
+                                              hide_profile=request.POST.get("hide_profile", None),
+                                              hide_votes=request.POST.get("hide_votes", None))
+                    
                     service_response = client_update_user(userUpdate,
                                                           request.user.session_id)                              
                     

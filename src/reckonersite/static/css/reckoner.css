@@ -1168,7 +1168,7 @@ td.gsc-search-button {
 }
 
 #individual-entry .voting-section {
-	margin: 30px 7px 10px 7px;
+	margin: 30px 7px 8px 7px;
 }
 
 #individual-entry .voting-section .vote-box {
@@ -1367,6 +1367,40 @@ td.gsc-search-button {
 #individual-entry .voting-section .error-box .description {
     font-size: 12px;
     margin: 5px 20px;
+}
+
+#individual-entry .voting-section .detailed-results-link {
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+#individual-entry .voting-section .detailed-results-link a {
+    color: #cc0000;
+}
+
+#individual-entry .voting-section .anonymize-vote {
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;    font-size: 12px;
+    font-size: 8px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#individual-entry .voting-section .anonymize-vote .button {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif; 
+    font-size: 8px;   
+    font-weight: bold;
+    margin: 0 0 0 0;
+    padding: 0;  
+}
+
+#individual-entry .voting-section .anonymize-vote .button:hover {
+    text-decoration: underline;
 }
 
 #individual-entry .metadata-section {
@@ -1640,6 +1674,101 @@ td.gsc-search-button {
     text-transform: uppercase; 
     width: 300px;
  }
+ 
+/***************************************************************************************
+* RESULTS PAGE STYLES
+* Generic styles used specifically for the results page.
+***************************************************************************************/
+ 
+#individual-entry .voter-section {
+    border: 1px solid #9d9d9d;
+    margin: 0px 7px 10px 7px;
+    width: 610px;
+}
+
+#individual-entry .voter-section .voter-section-heading {
+	border-bottom: 1px solid #9d9d9d;
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 8px 0;
+    text-align: center;
+}
+
+#individual-entry .voter-section .voter-box-heading-answer {
+    text-transform: uppercase;
+}
+
+#individual-entry .voter-section-winner-1 .voter-section-heading {
+    background-image: url(../images/reckoning-results-winner-1-background.png);
+    background-repeat: repeat-y;
+}
+
+#individual-entry .voter-section-winner-2 .voter-section-heading {
+    background-image: url(../images/reckoning-results-winner-2-background.png);
+    background-repeat: repeat-y;
+}
+
+#individual-entry .voter-section-tie .voter-section-heading {
+    background-image: url(../images/reckoning-results-tie-background.png);
+    background-repeat: repeat-y;
+}
+
+#individual-entry .voter-section-open .voter-section-heading {
+    background-image: url(../images/reckoning-results-open-background.png);
+    background-repeat: repeat-y;
+}
+
+#individual-entry .voter-column-heading {
+    display: inline-block;
+    width: 301px;
+}
+
+#individual-entry .voter-section .voter-section-body {
+    background-image: url(../images/reckoning-results-voters-background.png);
+    background-repeat: repeat-y;
+}
+
+#individual-entry .voter-section .voter-column-body {
+    display: inline-block;
+    padding: 10px 60px 12px 60px;
+    text-align: right;
+    width: 182px;
+    vertical-align: top;
+}
+
+#individual-entry .voter-section .voter-column-body hr {
+	border-top: 1px dotted #cccccc;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    margin: 0px 28px 4px 29px;
+}
+
+#individual-entry .voter-section .voter-box-voter {
+    height: 38px;
+}
+
+#individual-entry .voter-section .voter-picture-wrapper {
+    border: 1px solid #666666;
+    display: inline-block;
+    height: 30px;
+    float: left;
+    width: 30px;
+}
+
+#individual-entry .voter-section .voter-name-text {
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+}
+
+#individual-entry .voter-section .other-votes-wrapper {
+	color: #666666;
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-style: italic;
+    text-align: center;
+}
  
 /***************************************************************************************
 * COMMENT STYLES
@@ -2490,6 +2619,10 @@ td.gsc-search-button {
 	margin: 7px 0;
 }
 
+#user-profile-page .profile-info-section .profile-bio .profile-bio-edit-button:hover {
+    text-decoration: underline;
+}
+
 #user-profile-page .profile-info-section .profile-bio .profile-bio-edit-message {
     color: #cc0000;
     font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
@@ -2505,16 +2638,16 @@ td.gsc-search-button {
  
 .reckoning .vote-boxes {
 	float: left;
+	font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    text-align: center;
 }
 
 .reckoning .vote-boxes .vote-box {
     border: 1px solid #666666;
     color: #9d9d9d;
-    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
-    font-size: 12px;
     margin: 0 0 5px 0;
     padding: 5px 0;
-    text-align: center;
     width: 140px;    
 }
 
@@ -2522,6 +2655,11 @@ td.gsc-search-button {
     background-color: #d7ffbe;  
     color: black;
     font-weight: bold; 
+}
+
+.reckoning .vote-boxes {
+	color: #cc0000;
+    font-weight: bold;
 }
 
 .profile-comment .profile-comment-reckoning {
@@ -2552,6 +2690,25 @@ td.gsc-search-button {
 	margin: 5px auto;
 	text-align: center;
 	width: 100%;	
+}
+
+.privacy-field {
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+}
+
+#user-profile-page .profile-privacy-edit-message {
+    color: #cc0000;
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+#user-profile-page .private-account-notice {
+	color: #999999;
+    font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    text-align: center;
 }
 
 /***************************************************************************************

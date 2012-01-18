@@ -63,6 +63,7 @@ class Reckoning(Base):
             self.buildFromXMLElement(xml_element)
             
         self.url = self.getURL()
+        self.results_url = self.getResultsURL()
         self.total_votes = self.getTotalVotes()
         
     def getXML(self):
@@ -206,6 +207,12 @@ class Reckoning(Base):
     def getURL(self):
         if (self.id and self.question):
             return '/reckoning/' + self.id + "/" + slugifyTitle(self.question)
+        
+        return None
+    
+    def getResultsURL(self):
+        if (self.id and self.question):
+            return '/reckoning/results/' + self.id + "/" + slugifyTitle(self.question)
         
         return None
     

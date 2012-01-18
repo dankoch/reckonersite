@@ -145,4 +145,37 @@
                      , "xml")
           }); 
        });
+      
+      $(function(){
+          $(".anonymize-vote-form").submit(function(e) {
+              e.preventDefault();
+              var $form = $( this ),
+              userId = $form.find("input[name=user-id]").val(),
+              reckoningId = $form.find("input[name=reckoning-id]").val(),
+              answerIndex = $form.find("input[name=answer-index]").val(),
+              currStatus = $form.find("input[name=current-status]").val();
+              
+              if (currStatus === "True") {
+            	  var nextStatus = false;
+              } else {
+            	  var nextStatus = true;
+              }
+              
+              $.post("/ajax/vote/update/" + reckoningId + "/" + userId + "/" + answerIndex, "anonymous=" + nextStatus,
+                     function(data) {                 
+                        var message = $( data ).find( 'message_description' ),
+                            success = $( data ).find( 'message' ).text();
+                        
+                        if (success.toLowerCase() === 'success' && nextStatus) {
+                            $("#anonymize-vote-form-" + reckoningId).empty().append("(Anonymized!)");                        	
+                        } else if (success.toLowerCase() === 'success' && !nextStatus) {
+                            $("#anonymize-vote-form-" + reckoningId).empty().append("(De-Anonymized!)");                         
+                        } else {
+                        	$("#anonymize-vote-form-" + reckoningId).empty().append(message);
+                        }
+
+                     } 
+                     , "xml")
+          }); 
+       });
 </script>
