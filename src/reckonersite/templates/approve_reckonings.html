@@ -1,4 +1,5 @@
 {% extends "standard_sidebar.html" %}
+{% load reckontags %}
 
 {% block pagetitle %}The Reckoner! - Reckoning Administration{% endblock %}
 
@@ -44,7 +45,7 @@
 			        {% if postingUser %}
 			        <li><span class="label">Submitter:</span>
 			           <ul>
-			           <li><a href="{{postingUser.getURL}}">{{postingUser.first_name}} {{postingUser.last_name}}</a></li>
+			           <li>{{ postingUser|print_user_name }}</li>
 			           <li>Reckoner ID: {{postingUser.reckoner_id}}</li>
 			           </ul>
 			        </li>

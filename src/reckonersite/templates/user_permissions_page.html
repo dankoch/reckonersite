@@ -1,4 +1,5 @@
 {% extends "standard_sidebar.html" %}
+{% load reckontags %}
 
 {% block title %}Reckoning Administration{% endblock %}
 
@@ -19,7 +20,7 @@
     {% if groupForm %}
 	    <h3>Current User:</h3>
 	    <ul>
-	        <li>Name: {{currentUser.first_name}} {{currentUser.last_name}}
+	        <li>Name: {{currentUser|print_user_name}}
 	        <li>ID: {{currentUser.reckoner_id}}
 	        <li>Provider: {{currentUser.auth_provider}} ID: {{currentUser.auth_provider_id}}
 	    </ul>

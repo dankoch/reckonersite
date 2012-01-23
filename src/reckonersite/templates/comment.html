@@ -1,8 +1,9 @@
+{% load reckontags %}
 <div id="comment-{{comment.id}}" class="comment">
     <div class="comment-picture-wrapper"><img src="{{comment.user.profile_picture_url}}" class="profile-picture"></div>
     <div class="comment-data">
         <div class="comment-header">
-            <span id="profile-name-{{comment.id}}" class="profile-name"><a href="{{comment.user.getURL}}">{{comment.user.first_name}} {{comment.user.last_name}}</a></span>
+            <span id="profile-name-{{comment.id}}" class="profile-name">{{comment.user|print_user_name}}</span>
         </div>
         <div id="comment-text-{{comment.id}}" class="comment-text">{{comment.comment|safe}}</div>
         {% if 'UPDATE_ALL_COMMENTS' in perms %}

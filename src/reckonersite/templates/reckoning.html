@@ -50,7 +50,7 @@
         {% if reckoning.commentary and reckoning.commentary|length > 0 %}
         <div class="commentary-section">
             <div id="commentary-profile-picture" class="profile-picture-wrapper"><img src="{{reckoning.commentary_user.profile_picture_url}}" class="profile-picture"></div>
-            <div class="profile-name"><a href="{{reckoning.commentary_user.getURL}}">{{reckoning.commentary_user.first_name}} {{reckoning.commentary_user.last_name}}</a></div>
+            <div class="profile-name">{{reckoning.commentary_user|print_user_name}}</div>
             <div class="commentary-text">{{reckoning.commentary|safe}}</div>
         </div>      
         {% endif %}
@@ -266,7 +266,7 @@
                             <form id="comment-form" action="/comment/reckoning/post" method="post">{% csrf_token %}	                    
 		                        <div class="comment-header">
                                    {{errors.comment}}		                        
-			                       <div class="profile-name">{{user.first_name}} {{user.last_name}}</div>
+			                       <div class="profile-name">{{user|get_user_name}}</div>
 			                    </div>
                                 <div class="comment-field">
                                      <label for="id_commentform-comment" class="comment-form-label"><h5>Comment!</h5></label>

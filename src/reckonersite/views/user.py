@@ -3,6 +3,7 @@ Created on Aug 23, 2011
 @author: danko
 '''
 import logging
+import re
 import sys
 import traceback
 
@@ -124,16 +125,29 @@ def update_reckoning_profile(request, id = None):
     if (request.user.has_perm('UPDATE_PROFILE_INFO') or id == request.user.reckoner_id):
         try:
             if request.method == 'POST':
+                print "Username POST: " + str(request.POST)
+                
                 bio = sanitizeBioHtml(request.POST.get("user-bio", None))
+                username = request.POST.get("username", None)
                 
                 if (bio and len(bio) > 1000):
                     site_response = AjaxServiceResponse(success=False,
                                                         message="too_long",
                                                         message_description="Maximum Length is 1000 Characters (minus markup)")
+                elif (username and not re.match("^[a-zA-Z0-9_. -]+$", username)):
+                    site_response = AjaxServiceResponse(success=False,
+                                                    message="bad_username_characters",
+                                                    message_description="Sorry! Usernames can only use letters, numbers, '-', '_', '.', or spaces.")
+                        
+                elif (username and (len(username) < 1 or len(username) > 32)):
+                    site_response = AjaxServiceResponse(success=False,
+                                                    message="username_too_long",
+                                                    message_description="Sorry! Usernames must be between 1 and 32 characters.")
                 else: 
-                    userUpdate = ReckonerUser(id=id, bio=bio,
+                    userUpdate = ReckonerUser(id=id, bio=bio, username=username,
                                               hide_profile=request.POST.get("hide_profile", None),
-                                              hide_votes=request.POST.get("hide_votes", None))
+                                              hide_votes=request.POST.get("hide_votes", None),
+                                              use_username=request.POST.get("use_username", None))
                     
                     service_response = client_update_user(userUpdate,
                                                           request.user.session_id)                              
@@ -142,7 +156,11 @@ def update_reckoning_profile(request, id = None):
                         site_response = AjaxServiceResponse(success=True,
                                                             message="success",
                                                             message_description="Updated!")
-                
+                    elif (service_response.status.message == "R715_AUTH_USER"):
+                        site_response = AjaxServiceResponse(success=False,
+                                                            message="already_used",
+                                                            message_description="Sorry! This username is already being used.")
+              
         except Exception:
             logger.error("Exception when flagging a reckoning:") 
             logger.error(traceback.print_exc(8))    

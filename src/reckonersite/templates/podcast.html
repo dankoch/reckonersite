@@ -45,7 +45,7 @@
         {% if content.commentary and content.commentary|length > 0 %}
         <div class="commentary-section">
             <div id="commentary-profile-picture" class="profile-picture-wrapper"><img src="{{content.commentary_user.profile_picture_url}}" class="profile-picture"></div>
-            <div class="profile-name"><a href="{{content.commentary_user.getURL}}">{{content.commentary_user.first_name}} {{content.commentary_user.last_name}}</a></div>
+            <div class="profile-name">{{content.commentary_user|print_user_name}}</div>
             <div class="commentary-text">{{content.commentary}}</div>
         </div>      
         {% endif %}
@@ -244,7 +244,7 @@
                             <form id="comment-form" action="/comment/content/post" method="post">{% csrf_token %}	                    
 		                        <div class="comment-header">
                                    {{errors.comment}}		                        
-			                       <div class="profile-name">{{user.first_name}} {{user.last_name}}</div>
+			                       <div class="profile-name">{{user|get_user_name}}</div>
 			                    </div>
                                 <div class="comment-field">
                                      <label for="id_commentform-comment" class="comment-form-label"><h5>Comment!</h5></label>

@@ -17,6 +17,7 @@ class SiteCustomUser(object):
                  profile_picture_url=None, profile_url=None, groups=None, permissions=None,
                  active=False, session_id=None, expiration_date=None, is_new_user=False,
                  is_anonymous=False, is_invalid_google_user=False,
+                 hide_profile=None, hide_votes=None, use_username=None,
                  reckoner_user=None, auth_session=None):
         
         self.reckoner_id = reckoner_id
@@ -41,6 +42,10 @@ class SiteCustomUser(object):
         self.is_anonymous = is_anonymous
         self.is_invalid_google_user = is_invalid_google_user
         
+        self.hide_profile = hide_profile
+        self.hide_votes = hide_votes
+        self.use_username = use_username
+        
         if (reckoner_user):
             self.build_from_reckonuser(reckoner_user)
         if (auth_session):
@@ -64,6 +69,10 @@ class SiteCustomUser(object):
         self.groups = reckonerUser.groups
         self.permissions = reckonerUser.permissions
         self.active = reckonerUser.active
+        
+        self.hide_profile = reckonerUser.hide_profile
+        self.hide_votes = reckonerUser.hide_votes
+        self.use_username = reckonerUser.use_username
         
     def build_from_authsession (self, authSession):
         '''

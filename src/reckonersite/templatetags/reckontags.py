@@ -4,6 +4,7 @@ Created on Oct 16, 2011
 @author: danko
 '''
 import datetime
+import traceback
 
 from django import template
 from django.conf import settings
@@ -86,6 +87,22 @@ def form_time(value):
 form_time.is_safe = True
 
 @register.filter
+def get_user_name(value):
+    '''
+    Accepts an object of type reckonersite.domain.reckonuser or reckonersite.domain.sitecustomuser
+    and uses it to retrieve the raw name string according to how the user wants to display it.
+    '''
+    returnString=""
+    
+    try:        
+        if (value.use_username):
+            returnString= value.username 
+        else:
+            returnString= "".join((value.first_name, " ", value.last_name,))    
+    finally:
+        return mark_safe(returnString)
+
+@register.filter
 def print_user_name(value):
     '''
     Accepts an object of type reckonersite.domain.reckonuser or reckonersite.domain.sitecustomuser
@@ -93,10 +110,15 @@ def print_user_name(value):
     '''
     returnString=""
     
-    try:
-        returnString= "".join(("<a href=\"", value.getURL(), "\">",
-                                   value.first_name, " ", value.last_name,
-                                   "</a>"))    
+    try:        
+        if (value.use_username):
+            returnString= "".join(("<a href=\"", value.getURL(), "\">",
+                                       value.username,
+                                       "</a>"))  
+        else:
+            returnString= "".join(("<a href=\"", value.getURL(), "\">",
+                                       value.first_name, " ", value.last_name,
+                                       "</a>"))    
     finally:
         return mark_safe(returnString)
     

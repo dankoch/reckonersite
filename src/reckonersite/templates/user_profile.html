@@ -1,14 +1,14 @@
 {% extends "standard_sidebar.html" %}
 {% load reckontags %}
 
-{% block pagetitle %}The Reckoner! - User Profile: {{profile_user.first_name}} {{profile_user.last_name}}{% endblock %}
+{% block pagetitle %}The Reckoner! - User Profile: {{profile_user|get_user_name}}{% endblock %}
 
-{% block fb-title %}"The Reckoner! - User Profile: {{profile_user.first_name}} {{profile_user.last_name}}"{% endblock %}
+{% block fb-title %}"The Reckoner! - User Profile: {{profile_user|get_user_name}}"{% endblock %}
 {% block fb-url %}"{{ SITE_ROOT }}{{ page_url }}"{% endblock %}
-{% block fb-description %}"Take a look at the Reckoning history of our prized Reckonaut, {{profile_user.first_name}} {{profile_user.last_name}}!"{% endblock %}
+{% block fb-description %}"Take a look at the Reckoning history of our prized Reckonaut, {{profile_user|get_user_name}}!"{% endblock %}
 
-{% block gplus-title %}"The Reckoner! - User Profile: {{profile_user.first_name}} {{profile_user.last_name}}"{% endblock %}
-{% block gplus-description %}"Take a look at the Reckoning history of our prized Reckonaut, {{profile_user.first_name}} {{profile_user.last_name}}!"{% endblock %}
+{% block gplus-title %}"The Reckoner! - User Profile: {{profile_user|get_user_name}}"{% endblock %}
+{% block gplus-description %}"Take a look at the Reckoning history of our prized Reckonaut, {{profile_user|get_user_name}}!"{% endblock %}
 
 {% block canon-url %}"{{ SITE_ROOT }}{{ page_url }}"{% endblock %}
 
@@ -21,14 +21,14 @@
 {% block main %}
     <div id="user-profile-page">
         {% if profile_user.id == user.reckoner_id %}
-            <div class=page-header><h1>Howdy {{profile_user.first_name}}!</h1></div>
+            <div class=page-header><h1>Howdy {% if profile_user.use_username %}{{profile_user.username}}{% else %}{{profile_user.first_name}}{% endif %}!</h1></div>
         {% else %}
-            <div class=page-header><h1>Reckonaut {{profile_user.first_name}} {{profile_user.last_name}}!</h1></div>            
+            <div class=page-header><h1>Reckonaut {{profile_user|get_user_name}}!</h1></div>            
         {% endif %}
         <div class="profile-info-section">
             <div class="profile-overview profile-box">
-	            <div class="profile-picture-wrapper"><img src="{{profile_user.profile_picture_url}}" alt="Reckonaut {{profile_user.first_name}} {{profile_user.last_name}}"></div>
-	            <div class="poster-name">{{profile_user.first_name}} {{profile_user.last_name}}</div>
+	            <div class="profile-picture-wrapper"><img src="{{profile_user.profile_picture_url}}" alt="Reckonaut {{profile_user|get_user_name}}"></div>
+	            <div class="poster-name">{{profile_user|get_user_name}}</div>
 	            <div class="poster-links">
                     {% if profile_user.id == user.reckoner_id %}<div class="poster-link">(<span id="privacy-settings-link"><a href="">Privacy Settings</a></span>) <span class="profile-privacy-edit-message"></span></div>{% endif %}    	            
 	                <div class="poster-link">(<a href="{{profile_user.profile_url}}">{{profile_user.auth_provider|lower}} Profile</a>)</div>
@@ -134,12 +134,28 @@
     </div>
     
 	<div id="privacy-dialog-form" title="The Reckoner! Privacy Settings!">
-	    <div class="privacy-description">
-	       <p><b>Here you can control what is visible to other users, Google, and Reckonbot.</b></p>
-	       <p>You can still view hidden profile data, but it will be hidden from other site users (and the world at large).</p>
-	    </div>
+	    <div class="privacy-description-header">Here you can control what is visible to other users, Google, and Reckonbot.</div>
 	
 	    <form>
+	        {% if profile_user.username %}
+              <div class="privacy-description-subheader">Want to change the name used for all of this account's activity?</div>
+		      <fieldset>
+		          <div class="privacy-field">
+		              <input type="radio" name="use_reckoner_name" id="use_facebook_name" value="false" class="use_facebook_name privacy-field" {% if not profile_user.use_username %} checked {% endif %} />
+		              <label for="use_facebook_name">Use your Facebook name: ({{profile_user.first_name}} {{profile_user.last_name}})</label>
+		          </div> <div class="privacy-field">
+		              <input type="radio" name="use_reckoner_name" id="use_reckoner_name" value="true" class="use_reckoner_name privacy-field" {% if profile_user.use_username %} checked {% endif %} />
+		              <label for="use_facebook_name">Use your Reckoner username: ({{profile_user.username}})</label>
+		          </div>
+		          <input type="hidden" name="user-id" id="privacy_user_id" value="{{profile_user.id}}">
+		      </fieldset>
+		      <div class="privacy-description-subnote">*Note: Change may take up to 30 minutes to propagate through the whole site.</div>
+		    {% else %}
+		      <div class="privacy-description-subheader">Want to change the name associated with your account?</div>
+		      <div id="create-username-link"><a href="/">Click here to create a Reckoner username.</a></div>
+		    {% endif %}
+	    
+	    <div class="privacy-description-subheader">Want to hide part of your user profile page?</div>
 	    <fieldset>
 	        <div class="privacy-field">
                 <input type="checkbox" name="privacy_hide_votes" id="privacy_hide_votes" class="privacy-checkbox privacy-field" />
@@ -153,11 +169,34 @@
 	    </form>
 	    
         <div class="privacy-description">
-           <p>You can also hide individual votes using the 'Votes' tab in your profile page.
-              If you have any questions on your privacy settings, don't hesitate to <a href="/contact-us">contact us</a>!
+           <p>You can still view hidden profile data, but it will be hidden from other site users (and the world at large). You can also anonymize your individual votes via their Reckoning page.</p>
+           <p>If you have any questions on your privacy settings, don't hesitate to <a href="/contact-us">contact us</a>!
            </p>
         </div>
-	</div>        
+	</div> 
+	
+    <div id="create-username-form" title="The Reckoner! Create a Username!">
+        <div class="create-username-description">
+           <p><b>Don't want your real name splashed all over The Reckoner?</b></p>
+           <p>Here, you can attach a different username to your Reckoner profile and activity.</p>
+        </div>
+    
+        <form>
+            <div class="create-username-message"></div>        
+	        <div class="create-username-field privacy-field">
+	            <label for="create_username_username">Username:</label>
+	            <input type="text" maxlength=32 id="create_username_username" name="username" class="create-username-text-field"/>
+	        <input type="hidden" name="user-id" id="create_username_user_id" value="{{profile_user.id}}">
+	        </div>
+        </form>
+        
+        <div class="privacy-description">
+           <p>This will retroactively apply to everything you've done on the site. You can also switch back to your Facebook/Google name at any time. </p>
+           <p>Be careful though. Once you set this username, <b>you can't modify it.</b></p>
+        </div>
+        <div class="privacy-description-subnote">*Note: Change may take up to 30 minutes to propagate through the whole site.</div>
+    </div> 
+	      
 {% endblock %}
 
 {% block javascript %}
@@ -215,8 +254,8 @@
     	    var $dialog = $('#privacy-dialog-form')
     	        .dialog({
     	            autoOpen: false,
-    	            height: 400,
-    	            width: 400,
+    	            height: 520,
+    	            width: 500,
     	            modal: true,
     	            title: 'The Reckoner! Privacy Settings!',
     	            buttons: {
@@ -224,8 +263,10 @@
     	                	userId = $('#privacy_user_id').val();
     	                	hide_votes = $('#privacy_hide_votes').is(':checked');
                             hide_profile = $('#privacy_hide_profile').is(':checked');
+                            use_username = $('#use_reckoner_name').is(':checked');
     	                	
-    	                    $.post("/ajax/user/update/" + userId, "hide_votes=" + hide_votes.toString() + "&hide_profile=" + hide_profile.toString(),
+    	                    $.post("/ajax/user/update/" + userId, "hide_votes=" + hide_votes.toString() + "&hide_profile=" + hide_profile.toString() +
+    	                    		"&use_username=" + use_username,
     	                            function(data) {                 
     	                               var message = $( data ).find( 'message_description' ),
     	                                   success = $( data ).find( 'success' ).text();  
@@ -254,6 +295,45 @@
     	        return false;
     	    });
     	});
+       
+       $(document).ready(function() {          
+           var $dialog = $('#create-username-form')
+               .dialog({
+                   autoOpen: false,
+                   height: 420,
+                   width: 400,
+                   modal: true,
+                   title: 'The Reckoner! Create a Username!',
+                   buttons: {
+                       "Create": function() {
+                           userId = $('#create_username_user_id').val();
+                           username = $('#create_username_username').val();
+                           
+                           $.post("/ajax/user/update/" + userId, "username=" + username + "&use_username=" + "true",
+                                   function(data) {                 
+                                      var message = $( data ).find( 'message_description' ),
+                                          success = $( data ).find( 'success' ).text();  
+                                      $(".create-username-message").empty().append(message);    
+                                      
+                                      if (success.toLowerCase() === 'true') {    
+                                          location.reload();
+                                          $( this ).dialog( "close" );    
+                                      }
+                                   } 
+                                   , "xml")                                               
+                       },
+                       Cancel: function() {                    
+                           $( this ).dialog( "close" );
+                       }
+                   },
+               });
+
+           $('#create-username-link').click(function() {
+               $dialog.dialog('open');
+               // prevent the default action, e.g., following a link
+               return false;
+           });
+       });
 </script>
 {% endblock %}
 

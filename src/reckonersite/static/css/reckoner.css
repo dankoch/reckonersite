@@ -2514,7 +2514,6 @@ td.gsc-search-button {
     font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
     font-size: 14px;
     padding: 4px;
-    text-transform: capitalize;
     width: 250px;
 }
 
@@ -2709,6 +2708,29 @@ td.gsc-search-button {
     font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, Arial, sans-serif;
     font-size: 18px;
     text-align: center;
+}
+
+.privacy-description-header {
+    font-weight: bold;
+    margin: 1.5em 0;
+}
+
+.privacy-description-subheader {
+    font-style: italic;
+    font-weight: bold;
+    margin: 1.5em 0;
+}
+
+.privacy-description-subnote {
+	font-size: 10px;
+    font-style: italic;
+    margin: 0;
+}
+
+.create-username-message {
+    color: #cc0000;
+    font-family: "Lucida Sans", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 10px;
 }
 
 /***************************************************************************************
