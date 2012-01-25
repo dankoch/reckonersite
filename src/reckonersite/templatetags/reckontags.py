@@ -123,6 +123,25 @@ def print_user_name(value):
         return mark_safe(returnString)
     
 @register.filter
+def print_profile_picture(value):
+    '''
+    Accepts an object of type reckonersite.domain.reckonuser or reckonersite.domain.sitecustomuser
+    and uses it to print out the appropriate profile picture URL.
+    '''
+    returnString=""
+    
+    try:        
+        if (value.use_custom_profile_picture):
+            if (value.custom_profile_picture_url):
+                returnString = value.custom_profile_picture_url
+            else:
+                returnString = settings.USER_PLACEHOLDER_PICTURE
+        else:
+            returnString = value.profile_picture_url
+    finally:
+        return mark_safe(returnString)
+    
+@register.filter
 def print_tag_link(value):
     '''
     Accepts an object of type reckonersite.domain.reckoning.Tag and converts it 

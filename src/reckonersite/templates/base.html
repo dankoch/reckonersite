@@ -30,10 +30,13 @@
 							    <img src="{{ STATIC_URL }}images/google-login-button.png">     
 							    </a>
 		                    </div>
+		                    <div class="new-account-button">
+		                        (New user? <a href="/login/sign-up">Sign up!</a>)
+		                    </div>
 		                </div>
 		            {% else %}
 		               <div class="profile-wrapper">
-		                   <div class="profile-picture-wrapper"><img src="{{ user.profile_picture_url }}" alt="You!" class="profile-picture"></div>
+		                   <div class="profile-picture-wrapper"><img src="{{ user|print_profile_picture }}" alt="You!" class="profile-picture"></div>
 		                   <div class="profile-info">
 		                       <p class="profile-name">{{user|print_user_name}}</p>
 		                       {% if 'ADMIN' in user.groups or 'SUPER_ADMIN' in user.groups %}

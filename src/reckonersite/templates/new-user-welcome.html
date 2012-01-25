@@ -1,0 +1,17 @@
+{% extends "standard_sidebar.html" %}
+
+{% block title %}Welcome to The Reckoner!{% endblock %}
+
+{% block main %}
+    <div id="new-user-welcome-page" class="static-page">
+        <h1>Awesome! Welcome!</h1>
+        <h3>Lo, the smorgasboard before you!</h3>
+        <p>To go back to the page you were viewing, <a href="/login/howdy">head here</a>!</p>
+        <p>To submit a Reckoning, <a href="/post-reckoning-welcome">head here</a> or click the 'Post a Reckoning!' link on the top bar!</p>
+        <p>To change your account and privacy settings, access your account via the link in the top-right corner, as shown in this helpful illustration!</p>
+        <h3><img src="{{ STATIC_URL }}images/Privacy-Panel-Intro.png" alt="Here's how to access your privacy panel! Click your account link in the top right, and check your profile box.  Voila!"></h3>
+        <p>This includes setting up a new account name.  The sky is the limit!</p>
+        <p>Thanks again, and happy reckoning!</p>
+        {% include "signature.html" %}
+    </div>
+{% endblock %}

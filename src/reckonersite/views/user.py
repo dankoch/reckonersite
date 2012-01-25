@@ -147,7 +147,8 @@ def update_reckoning_profile(request, id = None):
                     userUpdate = ReckonerUser(id=id, bio=bio, username=username,
                                               hide_profile=request.POST.get("hide_profile", None),
                                               hide_votes=request.POST.get("hide_votes", None),
-                                              use_username=request.POST.get("use_username", None))
+                                              use_username=request.POST.get("use_username", None),
+                                              use_custom_profile_picture=request.POST.get("use_custom_profile_picture", None))
                     
                     service_response = client_update_user(userUpdate,
                                                           request.user.session_id)                              

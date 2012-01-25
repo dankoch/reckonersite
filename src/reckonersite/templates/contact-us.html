@@ -69,9 +69,8 @@
             </div>
         {% else %}
             <div class="sign-up-box">
-                <h4>Want to post a reckoning?</h4>
-                <h2>Sign up or log in!</h2>
-                <h3>It's easy!</h3>
+                <h4>Want to contact us?</h4>
+                <h2>Log in!</h2>
                 <div class="login-buttons">
                      <div class="login-button login-button-1">    
                          <a href="{{ FACEBOOK_OAUTH_URL }}?client_id={{ FACEBOOK_APP_ID }}&redirect_uri={{ FACEBOOK_REDIRECT_URL }}&scope={{ FACEBOOK_SCOPE }}">
@@ -84,7 +83,8 @@
                          </a>
                      </div>                
                 </div>
-            </div>
+            <h3>Or <a href="/login/sign-up">sign up!</a></h3>
+            </div>         
         {% endif %}
     </div>
 {% endblock %}

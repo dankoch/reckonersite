@@ -14,10 +14,10 @@ class SiteCustomUser(object):
     
     def __init__(self, reckoner_id=None, username=None, first_name=None, last_name=None, email=None,
                  auth_provider=None, auth_provider_id=None, first_login=None, last_login=None, 
-                 profile_picture_url=None, profile_url=None, groups=None, permissions=None,
+                 profile_picture_url=None, custom_profile_picture_url=None, profile_url=None, groups=None, permissions=None,
                  active=False, session_id=None, expiration_date=None, is_new_user=False,
                  is_anonymous=False, is_invalid_google_user=False,
-                 hide_profile=None, hide_votes=None, use_username=None,
+                 hide_profile=None, hide_votes=None, use_username=None, use_custom_profile_picture=None,
                  reckoner_user=None, auth_session=None):
         
         self.reckoner_id = reckoner_id
@@ -30,6 +30,7 @@ class SiteCustomUser(object):
         self.first_login = first_login
         self.last_login = last_login
         self.profile_picture_url = profile_picture_url
+        self.custom_profile_picture_url = custom_profile_picture_url
         self.profile_url = profile_url
         self.groups = groups
         self.permissions = permissions
@@ -45,6 +46,7 @@ class SiteCustomUser(object):
         self.hide_profile = hide_profile
         self.hide_votes = hide_votes
         self.use_username = use_username
+        self.use_custom_profile_picture = use_custom_profile_picture
         
         if (reckoner_user):
             self.build_from_reckonuser(reckoner_user)
@@ -65,6 +67,7 @@ class SiteCustomUser(object):
         self.first_login = reckonerUser.first_login
         self.last_login = reckonerUser.last_login
         self.profile_picture_url = reckonerUser.profile_picture_url
+        self.custom_profile_picture_url = reckonerUser.custom_profile_picture_url
         self.profile_url = reckonerUser.profile_url
         self.groups = reckonerUser.groups
         self.permissions = reckonerUser.permissions
@@ -73,6 +76,7 @@ class SiteCustomUser(object):
         self.hide_profile = reckonerUser.hide_profile
         self.hide_votes = reckonerUser.hide_votes
         self.use_username = reckonerUser.use_username
+        self.use_custom_profile_picture = reckonerUser.use_custom_profile_picture
         
     def build_from_authsession (self, authSession):
         '''

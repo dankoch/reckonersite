@@ -224,6 +224,10 @@ PODCAST_TRACKING_PREFIX="http://www.podtrac.com/pts/redirect.mp3/"
 ## Sentinel used to mark fields as deleted for Reckoning update calls
 RECKONING_UPDATE_DELETE_SENTINEL = "null"
 
+## Image used for users that do not have an uploaded profile image.
+## NOTE: This is the GPLUS image used for the dan@reckonlabs.org account.
+USER_PLACEHOLDER_PICTURE = "https://lh3.googleusercontent.com/-SWrd4n6Ndqs/AAAAAAAAAAI/AAAAAAAAAAA/Xm_MtQvQIwM/photo.jpg?sz=50"
+
 
 #==========================END CUSTOM SETTINGS==================================
 

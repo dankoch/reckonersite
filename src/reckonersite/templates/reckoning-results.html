@@ -61,7 +61,7 @@
                 <div class="voter-column-body voter-column-body-1">
 	                {% for vote in vote_lists.0 %}
 	                    <div class="voter-box-voter">
-	                     <img src="{{ vote.voting_user.profile_picture_url}}" class="voter-picture-wrapper">
+	                     <img src="{{ vote.voting_user|print_profile_picture}}" class="voter-picture-wrapper">
 	                     <div class="voter-name-text">{{ vote.voting_user|print_user_name}}</div>
 	                    </div>
 	                    {% if not forloop.last %}<hr>{% endif %}                 
@@ -73,7 +73,7 @@
                 <div class="voter-column-body voter-column-body-2">
                     {% for vote in vote_lists.1 %}
                         <div class="voter-box-voter">
-                         <img src="{{ vote.voting_user.profile_picture_url}}" class="voter-picture-wrapper">
+                         <img src="{{ vote.voting_user|print_profile_picture}}" class="voter-picture-wrapper">
                          <div class="voter-name-text">{{ vote.voting_user|print_user_name}}</div>
                         </div>   
                         {% if not forloop.last %}<hr>{% endif %}          

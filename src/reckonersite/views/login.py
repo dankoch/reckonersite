@@ -53,6 +53,9 @@ def login_facebook(request):
                         request.session[settings.RECKONER_API_SESSION_ID] = user.session_id
                         request.session.set_expiry(user.expiration_date) 
                         
+                        if (user.is_new_user):
+                            return HttpResponseRedirect('/login/new-user-welcome')
+                        
                         return HttpResponseRedirect('/login/howdy')
                 else:
                     raise BaseException() 
@@ -94,6 +97,8 @@ def login_google(request):
                         
                         # Google sessions can be renewed, so don't set the expiry date.
                         # request.session.set_expiry(user.expiration_date)
+                        if (user.is_new_user):
+                            return HttpResponseRedirect('/login/new-user-welcome')
                         
                         return HttpResponseRedirect('/login/howdy')
                     if (user.is_invalid_google_user):
@@ -126,10 +131,14 @@ def logged_in(request):
         logger.error(traceback.print_exc(8))
         raise Exception
 
+def sign_up_page(request):
+    return render_to_response('how-to-sign-up.html', RequestContext(request, None))
+
+def new_user_welcome(request):
+    return render_to_response('new-user-welcome.html', RequestContext(request, None))
 
 def rejected_login(request):
     return render_to_response('rejected_login.html', RequestContext(request, None))
-
 
 def rejected_login_bad_google(request):
     '''
@@ -137,7 +146,6 @@ def rejected_login_bad_google(request):
     a G+ (or Buzz) enabled account.  Google Accounts need a profile to log in.
     '''
     return render_to_response('rejected_login_bad_google.html', RequestContext(request, None))
-
 
 def logout(request):
     reckonerauthbackend.logout_user(request.session.get(settings.RECKONER_API_SESSION_ID, None))

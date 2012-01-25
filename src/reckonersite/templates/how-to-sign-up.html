@@ -1,0 +1,46 @@
+{% extends "standard_sidebar.html" %}
+
+{% block title %}How to Sign Into The Reckoner!{% endblock %}
+
+{% block main %}
+    <div id="how-to-sign-up-page" class="static-page">
+	    <h1>Howdy friend!</h1>
+	    <h3>You're in the right place!</h3>
+	    <p>To get your own The Reckoner account, just log right in with Facebook or Google+, and <b>you'll be commenting and posting new Reckonings in no time!</b></p>
+	    <h3>
+	       <div class="login-option-box">
+	           <a href="{{ FACEBOOK_OAUTH_URL }}?client_id={{ FACEBOOK_APP_ID }}&redirect_uri={{ FACEBOOK_REDIRECT_URL }}&scope={{ FACEBOOK_SCOPE }}"><img src="{{STATIC_URL}}images/facebook-icon.png" alt="Signup with Facebook!">
+                   Click here to create your account via Facebook!
+               </a>
+           </div>
+           <div class="login-option-box">
+               <a href="{{ GOOGLE_API_OAUTH_URL }}?client_id={{ GOOGLE_APP_ID }}&redirect_uri={{ GOOGLE_REDIRECT_URL }}&scope={{ GOOGLE_SCOPE }}&response_type=code"><img src="{{STATIC_URL}}images/gplus-icon-web.png" alt="Signup with Google Plus!">
+                   Click here to create your account via Google Plus!
+               </a>
+           </div>
+        </h3>
+        <h5>But wait? What about my privacy?</h5>
+        <p>Yep, we hear you. Don't want to use your Facebook or Twitter name?  Don't want your Facebook Profile Picture plastered all over the site for Google to see?  You can change them both on The Reckoner as soon as you log in!  Also, you can make your profile (and voting record) private to everybody (including Reckonbot) at any time.  You can also set each individual vote to be anonymous whenever you wish.</p>
+        <h5>Wait a sec?  Why Facebook and Google Plus?  I hate 'em!</h5>
+        <p>Yep, we hear you there too.  Basically, we don't want to be <a href="http://www.xkcd.com/792/">this guy</a>. You've got enough accounts and passwords to memorize as it is. We're offloading authentication to Facebook and Google, since they're pretty good at verifying that somebody (a) is a real person who (b) isn't going to ask if the rest of the Reckonauts want to win a free iPad.</p>
+        <h5>Fine.  What are you doing with my Facebook or Google information?</h5>
+        <p>Not a whole heck of a lot.  When Dan gets around to it, he's going to put together generalized group metrics such as 'It turns out that people on the whole think that <i>Highlander</i> sucks as a movie.  But people between 30 and 49 really seem to love it.'  This is why Facebook has the 'Access My Data Any Time' scope included. Even in these cases, you can make your vote anonymous so that even Reckonbot can't see it.</p>
+        <p>In terms of posting anything to your Facebook account, nope, we won't.  If we ever *have* that sort of capability, you'd better believe there will be a checkbox right next to every single case where this is possible, and the default will be 'no'.</p>
+        <h5>What if I have questions?</h5>
+        <p>Don't hesitate to hit us up on the <a href="/contact-us">Contact Us</a> page.  Dan checks it compulsively, and there's no better way to get in touch with him and give him a piece of your mind!  And hey, if you decide you don't want to make the leap to sign in, Dan would love to hear why and see what he can do to help.</p>
+	    <h5>Where were those links again?</h5>
+        <h3>
+           <div class="login-option-box">
+               <a href="{{ FACEBOOK_OAUTH_URL }}?client_id={{ FACEBOOK_APP_ID }}&redirect_uri={{ FACEBOOK_REDIRECT_URL }}&scope={{ FACEBOOK_SCOPE }}"><img src="{{STATIC_URL}}images/facebook-icon.png" alt="Signup with Facebook!">
+                   Click here to create your account via Facebook!
+               </a>
+           </div>
+           <div class="login-option-box">
+               <a href="{{ GOOGLE_API_OAUTH_URL }}?client_id={{ GOOGLE_APP_ID }}&redirect_uri={{ GOOGLE_REDIRECT_URL }}&scope={{ GOOGLE_SCOPE }}&response_type=code"><img src="{{STATIC_URL}}images/gplus-icon-web.png" alt="Signup with Google Plus!">
+                   Click here to create your account via Google Plus!
+               </a>
+           </div>
+        </h3>
+	    {% include "signature.html" %}
+    </div>
+{% endblock %}

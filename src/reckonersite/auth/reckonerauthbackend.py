@@ -50,6 +50,9 @@ def authenticate(oAuthReceipt = None, username = None, password = None):
         else:
             siteUser = SiteCustomUser(reckoner_user = authResponse.reckoner_user, 
                                         auth_session = authResponse.auth_session)
+            
+            if (authResponse.status.message == "R703_AUTH_USER"):
+                siteUser.is_new_user = True
 
     return siteUser
   

@@ -77,23 +77,23 @@
                 </form>
             </div>
 		{% else %}
-	        <div class="sign-up-box">
-	            <h4>Want to post a reckoning?</h4>
-	            <h2>Sign up or log in!</h2>
-	            <h3>It's easy!</h3>
-	            <div class="login-buttons">
-	                 <div class="login-button login-button-1">    
-	                     <a href="{{ FACEBOOK_OAUTH_URL }}?client_id={{ FACEBOOK_APP_ID }}&redirect_uri={{ FACEBOOK_REDIRECT_URL }}&scope={{ FACEBOOK_SCOPE }}">
-	                     <img src="{{ STATIC_URL }}images/big-facebook-login-button.png" alt="Login with Facebook!">
-	                     </a>     
-	                 </div>
-	                 <div class="login-button login-button-2">
-	                     <a href="{{ GOOGLE_API_OAUTH_URL }}?client_id={{ GOOGLE_APP_ID }}&redirect_uri={{ GOOGLE_REDIRECT_URL }}&scope={{ GOOGLE_SCOPE }}&response_type=code">
-	                     <img src="{{ STATIC_URL }}images/big-google-login-button.png">     
-	                     </a>
-	                 </div>                
-	            </div>
-	        </div>
+            <div class="sign-up-box">
+                <h4>Want to post content?</h4>
+                <h2>Log in!</h2>
+                <div class="login-buttons">
+                     <div class="login-button login-button-1">    
+                         <a href="{{ FACEBOOK_OAUTH_URL }}?client_id={{ FACEBOOK_APP_ID }}&redirect_uri={{ FACEBOOK_REDIRECT_URL }}&scope={{ FACEBOOK_SCOPE }}">
+                         <img src="{{ STATIC_URL }}images/big-facebook-login-button.png" alt="Login with Facebook!">
+                         </a>     
+                     </div>
+                     <div class="login-button login-button-2">
+                         <a href="{{ GOOGLE_API_OAUTH_URL }}?client_id={{ GOOGLE_APP_ID }}&redirect_uri={{ GOOGLE_REDIRECT_URL }}&scope={{ GOOGLE_SCOPE }}&response_type=code">
+                         <img src="{{ STATIC_URL }}images/big-google-login-button.png">     
+                         </a>
+                     </div>                
+                </div>
+            <h3>Or <a href="/login/sign-up">sign up!</a></h3>
+            </div>         
         {% endif %}
     </div>
 {% endblock %}

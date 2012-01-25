@@ -49,7 +49,7 @@
         {% endif %}   
         {% if reckoning.commentary and reckoning.commentary|length > 0 %}
         <div class="commentary-section">
-            <div id="commentary-profile-picture" class="profile-picture-wrapper"><img src="{{reckoning.commentary_user.profile_picture_url}}" class="profile-picture"></div>
+            <div id="commentary-profile-picture" class="profile-picture-wrapper"><img src="{{reckoning.commentary_user|print_profile_picture}}" class="profile-picture"></div>
             <div class="profile-name">{{reckoning.commentary_user|print_user_name}}</div>
             <div class="commentary-text">{{reckoning.commentary|safe}}</div>
         </div>      
@@ -155,7 +155,7 @@
 	                 </div>      
                 </div>   
 				<div class="poster-wrapper">
-				     <div class="profile-picture-wrapper"><img src="{{reckoning.posting_user.profile_picture_url}}" class="profile-picture"></div>
+				     <div class="profile-picture-wrapper"><img src="{{reckoning.posting_user|print_profile_picture}}" class="profile-picture"></div>
 				     <div class="label">Posted By:</div>
 				     <div class="poster-name">{{reckoning.posting_user|print_user_name}}</div>
 				     <div class="poster-date">{{reckoning.posting_date}}</div>
@@ -261,7 +261,7 @@
                         <div class="subtitle">Add your two cents!</div>
                     </h4>
                     <div class="comment">
-	                    <div class="profile-picture-wrapper"><img src="{{ user.profile_picture_url }}" alt="You!" class="profile-picture"></div>
+	                    <div class="profile-picture-wrapper"><img src="{{ user|print_profile_picture}}" alt="You!" class="profile-picture"></div>
 	                    <div class="comment-data">
                             <form id="comment-form" action="/comment/reckoning/post" method="post">{% csrf_token %}	                    
 		                        <div class="comment-header">
@@ -294,8 +294,7 @@
             {% if not 'COMMENT' in perms %}
 		        <div class="sign-up-box">
 		            <h4>Want to post a comment?</h4>
-		            <h2>Sign up or log in!</h2>
-		            <h3>It's easy!</h3>
+		            <h2>Log in!</h2>
 		            <div class="login-buttons">
 		                 <div class="login-button login-button-1">    
 		                     <a href="{{ FACEBOOK_OAUTH_URL }}?client_id={{ FACEBOOK_APP_ID }}&redirect_uri={{ FACEBOOK_REDIRECT_URL }}&scope={{ FACEBOOK_SCOPE }}">
@@ -308,6 +307,7 @@
 		                     </a>
 		                 </div>                
 		            </div>
+                <h3>Or <a href="/login/sign-up">sign up!</a></h3>
 		        </div>               
             {% endif %}
         </div>

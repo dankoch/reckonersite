@@ -27,7 +27,7 @@
         {% endif %}
         <div class="profile-info-section">
             <div class="profile-overview profile-box">
-	            <div class="profile-picture-wrapper"><img src="{{profile_user.profile_picture_url}}" alt="Reckonaut {{profile_user|get_user_name}}"></div>
+	            <div class="profile-picture-wrapper"><img src="{{profile_user|print_profile_picture}}" alt="Reckonaut {{profile_user|get_user_name}}"></div>
 	            <div class="poster-name">{{profile_user|get_user_name}}</div>
 	            <div class="poster-links">
                     {% if profile_user.id == user.reckoner_id %}<div class="poster-link">(<span id="privacy-settings-link"><a href="">Privacy Settings</a></span>) <span class="profile-privacy-edit-message"></span></div>{% endif %}    	            
@@ -137,24 +137,28 @@
 	    <div class="privacy-description-header">Here you can control what is visible to other users, Google, and Reckonbot.</div>
 	
 	    <form>
+	        <div class="privacy-description-subheader">Want to change the name and picture associated with your account?</div>
 	        {% if profile_user.username %}
-              <div class="privacy-description-subheader">Want to change the name used for all of this account's activity?</div>
 		      <fieldset>
 		          <div class="privacy-field">
 		              <input type="radio" name="use_reckoner_name" id="use_facebook_name" value="false" class="use_facebook_name privacy-field" {% if not profile_user.use_username %} checked {% endif %} />
-		              <label for="use_facebook_name">Use your Facebook name: ({{profile_user.first_name}} {{profile_user.last_name}})</label>
+		              <label for="use_facebook_name">Use your {{profile_user.auth_provider|lower|capfirst}} name: ({{profile_user.first_name}} {{profile_user.last_name}})</label>
 		          </div> <div class="privacy-field">
 		              <input type="radio" name="use_reckoner_name" id="use_reckoner_name" value="true" class="use_reckoner_name privacy-field" {% if profile_user.use_username %} checked {% endif %} />
 		              <label for="use_facebook_name">Use your Reckoner username: ({{profile_user.username}})</label>
 		          </div>
 		          <input type="hidden" name="user-id" id="privacy_user_id" value="{{profile_user.id}}">
 		      </fieldset>
-		      <div class="privacy-description-subnote">*Note: Change may take up to 30 minutes to propagate through the whole site.</div>
 		    {% else %}
-		      <div class="privacy-description-subheader">Want to change the name associated with your account?</div>
 		      <div id="create-username-link"><a href="/">Click here to create a Reckoner username.</a></div>
 		    {% endif %}
-	    
+		     <fieldset>
+                  <div class="privacy-field">
+                      <input type="checkbox" name="use_facebook_picture" id="use_facebook_picture" value="false" class="use_facebook_picture privacy-field" {% if not profile_user.use_custom_profile_picture %} checked {% endif %} />                  
+                      <label for="use_facebook_picture">Use your {{profile_user.auth_provider|lower|capfirst}} picture as your profile picture.</label>
+                  </div>		     
+		     </fieldset>
+             <div class="privacy-description-subnote">*Note: Change may take up to 30 minutes to propagate through the whole site.</div>
 	    <div class="privacy-description-subheader">Want to hide part of your user profile page?</div>
 	    <fieldset>
 	        <div class="privacy-field">
@@ -194,7 +198,7 @@
            <p>This will retroactively apply to everything you've done on the site. You can also switch back to your Facebook/Google name at any time. </p>
            <p>Be careful though. Once you set this username, <b>you can't modify it.</b></p>
         </div>
-        <div class="privacy-description-subnote">*Note: Change may take up to 30 minutes to propagate through the whole site.</div>
+        <div class="privacy-description-subnote privacy-description-subnote-highlight">*Note: Change may take up to 30 minutes to propagate through the whole site.</div>
     </div> 
 	      
 {% endblock %}
@@ -250,11 +254,12 @@
        $(document).ready(function() {
     	    var current_hide_votes = {% if profile_user.hide_votes %}true{% else %}false{% endif %};
     	    var current_hide_profile = {% if profile_user.hide_profile %}true{% else %}false{% endif %};
+    	    var current_use_custom_profile_picture = {% if profile_user.use_custom_profile_picture %}true{% else %}false{% endif %};
     	   
     	    var $dialog = $('#privacy-dialog-form')
     	        .dialog({
     	            autoOpen: false,
-    	            height: 520,
+    	            height: 580,
     	            width: 500,
     	            modal: true,
     	            title: 'The Reckoner! Privacy Settings!',
@@ -264,9 +269,10 @@
     	                	hide_votes = $('#privacy_hide_votes').is(':checked');
                             hide_profile = $('#privacy_hide_profile').is(':checked');
                             use_username = $('#use_reckoner_name').is(':checked');
+                            use_custom_profile_picture = !($('#use_facebook_picture').is(':checked'));
     	                	
     	                    $.post("/ajax/user/update/" + userId, "hide_votes=" + hide_votes.toString() + "&hide_profile=" + hide_profile.toString() +
-    	                    		"&use_username=" + use_username,
+    	                    		"&use_username=" + use_username.toString() + "&use_custom_profile_picture=" + use_custom_profile_picture.toString(),
     	                            function(data) {                 
     	                               var message = $( data ).find( 'message_description' ),
     	                                   success = $( data ).find( 'success' ).text();  
@@ -275,6 +281,7 @@
     	                               if (success.toLowerCase() === 'true') {	                            	   
     	                                   current_hide_votes = hide_votes;
     	                                   current_hide_profile = hide_profile;
+    	                                   current_use_custom_profile_picture = use_custom_profile_picture;
     	                               }
     	                            } 
     	                            , "xml")    	                	
@@ -289,7 +296,8 @@
 
     	    $('#privacy-settings-link').click(function() {
                 $('#privacy_hide_votes').attr('checked', current_hide_votes);
-                $('#privacy_hide_profile').attr('checked', current_hide_profile);   
+                $('#privacy_hide_profile').attr('checked', current_hide_profile);
+                $('#use_facebook_picture').attr('checked', !current_use_custom_profile_picture);   
     	        $dialog.dialog('open');
     	        // prevent the default action, e.g., following a link
     	        return false;
@@ -300,8 +308,8 @@
            var $dialog = $('#create-username-form')
                .dialog({
                    autoOpen: false,
-                   height: 420,
-                   width: 400,
+                   height: 470,
+                   width: 340,
                    modal: true,
                    title: 'The Reckoner! Create a Username!',
                    buttons: {

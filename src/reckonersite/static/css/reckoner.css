@@ -47,11 +47,16 @@ body {
 #top-bar .login-wrapper {
     float: right;
     position: relative;
-    top: 18px;
+    top: 12px;
     right: 30px;
 }
 
 #top-bar .login-wrapper .login-button {
+}
+
+#top-bar .login-wrapper .new-account-button {
+	font-size: 9px;
+	text-align: center;
 }
 
 #top-bar .navigation-section {
@@ -524,6 +529,13 @@ body {
 	border: 2px solid black;
 }
 
+#how-to-sign-up-page .login-option-box {
+	display: inline-block;
+	font-size: 14px;
+	text-align: center;
+	width: 250px;
+}
+
 /***************************************************************************************
  * SEARCH STYLES
  * Styles used to display Google Custom Search
@@ -564,7 +576,7 @@ td.gsc-search-button {
 	background-color: #f6f6f6;
 	border: 1px solid #666666;
 	margin: 48px 7px;
-	padding: 6px;
+	padding: 6px 6px 18px 6px;
 	width: 598px;
 }
 
@@ -575,7 +587,7 @@ td.gsc-search-button {
 #content-area .sign-up-box h2 {
     font-family: Impact, Haettenschweiler, "Franklin Gothic Bold", Charcoal, "Helvetica Inserat", "Bitstream Vera Sans Bold", "Arial Black", sans serif;
     font-size: 72px;
-    margin: .4em 0 0 0;
+    margin: .2em 0 0 0;
     text-align: center;	
 }
 
@@ -599,21 +611,21 @@ td.gsc-search-button {
 }
 
 #content-area .login-buttons {
-	height: 80px;
+	height: 60px;
 }
 
 #content-area .login-buttons .login-button-1 {
 	float: left;
 	position: relative;
-	top: 30px;
 	left: 70px;
+	top: 10px;
 }
 
 #content-area .login-buttons .login-button-2 {
 	float: left;
     position: relative;
-    top: 30px;
     left: 110px;
+    top: 10px;
 }
 
 
@@ -2540,6 +2552,10 @@ td.gsc-search-button {
     font-weight: bold;
 }
 
+#user-profile-page .profile-info-section .poster-links {
+    text-transform: capitalize;
+}
+
 #user-profile-page .profile-info-section .poster-dates .label {
 	clear: both;
     text-decoration: underline;
@@ -2722,9 +2738,10 @@ td.gsc-search-button {
 }
 
 .privacy-description-subnote {
-	font-size: 10px;
+	color: #cc0000;
+	font-size: 11px;
     font-style: italic;
-    margin: 0;
+    margin: 6px 0 0 0;
 }
 
 .create-username-message {

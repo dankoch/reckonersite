@@ -44,7 +44,7 @@
         {% endif %}   
         {% if content.commentary and content.commentary|length > 0 %}
         <div class="commentary-section">
-            <div id="commentary-profile-picture" class="profile-picture-wrapper"><img src="{{content.commentary_user.profile_picture_url}}" class="profile-picture"></div>
+            <div id="commentary-profile-picture" class="profile-picture-wrapper"><img src="{{content.commentary_user|print_profile_picture}}" class="profile-picture"></div>
             <div class="profile-name">{{content.commentary_user|print_user_name}}</div>
             <div class="commentary-text">{{content.commentary}}</div>
         </div>      
@@ -154,7 +154,7 @@
 	                 </div>      
                 </div>   
 				<div class="poster-wrapper">
-				     <div class="profile-picture-wrapper"><img src="{{content.posting_user.profile_picture_url}}" class="profile-picture"></div>
+				     <div class="profile-picture-wrapper"><img src="{{content.posting_user|print_profile_picture}}" class="profile-picture"></div>
 				     <div class="label">Posted By:</div>
 				     <div class="poster-name">{{content.posting_user|print_user_name}}</div>
 				     <div class="poster-date">{{content.posting_date}}</div>
@@ -239,7 +239,7 @@
                         <div class="subtitle">Add your two cents!</div>
                     </h4>
                     <div class="comment">
-	                    <div class="profile-picture-wrapper"><img src="{{ user.profile_picture_url }}" alt="You!" class="profile-picture"></div>
+	                    <div class="profile-picture-wrapper"><img src="{{ user|print_profile_picture }}" alt="You!" class="profile-picture"></div>
 	                    <div class="comment-data">
                             <form id="comment-form" action="/comment/content/post" method="post">{% csrf_token %}	                    
 		                        <div class="comment-header">
@@ -270,23 +270,23 @@
         </div>
         <div class="post-comment-section">
             {% if not 'COMMENT' in perms %}
-		        <div class="sign-up-box">
-		            <h4>Want to post a comment?</h4>
-		            <h2>Sign up or log in!</h2>
-		            <h3>It's easy!</h3>
-		            <div class="login-buttons">
-		                 <div class="login-button login-button-1">    
-		                     <a href="{{ FACEBOOK_OAUTH_URL }}?client_id={{ FACEBOOK_APP_ID }}&redirect_uri={{ FACEBOOK_REDIRECT_URL }}&scope={{ FACEBOOK_SCOPE }}">
-		                     <img src="{{ STATIC_URL }}images/big-facebook-login-button.png" alt="Login with Facebook!">
-		                     </a>     
-		                 </div>
-		                 <div class="login-button login-button-2">
-		                     <a href="{{ GOOGLE_API_OAUTH_URL }}?client_id={{ GOOGLE_APP_ID }}&redirect_uri={{ GOOGLE_REDIRECT_URL }}&scope={{ GOOGLE_SCOPE }}&response_type=code">
-		                     <img src="{{ STATIC_URL }}images/big-google-login-button.png">     
-		                     </a>
-		                 </div>                
-		            </div>
-		        </div>               
+                <div class="sign-up-box">
+                    <h4>Want to post a comment?</h4>
+                    <h2>Log in!</h2>
+                    <div class="login-buttons">
+                         <div class="login-button login-button-1">    
+                             <a href="{{ FACEBOOK_OAUTH_URL }}?client_id={{ FACEBOOK_APP_ID }}&redirect_uri={{ FACEBOOK_REDIRECT_URL }}&scope={{ FACEBOOK_SCOPE }}">
+                             <img src="{{ STATIC_URL }}images/big-facebook-login-button.png" alt="Login with Facebook!">
+                             </a>     
+                         </div>
+                         <div class="login-button login-button-2">
+                             <a href="{{ GOOGLE_API_OAUTH_URL }}?client_id={{ GOOGLE_APP_ID }}&redirect_uri={{ GOOGLE_REDIRECT_URL }}&scope={{ GOOGLE_SCOPE }}&response_type=code">
+                             <img src="{{ STATIC_URL }}images/big-google-login-button.png">     
+                             </a>
+                         </div>                
+                    </div>
+                <h3>Or <a href="/login/sign-up">sign up!</a></h3>
+                </div>                     
             {% endif %}
         </div>
     </div>        

@@ -22,7 +22,7 @@
 	        </div>
         {% endif %}
         <div class="poster-wrapper">
-            <div class="profile-picture-wrapper"><img src="{{reckoning.posting_user.profile_picture_url}}" class="profile-picture"></div>
+            <div class="profile-picture-wrapper"><img src="{{reckoning.posting_user|print_profile_picture}}" class="profile-picture"></div>
             <div class="profile-info-wrapper">
                 <span class="label">Posted By:</span>
                 <span class="poster-name">{{reckoning.posting_user|print_user_name}}</span><br>

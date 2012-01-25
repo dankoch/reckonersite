@@ -1,6 +1,6 @@
 {% load reckontags %}
 <div id="comment-{{comment.id}}" class="comment">
-    <div class="comment-picture-wrapper"><img src="{{comment.user.profile_picture_url}}" class="profile-picture"></div>
+    <div class="comment-picture-wrapper"><img src="{{comment.user|print_profile_picture}}" class="profile-picture"></div>
     <div class="comment-data">
         <div class="comment-header">
             <span id="profile-name-{{comment.id}}" class="profile-name">{{comment.user|print_user_name}}</span>
