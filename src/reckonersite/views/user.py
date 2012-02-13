@@ -125,7 +125,6 @@ def update_reckoning_profile(request, id = None):
     if (request.user.has_perm('UPDATE_PROFILE_INFO') or id == request.user.reckoner_id):
         try:
             if request.method == 'POST':
-                print "Username POST: " + str(request.POST)
                 
                 bio = sanitizeBioHtml(request.POST.get("user-bio", None))
                 username = request.POST.get("username", None)

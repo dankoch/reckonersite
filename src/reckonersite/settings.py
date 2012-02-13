@@ -184,6 +184,10 @@ if (ENVIRONMENT == "local"):
     STATIC_URL = '/static/'
 else:
     STATIC_URL = 'http://static.thereckoner.net/'
+    
+# URL prefix for content uploaded to S3.
+# Make sure to use a trailing slash.
+S3_URL_ROOT = 'https://s3.amazonaws.com/reckoner-static/'
 
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.

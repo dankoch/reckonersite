@@ -24,7 +24,9 @@ from reckonersite.client.reckoningclient import client_get_reckoning_approval_qu
                                                 client_update_reckoning, \
                                                 client_approve_reckoning, \
                                                 client_reject_reckoning
+
 from reckonersite.domain.answer import Answer
+from reckonersite.domain.media import Media, parseReckoningImageFromUploadUrl
 from reckonersite.domain.reckoning import Reckoning
 from reckonersite.util.dateutil import getCurrentDateTime
 from reckonersite.util.validation import purgeHtml, sanitizeDescriptionHtml
@@ -191,6 +193,12 @@ def reckoning_approval_page(request):
                             elif (key.startswith("subtitle")):
                                 index = key.split('_')[1]
                                 answers[int(index)-1].subtitle = purgeHtml(attr)
+                                
+                        media = []
+                        if (request.POST.get('attached-files', None)):
+                            urls = request.POST.get('attached-files', None).split(";")
+                            for url in urls:
+                                media.append(parseReckoningImageFromUploadUrl(url))
 
                         savedReckoning=Reckoning(id=request.session["admin_approve_reckoning"],
                                                  question=purgeHtml(approveReckoningForm.cleaned_data['question']),
@@ -200,7 +208,8 @@ def reckoning_approval_page(request):
                                                  highlighted=approveReckoningForm.cleaned_data['highlighted'],
                                                  commentary=commentary,
                                                  commentary_user_id=commentary_user_id,
-                                                 tag_csv=purgeHtml(approveReckoningForm.cleaned_data['tags']))
+                                                 tag_csv=purgeHtml(approveReckoningForm.cleaned_data['tags']),
+                                                 media_items=media)
                         
                         response = client_update_reckoning(savedReckoning, request.user.session_id)
                         if (not response.success):
@@ -298,6 +307,16 @@ class ApproveReckoningForm(forms.Form):
         self.fields["highlighted"] = forms.BooleanField(label="Highlighted", initial=reckoning.highlighted, required=False)
         self.fields["edit_commentary"] = forms.BooleanField(label="Edit Commentary", initial=False, required=False)
         self.fields["commentary"] = forms.CharField(max_length=3000, label="Admin Commentary", initial=reckoning.commentary, required=False, widget=forms.Textarea)
+        
+        attached_files=""
+        if (reckoning and reckoning.media_items):
+            for media in reckoning.media_items:
+                print "Adding Media"
+                print "Media: " + media.url
+                attached_files = "".join((attached_files, media.url, ";"))
+        print "Attached Files: " + attached_files
+                
+        self.fields["attached_files"] = forms.CharField(required=False, initial=attached_files)
                 
 
 ###############################################################################################

@@ -3,24 +3,35 @@ Created on Aug 23, 2011
 @author: danko
 '''
 import logging
+import simplejson
 import sys
 import traceback
+import uuid
+import StringIO
 
 from urllib import unquote_plus
 
 from django import forms
 from django.conf import settings
 from django.contrib import messages
+from django.core.files.storage import default_storage
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.http import Http404
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.http import HttpResponseBadRequest
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page
 
+from PIL import Image
+
 from reckonersite.client.commentclient import client_post_reckoning_comment, \
                                               client_update_reckoning_comment, \
                                               client_delete_reckoning_comment
+from reckonersite.client.mediaclient import client_post_reckoning_media, \
+                                            client_get_reckoning_media, \
+                                            client_delete_reckoning_media
 from reckonersite.client.reckoningclient import client_get_reckoning, \
                                                 client_post_reckoning, \
                                                 client_update_reckoning, \
@@ -37,6 +48,8 @@ from reckonersite.client.voteclient import client_get_reckoning_answer_votes
 from reckonersite.domain.ajaxserviceresponse import AjaxServiceResponse
 from reckonersite.domain.answer import Answer
 from reckonersite.domain.comment import Comment
+from reckonersite.domain.media import Media, getDefaultThumbnailName, getDefaultFullName, getDefaultSmallName, \
+                                             getDefaultUploadLocation, getDefaultUrl, parseReckoningImageFromUploadUrl
 from reckonersite.domain.reckoning import Reckoning
 from reckonersite.domain.reckoningajaxresponse import ReckoningAjaxResponse
 from reckonersite.domain.vote import Vote
@@ -45,6 +58,7 @@ from reckonersite.util.dateutil import convertFormToDateTime
 from reckonersite.util.math import computeReckoningAnswerPercentages
 from reckonersite.util.validation import purgeHtml, sanitizeDescriptionHtml, sanitizeCommentHtml
 from reckonersite.util.pagination import pageDisplay
+from reckonersite.util.uploadhandler import ReckoningImageUploadHandler, FileTooBigException
 
 logger = logging.getLogger(settings.STANDARD_LOGGER)
 
@@ -52,7 +66,6 @@ logger = logging.getLogger(settings.STANDARD_LOGGER)
 ###############################################################################################
 # The page responsible for the actual submission of new Reckonings.
 ###############################################################################################
-
 
 def post_reckoning(request):
     
@@ -72,13 +85,20 @@ def post_reckoning(request):
                         elif (key.startswith("subtitle")):
                             index = key.split('_')[1]
                             answers[int(index)-1].subtitle = purgeHtml(attr)
+                    
+                    media = []
+                    if (request.POST.get('attached-files', None)):
+                        urls = request.POST.get('attached-files', None).split(";")
+                        for url in urls:
+                            media.append(parseReckoningImageFromUploadUrl(url))
     
                     reckoning=Reckoning(question=purgeHtml(form.cleaned_data['question']),
                                         description=sanitizeDescriptionHtml(form.cleaned_data['description']),
                                         answers=answers,
                                         tag_csv=purgeHtml(form.cleaned_data['tags']),
                                         submitter_id=request.user.reckoner_id,
-                                        anonymous_requested=(form.cleaned_data['request_anonymous']))
+                                        anonymous_requested=(form.cleaned_data['request_anonymous']),
+                                        media_items=media)
                 
                     # Submit to the API
                     response = client_post_reckoning(reckoning, request.user.session_id)
@@ -867,3 +887,282 @@ def reject_reckoning_ajax(request):
 
     
     return HttpResponse(site_response.getXMLString())
+
+###############################################################################################
+#  The endpoint used to upload image files associated with a Reckoning.
+#  This needs to tie into the BlueImp AJAX File Handler, and thus returns a JSON object as follows:
+#
+#  NAME
+#  SIZE
+#  URL
+#  THUMBNAIL_URL
+#  DELETE_URL
+#  DELETE_TYPE
+###############################################################################################
+
+def image_upload_ajax(request):
+    delete_url = "/ajax/reckoning/image/delete"
+    scaled_image_size = 575, 575
+    small_image_size = 300, 575
+    thumbnail_size = 70, 70  
+    #request.upload_handlers.insert(0, ReckoningImageUploadHandler())
+    result = []
+          
+    if request.method == 'POST':
+        if (request.user.has_perm('POST_RECKONING')):
+            try:
+                if request.FILES == None:
+                    return HttpResponseBadRequest('Must have files attached!')
+             
+                ####### Downloading file data. #######
+                id = str(uuid.uuid4())
+                image_file = request.FILES[u'files[]']
+                file_name = str(image_file.name)
+                file_size = image_file.size
+                content_type = image_file.content_type
+                
+                ####### Save four copies of the image to S3, specifically: ####### 
+                              
+                # (1) Original, Full Size Copy               
+                default_storage.save(getDefaultUploadLocation(getDefaultFullName(file_name), id), image_file)   
+                
+                # (2) Scaled Copy for Display Within A One-Image Reckoning (treated as 'authoritative')               
+                scaled_image = Image.open(image_file)
+                scaled_image.thumbnail(scaled_image_size, Image.ANTIALIAS)
+                scaled_image_io = StringIO.StringIO()
+                
+                if (content_type == "image/jpeg"):
+                    scaled_image.save(scaled_image_io, format='JPEG')
+                elif (content_type == "image/gif"):
+                    scaled_image.save(scaled_image_io, format='GIF')
+                else:
+                    scaled_image.save(scaled_image_io, format='PNG')
+                scaled_image_file = InMemoryUploadedFile(scaled_image_io, None, 
+                                                            file_name, content_type, scaled_image_io.len, None)
+                
+                default_storage.save(getDefaultUploadLocation(file_name, id), scaled_image_file)      
+
+                # (3) Scaled Copy for Display Within A Two-Image Reckoning              
+                scaled_image.thumbnail(small_image_size, Image.ANTIALIAS)
+                small_image_io = StringIO.StringIO()
+                
+                if (content_type == "image/jpeg"):
+                    scaled_image.save(small_image_io, format='JPEG')
+                elif (content_type == "image/gif"):
+                    scaled_image.save(small_image_io, format='GIF')
+                else:
+                    scaled_image.save(small_image_io, format='PNG')
+                small_image_file = InMemoryUploadedFile(small_image_io, None, 
+                                                            getDefaultSmallName(file_name), content_type, small_image_io.len, None)
+                
+                default_storage.save(getDefaultUploadLocation(getDefaultSmallName(file_name), id), small_image_file)      
+
+                # (4) A Thumbnail               
+                thumbnail_image_io = StringIO.StringIO()
+                scaled_image.thumbnail(thumbnail_size, Image.ANTIALIAS)
+                
+                if (content_type == "image/jpeg"):
+                    scaled_image.save(thumbnail_image_io, format='JPEG')
+                elif (content_type == "image/gif"):
+                    scaled_image.save(thumbnail_image_io, format='GIF')
+                else:
+                    scaled_image.save(thumbnail_image_io, format='PNG')
+                thumbnail_image_file = InMemoryUploadedFile(thumbnail_image_io, None, 
+                                                            getDefaultThumbnailName(file_name), content_type, thumbnail_image_io.len, None)
+                
+                default_storage.save(getDefaultUploadLocation(getDefaultThumbnailName(file_name), id), thumbnail_image_file)
+                
+                # Set the 'authoritative' URL for this image forever more.
+                image_url = getDefaultUrl(file_name, id)    
+                              
+                # Generate JSON Response
+                result = []
+                result.append({"name": file_name, 
+                               "size": file_size, 
+                               "url": image_url, 
+                               "thumbnail_url": image_url,
+                               "delete_url": "/".join((delete_url,id)), 
+                               "delete_type":"POST",})
+                
+                response_data = simplejson.dumps(result)
+                return HttpResponse(response_data, mimetype='application/json')                                
+                    
+            except FileTooBigException:
+                logger.info("The uploaded file was too large:") 
+                result.append({"error":"1",})
+            except IOError:
+                logger.error("IO error when uploading an image:") 
+                logger.error(traceback.print_exc(8))  
+                result.append({"error":"2",})
+            except Exception:
+                logger.error("Exception when uploading an image:") 
+                logger.error(traceback.print_exc(8))    
+    
+    # Generic error response
+    if not result:
+        result.append({"error":"99",})
+    response_data = simplejson.dumps(result)
+    
+    return HttpResponse(response_data, mimetype='application/json')   
+
+
+###############################################################################################
+#  The endpoint used to download image files associated with a Reckoning.
+#  This needs to tie into the BlueImp AJAX File Handler, and thus returns a JSON object as follows:
+#
+#  NAME
+#  SIZE
+#  URL
+#  THUMBNAIL_URL
+#  DELETE_URL
+#  DELETE_TYPE
+###############################################################################################
+
+def image_download_ajax(request, id):
+    delete_url = "/ajax/reckoning/image/delete"
+    result = []
+          
+    if request.method == 'GET' and id:
+        if (request.user.has_perm('VIEW_RECKONING')):
+            try:
+                service_response = client_get_reckoning(id, request.user.session_id)    
+                
+                if (not service_response.status.success):
+                    result.append({"error": "4",})
+                    logger.error("Error when retrieving Reckoning images: " + str(service_response.status.message)) 
+                elif (not service_response.reckonings):
+                    result.append({"error": "5",})
+                    logger.error("Reckoning not found when retrieving images: " + str(service_response.status.message)) 
+                else:       
+                    for reckoning in service_response.reckonings:
+                        for media in reckoning.media_items:
+                    
+                            # Generate JSON Response
+                            result.append({"name": media.name, 
+                                           "size": media.size, 
+                                           "url": media.url, 
+                                           "thumbnail_url": media.url,
+                                           "delete_url": "/".join((delete_url, media.media_id)), 
+                                           "delete_type":"POST",})
+                
+                    response_data = simplejson.dumps(result)
+                    return HttpResponse(response_data, mimetype='application/json')                                
+                    
+            except Exception:
+                logger.error("Exception when retrieving Reckoning images:") 
+                logger.error(traceback.print_exc(8))    
+    
+    # Generic error response
+    if not result:
+        result.append({"error":"99",})
+    response_data = simplejson.dumps(result)
+    return HttpResponse(response_data, mimetype='application/json')     
+
+###############################################################################################
+#  The endpoint used to add an uploaded image to an existing Reckoning.
+#
+#  NAME
+#  SIZE
+#  URL
+#  THUMBNAIL_URL
+#  DELETE_URL
+#  DELETE_TYPE
+###############################################################################################
+
+def image_add_ajax(request, id = None):
+    result = []
+    
+    if request.method == 'POST' and id:
+        try:
+            if (request.user.has_perm('UPDATE_ALL_RECKONINGS')):
+             
+                media = None
+                url = request.POST.get('new-image', None)
+                if (url):
+                    media = parseReckoningImageFromUploadUrl(url)              
+             
+                if (media):
+                    service_response = client_post_reckoning_media(media, id, request.user.session_id) 
+             
+                    # Generate JSON Response
+                    if (service_response.success):                    
+                        result.append({"success": "true",
+                                       "name": id})
+                     
+                        response_data = simplejson.dumps(result)
+                        return HttpResponse(response_data, mimetype='application/json')  
+                    else:
+                        logger.error("Error when adding media to Reckoning: " + service_response.message_description)
+                        result.append({"success": "false",
+                                       "error":"99",
+                                       "message":service_response.message_description})            
+                    
+        except IOError:
+            logger.error("IO error when deleting an image:") 
+            logger.error(traceback.print_exc(8))  
+            result.append({"error":"2",})
+        except Exception:
+            logger.error("Exception when deleting an image:") 
+            logger.error(traceback.print_exc(8))    
+    
+    # Generic error response
+    if not result:
+        result.append({"error":"99",})
+    response_data = simplejson.dumps(result)
+    return HttpResponse(response_data, mimetype='application/json')   
+
+###############################################################################################
+#  The endpoint used to delete uploaded images attached to a reckoning.
+#
+#  NAME
+#  SIZE
+#  URL
+#  THUMBNAIL_URL
+#  DELETE_URL
+#  DELETE_TYPE
+###############################################################################################
+
+def image_delete_ajax(request, id = None):
+    result = []
+    
+    if request.method == 'POST' and id:
+        try:
+
+            # Check to see if the ID is attached to the Reckoning.  If so, the user needs
+            # tougher permissions to execute the delete, and we need to pry it off afterwards.
+            media_response = client_get_reckoning_media(id, request.user.session_id)
+        
+            if (request.user.has_perm('UPDATE_ALL_RECKONINGS') or
+                 (request.user.has_perm('POST_RECKONING') and not media_response.reckonings)):
+             
+                # Delete the content from S3.
+                files = default_storage.listdir(getDefaultUploadLocation(id=id))
+
+                if (files[1]):
+                    for file in files[1]:
+                        default_storage.delete(getDefaultUploadLocation(name=file, id=id))
+             
+                if (media_response.reckonings):
+                    client_delete_reckoning_media(id, request.user.session_id) 
+             
+                # Generate JSON Response
+                result = []
+                result.append({"success": "true",
+                               "name": id})
+             
+                response_data = simplejson.dumps(result)
+                return HttpResponse(response_data, mimetype='application/json')              
+                    
+        except IOError:
+            logger.error("IO error when deleting an image:") 
+            logger.error(traceback.print_exc(8))  
+            result.append({"error":"2",})
+        except Exception:
+            logger.error("Exception when deleting an image:") 
+            logger.error(traceback.print_exc(8))    
+    
+    # Generic error response
+    if not result:
+        result.append({"error":"99",})
+    response_data = simplejson.dumps(result)
+    return HttpResponse(response_data, mimetype='application/json')    

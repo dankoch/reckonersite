@@ -13,13 +13,24 @@
     </div>
     <div class="content-wrapper">
         {% if not reckoning.approved %}
-	        <div class="question">
+	        <div class="question {% if reckoning.media_items %} question-narrow {% endif %}">
 	            *PENDING APPROVAL*<br>{{ reckoning.question }}
 	        </div>
         {% else %}
-	        <div class="question">
+	        <div class="question {% if reckoning.media_items %} question-narrow {% endif %}">
 	            <a href="{{ reckoning.getURL }}">{{ reckoning.question }}</a>
 	        </div>
+        {% endif %}
+        {% if reckoning.media_items %}
+        <div class="media-wrapper">
+	        {% for media in reckoning.media_items %}
+	           {% if media.media_type == "IMAGE" %}   
+	               <span class="image-wrapper">
+	                   <a href="{{ reckoning.getURL }}"><img src="{{media.thumbnail_url}}"></a>
+	               </span>
+	           {% endif %}
+	        {% endfor %}
+        </div>
         {% endif %}
         <div class="poster-wrapper">
             <div class="profile-picture-wrapper"><img src="{{reckoning.posting_user|print_profile_picture}}" class="profile-picture"></div>

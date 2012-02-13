@@ -4,6 +4,7 @@
 {% block pagetitle %}The Reckoner! - Reckoning Administration{% endblock %}
 
 {% block extraheader %}
+      <script src="{{ STATIC_URL }}js/ajax-post.js"></script>
       <script src="{{ STATIC_URL }}ckeditor/ckeditor.js"></script>
       <script src="{{ STATIC_URL }}ckeditor/adapters/jquery.js"> </script>
 {% endblock %}
@@ -66,6 +67,29 @@
 			             <p><label for="id_reckapp-question"><h5>The Question!</h5></label></p>
 			             <p><textarea maxlength=150 id="id_reckapp-question" name="reckapp-question" class="question-edit-field">{% if approveReckoningForm.question.value %}{{approveReckoningForm.question.value}}{% endif %}</textarea></p>
                          <div class="field-notation">(150 Character Max)</div>
+                    </div><div class="field-wrapper">
+                         <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
+                         <div class="tooltip">
+                            <p><b>Here is where you attach the sights and scenes associated with your question.</b>  Let it rip!</p>
+                            <p>You can attach two images of up to 250 KB each, which will be displayed along with your Reckoning.  Take note that they'll be scaled down to fit within a 575 x 575 pixel box, so you'll want to upload something distinguishable within those parameters.</p>
+                         </div>                    
+                         {{form.images.errors}}    
+                         <p><label for="id_images_1"><h5>The Images!</h5></label></p>
+                         
+                         <div id="fileupload">
+                            <div class="fileupload-buttonbar">
+                                <label class="fileinput-button">
+                                    <span>Add Image...</span>
+                                    <input type="file" name="files[]" accept="image/jpeg,image/gif,image/png" multiple>
+                                </label>
+                            </div>
+                            <div class="fileupload-content">
+                                <table class="files"></table>
+                            </div>
+                         </div>                         
+                         
+                         <noscript><div class="field-notation">Sorry.  You need javascript enabled to support image uploading.</div></noscript>                   
+                         <div class="field-notation"><div class="free-text">(Upload up to two images. JPEGs, GIFs, and PNGs are accepted. Max. 250 KB each.  Images are scaled down to fit within a 575 x 575 pixel box.)</div></div>  
                     </div><div class="field-wrapper"> 
                          <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
                          <div class="tooltip">
@@ -150,7 +174,9 @@
                          {{errors.commentary}}         
                          <p><label for="id_reckapp-edit_commentary"><h5>Leave Commentary?</h5></label><input type="checkbox" id="id_reckapp-edit_commentary" name="reckapp-edit_commentary" value="edit_commentary" {% if approveReckoningForm.commentary.value and approveReckoningForm.commentary.value|length == 0 %}checked="checked"{% endif %}/></p>              
                          <p><textarea maxlength=3000 id="id_reckapp-commentary" name="reckapp-commentary" class="commentary-edit-field" {% if not approveReckoningForm.commentary.value or approveReckoningForm.commentary.value|length == 0 %}disabled="disabled"{% endif %}>{% if approveReckoningForm.commentary.value %}{{approveReckoningForm.commentary.value}}{% endif %}</textarea></p>
-                    </div>	        
+                    </div>	  
+                    
+                    <input type="hidden" name="attached-files" id="attached-files" value="{{approveReckoningForm.attached_files.value}}">      
 			        
 			        <div class="form-buttons">
 					    <input type="submit" name="save" value="Save" class="button save-button"/>
@@ -200,4 +226,6 @@
 	  })
    });
   </script>
+  
+  {% include "fileupload-scripts.html" with reckoning_id=currentReckoning.id %}
 {% endblock %}

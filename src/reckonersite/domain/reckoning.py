@@ -11,6 +11,7 @@ from reckonersite.domain.base import Base, buildXml, convertToDateTime
 from reckonersite.domain.comment import Comment
 from reckonersite.domain.favorite import Favorite
 from reckonersite.domain.flag import Flag
+from reckonersite.domain.media import Media
 from reckonersite.domain.reckoneruser import ReckonerUser
 from reckonersite.util.validation import slugifyTitle
 
@@ -21,6 +22,7 @@ class Reckoning(Base):
                  submitter_id=None, approver_id=None, approved=None, rejected=None,
                  open=None, anonymous_requested=None, anonymous=None, submission_date=None,
                  posting_date=None, closing_date=None, interval=None, comments=None, comment_index=None,
+                 media_items=None,
                  commentary=None, commentary_user_id=None, commentary_user=None, posting_user=None,
                  flags=None, favorites=None, tags=None, highlighted=None, views=None, 
                  tag_csv=None,
@@ -43,6 +45,7 @@ class Reckoning(Base):
         self.interval = interval
         self.comments = comments
         self.comment_index = comment_index
+        self.media_items = media_items
         self.commentary = commentary
         self.commentary_user_id = commentary_user_id
         self.commentary_user = commentary_user
@@ -144,6 +147,12 @@ class Reckoning(Base):
             self.comments=[]
             for commentElement in commentsElement.findall('comment'):
                 self.comments.append(Comment(xml_element=commentElement))
+                
+        mediaItemsElement = xml_root.find('media_items')
+        if (not mediaItemsElement is None):
+            self.media_items=[]
+            for mediaElement in mediaItemsElement.findall('media'):
+                self.media_items.append(Media(xml_element=mediaElement))
            
         flagsElement = xml_root.find('flags')        
         if (not flagsElement is None):

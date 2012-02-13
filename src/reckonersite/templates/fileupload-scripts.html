@@ -1,0 +1,191 @@
+{% load reckontags %}
+{% load verbatim %}
+
+<script>
+var fileUploadErrors = {
+    '1': 'File exceeds maximum size.',
+    '2': 'Trouble while uploading file. Try again later.',
+    '3': 'File was only partially uploaded',
+    '4': 'Issue when downloading Reckoning images.',
+    '5': 'Reckoning not found.',
+    '6': 'Failed to write file to disk',
+    '99': 'Trouble while uploading file. Try again later.',
+    maxFileSize: 'File is too big',
+    minFileSize: 'File is too small',
+    acceptFileTypes: 'Filetype not allowed',
+    maxNumberOfFiles: 'Max number of files exceeded',
+    uploadedBytes: 'Uploaded bytes exceed file size',
+    emptyResult: 'Empty file upload result'
+};
+</script>
+{% verbatim %}
+<script id="template-upload" type="text/html">
+{% $.each(o.files, function (index, file) { %}
+    <div class="file-upload template-upload{%=(file.error&&' ui-state-error')||''%}">
+        <div class="cancel">{% if (!index) { %}<button>Cancel</button>{% } %}</div>
+        <div class="preview"></div>
+        <div class="upload-info">
+            <div><span class="name">{%=file.name%}</span> <span class="size">({%=o.formatFileSize(file.size)%})</span></div>
+            <div>
+               {% if (file.error) { %}
+                   <span class="error">Error: {%=fileUploadErrors[file.error]%}</span>
+               {% } else if (o.files.valid && !index) { %}
+                   <div class="progress"><div></div></div>
+               {% } %}
+            </div>
+        </div>
+    </div>
+{% }); %}
+</script>
+<script id="template-download" type="text/html">
+{% $.each(o.files, function (index, file) { %}
+    <div class="file-download template-download{%=(file.error&&' ui-state-error')||''%}">
+        {% if (file.error) { %}
+            <div><span class="name">{%=file.name%}</span> <span class="size">({%=o.formatFileSize(file.size)%})</span></div>
+            <div>
+                 <span class="error">Error: {%=fileUploadErrors[file.error]%}</span>
+            </div>
+        {% } else { %}
+            <div class="preview">{% if (file.thumbnail_url) { %}
+               <img src="{%=file.thumbnail_url%}">
+            {% } %}</div>
+            <div class="download-info">
+                <div><span class="name">{%=file.name%}</span> <span class="size">({%=o.formatFileSize(file.size)%})</span></div>
+            </div>
+        {% } %}
+        <div class="delete">
+            <button data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}">Delete</button>
+        </div>
+    </div>
+{% }); %}
+</script>
+{% endverbatim %}
+
+<!-- SCRIPT RESPONSIBLE FOR INITIALIZING AND CONFIGURING THE BLUEIMP FILEUPLOADER PLUGIN -->
+<script>
+	$(function () {
+	    'use strict';
+	
+	    // Initialize the jQuery File Upload widget:
+	    $('#fileupload').fileupload();
+	    
+	    {% if reckoning_id %}
+	        // Load existing files:
+	        $.getJSON("/ajax/reckoning/image/download/{{reckoning_id}}", function (files) {
+	            var fu = $('#fileupload').data('fileupload');
+	            fu._adjustMaxNumberOfFiles(-files.length);
+	            fu._renderDownload(files)
+	                .appendTo($('#fileupload .files'))
+	                .fadeIn(function () {
+	                    // Fix for IE7 and lower:
+	                    $(this).show();
+	                });  
+            });
+	    {% endif %}
+	
+	    $('#fileupload').fileupload('option', {
+	        acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+	        autoUpload: true,
+	        maxFileSize: 256000,
+	        maxNumberOfFiles: 2,
+	        url: "/ajax/reckoning/image/upload"
+	    });
+	    
+	    {% if direct_commit and reckoning_id %}
+	        // Add the uploaded file path to the correct field of the form.
+	        $('#fileupload').bind('fileuploaddone', function (e, data) {
+	            var that = $(this).data('fileupload');
+	            if (data.context) {
+	                data.context.each(function (index) {
+	                    var file = ($.isArray(data.result) &&
+	                            data.result[index]) || {error: 'emptyResult'};
+	                    if (!file.error) {
+	                        $.post("/ajax/reckoning/image/add/{{reckoning_id}}", "new-image=" + file.url,
+	                               function(data) {}
+	                               , "json")	                        
+	                    }
+	                });
+	            } 
+	        });	    
+	    {% else %}
+	    
+		    // Add the uploaded file path to the correct field of the form.
+		    $('#fileupload').bind('fileuploaddone', function (e, data) {
+		        var that = $(this).data('fileupload');
+		        if (data.context) {
+		            data.context.each(function (index) {
+		                var file = ($.isArray(data.result) &&
+		                        data.result[index]) || {error: 'emptyResult'};
+		                if (!file.error) {
+		                    var origValue = $("#attached-files").attr("value");
+		                    if (origValue == null || origValue == "") {
+	                            $("#attached-files").attr("value", file.url);	                    	   	
+		                    }
+		                    else {
+		                    	$("#attached-files").attr("value", origValue + ";" + file.url);
+		                    }
+		                }
+		            });
+		        } 
+		    });
+	    {% endif %}
+
+	    {% if direct_commit and reckoning_id %}
+	    
+	    {% else %}
+	    // Remove the deleted file path from the correct field of the form.
+	    $('#fileupload').bind('fileuploaddestroy', function (e, data) {
+	        var that = $(this).data('fileupload');
+	        if (data.context) {
+	            // Get the submitted ID by taking the submission URL, removing trailing spaces, splitting by '/', and taking the last value.
+	            var submitSegments = data.url.split(" ").join("").split("/");
+	            var id = submitSegments[submitSegments.length - 1];
+	            
+	            var origValue = $("#attached-files").attr("value");
+	            var newValue = "";
+	            
+	            var origFiles = origValue.split(';')
+	            for (var i = 0; i < origFiles.length; i ++) {
+	                if (origFiles[i] != "" && origFiles[i].indexOf(id) == -1) {
+	                    newValue += origFiles[i] + ";";
+	                }
+	            }
+	            
+	            $("#attached-files").attr("value", newValue);
+	        } 
+	    });
+	    {% endif %}
+	
+	    // Enable iframe cross-domain access via redirect page:
+	    var redirectPage = window.location.href.replace(
+	        /\/[^\/]*$/,
+	        '/result.html?%s'
+	    );
+	    $('#fileupload').bind('fileuploadsend', function (e, data) {
+	        if (data.dataType.substr(0, 6) === 'iframe') {
+	            var target = $('<a/>').prop('href', data.url)[0];
+	            if (window.location.host !== target.host) {
+	                data.formData.push({
+	                    name: 'redirect',
+	                    value: redirectPage
+	                });
+	            }
+	        }
+	    });
+	
+	    // Open download dialogs via iframes,
+	    // to prevent aborting current uploads:
+	    $('#fileupload .files').delegate(
+	        'a:not([rel^=gallery])',
+	        'click',
+	        function (e) {
+	            e.preventDefault();
+	            $('<iframe style="display:none;"></iframe>')
+	                .prop('src', this.href)
+	                .appendTo(document.body);
+	        }
+	    );
+	});
+</script>
+
+<script src="{{STATIC_URL}}js/file-upload-min.js"></script>

@@ -3,6 +3,7 @@
 {% block pagetitle %}The Reckoner! - Post A Reckoning!{% endblock %}
 
 {% block extraheader %}
+      <script src="{{ STATIC_URL }}js/ajax-post.js"></script>
       <script src="{{ STATIC_URL }}ckeditor/ckeditor.js"></script>
       <script src="{{ STATIC_URL }}ckeditor/adapters/jquery.js"> </script>
 {% endblock %}
@@ -20,7 +21,7 @@
 		        </ul>
 		    {% endif %}
 		    
-            <div id="post-reckoning-form" class="form-wrapper edit-content-form">
+            <div id="post-reckoning-form" class="form-wrapper edit-content-form" method="POST" enctype="multipart/form-data">
                 <form action="" method="post">{% csrf_token %}
                     <div class="field-wrapper">
                          <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
@@ -34,6 +35,29 @@
                          <p><label for="id_question"><h5>The Question!</h5></label></p>
                          <p><textarea maxlength=150 id="id_question" name="question" class="question-edit-field"></textarea></p>
                          <div class="field-notation">(150 Character Max)</div>
+                    </div><div class="field-wrapper">
+                         <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
+                         <div class="tooltip">
+                            <p><b>Here is where you attach the sights and scenes associated with your question.</b>  Let it rip!</p>
+                            <p>You can attach two images of up to 250 KB each, which will be displayed along with your Reckoning.  Take note that they'll be scaled down to fit within a 575 x 575 pixel box, so you'll want to upload something distinguishable within those parameters.</p>
+                         </div>                    
+                         {{form.images.errors}}    
+                         <p><label for="id_images_1"><h5>The Images!</h5></label></p>
+                         
+					     <div id="fileupload">
+				            <div class="fileupload-buttonbar">
+				                <label class="fileinput-button">
+				                    <span>Add Image...</span>
+				                    <input type="file" name="files[]" accept="image/jpeg,image/gif,image/png" multiple>
+				                </label>
+				            </div>
+					        <div class="fileupload-content">
+					            <table class="files"></table>
+					        </div>
+					     </div>                         
+                         
+                         <noscript><div class="field-notation">Sorry.  You need javascript enabled to support image uploading.</div></noscript>                   
+                         <div class="field-notation"><div class="free-text">(Upload up to two images. JPEGs, GIFs, and PNGs are accepted. Max. 250 KB each.  Images are scaled down to fit within a 575 x 575 pixel box.)</div></div>  
                     </div><div class="field-wrapper">
                          <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
                          <div class="tooltip">
@@ -120,7 +144,7 @@
                             If you don't see the question live within 24 hours, send us a shout via the Contact Us form.
                          </div>
                     </div>         
-                    
+                    <input type="hidden" name="attached-files" id="attached-files" value="">
                     <div class="form-buttons">
                         <input type="submit" name="submit" value="Submit" class="button save-button"/>
                     </div>
@@ -171,4 +195,6 @@
     	}
     });
   </script>
+  
+  {% include "fileupload-scripts.html" %}
 {% endblock %}
