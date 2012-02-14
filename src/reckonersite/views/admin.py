@@ -311,10 +311,7 @@ class ApproveReckoningForm(forms.Form):
         attached_files=""
         if (reckoning and reckoning.media_items):
             for media in reckoning.media_items:
-                print "Adding Media"
-                print "Media: " + media.url
                 attached_files = "".join((attached_files, media.url, ";"))
-        print "Attached Files: " + attached_files
                 
         self.fields["attached_files"] = forms.CharField(required=False, initial=attached_files)
                 

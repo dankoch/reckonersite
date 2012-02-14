@@ -118,7 +118,7 @@ def getDefaultUploadLocation(name=None, id=None):
 def getDefaultUrl(name, id):
     '''Indicates the default URL of a piece of media attached to a Reckoning.'''
     if (name and id):
-        return ("".join((settings.S3_URL_ROOT, getDefaultUploadLocation(quote_plus(name), id))))
+        return ("".join((settings.STATIC_URL, getDefaultUploadLocation(quote_plus(name), id))))
     return None
             
 def parseReckoningImageFromUploadUrl(uploadUrl):

@@ -39,7 +39,8 @@
                          <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
                          <div class="tooltip">
                             <p><b>Here is where you attach the sights and scenes associated with your question.</b>  Let it rip!</p>
-                            <p>You can attach two images of up to 250 KB each, which will be displayed along with your Reckoning.  Take note that they'll be scaled down to fit within a 575 x 575 pixel box, so you'll want to upload something distinguishable within those parameters.</p>
+                            <p>You can attach two images of up to 250 KB each, which will be displayed along with your Reckoning.</p>
+                            <p>Take note that a single uploaded image will be scaled to fit within a 575 x 575 pixel box, while two uploaded images will each be scaled to fit within a 300 x 575 box (so they'll fit side-by-side on the page).  The full image will also be available for users who click on it.</p>
                          </div>                    
                          {{form.images.errors}}    
                          <p><label for="id_images_1"><h5>The Images!</h5></label></p>
@@ -57,7 +58,7 @@
 					     </div>                         
                          
                          <noscript><div class="field-notation">Sorry.  You need javascript enabled to support image uploading.</div></noscript>                   
-                         <div class="field-notation"><div class="free-text">(Upload up to two images. JPEGs, GIFs, and PNGs are accepted. Max. 250 KB each.  Images are scaled down to fit within a 575 x 575 pixel box.)</div></div>  
+                         <div class="field-notation"><div class="free-text">(Upload up to two images. JPEGs, GIFs, and PNGs are accepted. Max. 250 KB each.  Single images are scaled down to fit within a 575 x 575 pixel box. Dual images are each scaled to fit within a 300 x 575 box.)</div></div>  
                     </div><div class="field-wrapper">
                          <div class="tooltip-icon"><img src="{{ STATIC_URL }}images/tooltip-thumb-image.png"></div>
                          <div class="tooltip">

@@ -13,13 +13,38 @@
 
 {% block canon-url %}"{{ SITE_ROOT }}"{% endblock %}
 
+{% block extraheader %}
+      <script src="{{ STATIC_URL }}ckeditor/adapters/jquery.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+{% endblock %}
+
 {% block main %}
 	<div id="main-page">
 	    <div class="main-area">
 	       <div id="individual-entry" class="highlighted-reckoning section">
 	           <div class="question-section">
-		           <div class="reckoning-question"><h2><a href="{{reckoning.getURL}}">{{reckoning.question}}</a></h2></div>
-		           <div class="reckoning-description"><p>{{reckoning.description|safe}}</p></div>
+		            <div class="reckoning-question"><h2><a href="{{reckoning.getURL}}">{{reckoning.question}}</a></h2></div>
+		            <div id="gallery" class="media-wrapper">
+		                {% for media in reckoning.media_items %}
+		                   {% if media.media_type == "IMAGE" %}   
+		                       {% if reckoning.media_items|length >= 2 %} 
+		                            <div class="image-wrapper image-wrapper-small">
+		                                <a rel="gallery" href="{{media.full_url}}" title="{{media.name}}">
+		                                <img src="{{media.small_url}}">
+		                                </a>
+		                            </div>
+		                       {% else %} 
+		                            <div class="image-wrapper">
+		                                <a rel="gallery" href="{{media.full_url}}" title="{{media.name}}">
+		                                <img src="{{media.url}}">
+		                                </a>
+		                            </div>
+		                       {% endif %}                               
+		                        
+		                   {% endif %}
+		                {% endfor %}
+		            </div> 
+		            <div class="reckoning-description"><p>{{reckoning.description|safe}}</p></div>
 	           </div>
 	           <div class="voting-section">
                     {% include "reckon-two-voting-box.html" %}	
@@ -152,6 +177,8 @@
 
 {% block javascript %}
   {{ block.super }}
+      <script src="{{ STATIC_URL }}js/image-gallery-min.js"></script>
+      
       <script type="text/javascript">
 	      $(document).ready(function(){ 
 	          var largestHeight = 0;
@@ -169,6 +196,9 @@
 	          $('.button-area').find(".reckonbutton > span").each(function() {
 	              $(this).css('height', largestHeight + renderAdjustment);
 	          });
+	          
+	          // Initialize the Image Gallery for Attached Media
+	          $('#gallery').imagegallery();
 	      });
       </script>
 {% endblock %}
