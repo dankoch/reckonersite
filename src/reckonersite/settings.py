@@ -2,7 +2,7 @@
 from mongoengine import connect
 
 #### Version (used for internal tracking purposes) ############################################
-SITE_VERSION="1.0.1-SNAPSHOT"
+SITE_VERSION="1.0.1"
 
 
 #### Environment Version (determines which settings to use, based on the specified environment)
