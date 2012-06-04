@@ -1025,7 +1025,7 @@ def image_download_ajax(request, id):
     if request.method == 'GET' and id:
         if (request.user.has_perm('VIEW_RECKONING')):
             try:
-                service_response = client_get_reckoning(id, request.user.session_id)    
+                service_response = client_get_reckoning(id, request.user.session_id, True)    
                 
                 if (not service_response.status.success):
                     result.append({"error": "4",})
