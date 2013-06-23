@@ -16,7 +16,7 @@ Essentially, people submit questions with two possible answers, the questions ge
 Here's how it looks in practice (using some sample data used to generate the initial mockups):
 
 [![Individual Reckonings](https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Individual+Reckoning+Thumbnail.gif)](https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Individual+Reckoning.gif)
-[![Individual Reckoning (Closed)](https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Individual+Reckoning+(Closed)+Thumbnail.gif)](https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Individual+Reckoning+(Closed).gif)
+[![Individual Reckoning (Closed)](https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Individual+Reckoning+%28Closed%29+Thumbnail.gif)](https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Individual+Reckoning+%28Closed%29.gif)
 [![Front Page: Anonymous](https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Front+Page+Logged+Out+Thumbnail.gif)](https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Front+Page+Logged+Out.gif)
 [![User Profile](https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Profile+Main+Page+Thumbnail.gif)](https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Profile+Main+Page.gif)
 
