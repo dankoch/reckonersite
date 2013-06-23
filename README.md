@@ -20,7 +20,7 @@ Here's how it looks in practice (using some sample data used to generate the ini
 [![Front Page: Anonymous](https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Front+Page+Logged+Out+Thumbnail.gif)](https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Front+Page+Logged+Out.gif)
 [![User Profile](https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Profile+Main+Page+Thumbnail.gif)](https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Profile+Main+Page.gif)
 
-There's some salty language in the sample data, but The Reckoner was designed as a civil, long-standing resource meant to provide honest, well-considered resolutions to even the most frivolous of questions.  That's why the submitted questions were proctored, and real identities required for commenters.
+There's some salty language in the sample data, but The Reckoner was designed as a civil, long-standing resource meant to provide honest, well-considered resolutions to even the most frivolous of questions.  That's why the submitted questions were proctored, and real identities required for commenters.  It was also built for maximum scalability, so the technical architecture is more involved than what would typically be associated with a standard CRUD webapp such as this.
 
 ## Aha! So why did you build it?
 
