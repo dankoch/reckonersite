@@ -1,13 +1,15 @@
-## The Reckoner!?
+## Huh? The Reckoner!?
 
-Welcome to The Reckoner!  Yes, The Reckoner!  The Thunderdome for Decisions!  The Ultimate Arbiter for the Connected World!  And it's soft underbelly is made available to you, the fans, the curious, the intrigued!
+Yes, The Reckoner!  The Thunderdome for Decisions!  The Ultimate Arbiter for the Connected World!  And it's soft underbelly is made available to you, the fans, the curious, the intrigued!
 
-The Reckoner was a web project I build in the Fall of 2011 that was built on one simple concept:
+The Reckoner was a web project I built in the Fall of 2011 that was built on one simple concept:
 
 * Got a binary question?  Good or bad?  Yes or no?  Happy Days better with Chachi or without Chachi?  Put it on the Reckoner and let the world decide!
  
 Essentially, people submit questions with two possible answers, the questions get approved and spruced up, and posted on the site for a week.  At the end of the week, you have your answer.  This was always intended as a toy, but a *fun* toy, and sometimes fun toys have a way of ingratiating themselves into a lot of people's lives in a satisfying way.
- 
+
+## Aha! But why?
+
 This was built mostly as a way to decompress after six years in the Big Government and Commercial Consulting business, and to achieve three main goals:
 
 1. To complete the always-satisfying process of defining and building a production-grade **product** from scratch.
@@ -22,7 +24,8 @@ Now I've open-sourced it.  The code is largely untouched from November of 2011, 
 
 For the curious and intrepid, feel free to ask me any questions about how this works.  The Wiki for this code repo has a basic overview on how the different components work together and how to get a development environment set up.  All of this runs on AWS (as part of an auto-scaling group), and I'd be more than happy to offer a few pointers on how to get an instance of this spinning.
 
-Thanks, and cheers!
+**Thanks, and cheers!**
 
-Daniel Koch
-June 23, 2013
+__Daniel Koch__
+
+__June 23, 2013__
