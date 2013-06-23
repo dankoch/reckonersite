@@ -10,7 +10,7 @@ The Reckoner was a web application built in the Fall of 2011 that was founded on
 * Happy Days better with Chachi or without Chachi? 
 * **Submit it to the Reckoner and let the world decide!**
  
-Yes, the core concept really was that simple. People submit questions with two possible answers, the questions get approved and spruced up, and posted on the site for a week.  At the end of the week, you have your answer.  This was always intended as a toy, but a *fun* toy, and sometimes fun toys have a way of ingratiating themselves into many people's lives in a satisfying way.
+Yes, the core concept really was that simple. People submit questions with two possible answers, the questions get approved and spruced up, and posted on the site for a week.  At the end of the week, you have your answer.  This was always intended as a toy, but a *fun* toy, and sometimes fun toys have a way of ingratiating themselves into people's lives in a satisfying way.
 
 Here's how it looks in practice (using some sample data used to generate the initial mockups):
 
@@ -24,7 +24,7 @@ There's some salty language in the sample data, but The Reckoner was designed as
 
 ## Aha! So why did you build it?
 
-After six years in the Big Government and Commercial Consulting business, I embarked on the Reckoner project as a means to achieve three main goals:
+After six years in the Big Consulting business, I embarked on the Reckoner project as a means to achieve three goals:
 
 1. To complete the always-satisfying process of defining and building a **product** from scratch.
 2. As an opportunity to work with some technologies with which I wanted to build a production-grade system (MongoDB, Django 1.4, Amazon CloudFront CDN, etc.)
