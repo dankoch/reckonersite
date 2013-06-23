@@ -32,7 +32,7 @@ After six years in the Big Consulting business, I embarked on the Reckoner proje
  
 The Reckoner officially launched on November 30th, 2011.  Within four months, it had more than 250,000 pageviews from more than 65,000 unique visitors, including several hundred daily recurring users.  It ran precisely one year, and then I brought the site down having achieved each of the three goals initially defined for the project.
 
-In April of 2012, I joined [Artisan Mobile](www.useartisan.com) as a Senior Architect, which is the next phase of the plan noted in (3) above.
+In April of 2012, I joined [Artisan Mobile](http://www.useartisan.com) as a Senior Architect, which is the next phase of the plan noted in (3) above.
 
 ## Cool.  What now?
 
