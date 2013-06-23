@@ -15,10 +15,10 @@ Essentially, people submit questions with two possible answers, the questions ge
 
 Here's how it looks in practice (using some sample data used to generate the initial mockups):
 
-<img src="https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Individual+Reckoning.gif" alt="Individual Reckonings" style="width: 200px;"/>
-<img src="https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Individual+Reckoning+\(Closed\).gif" alt="Individual Reckoning (Closed)" style="width: 200px;"/>
-<img src="https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Front+Page+Logged+Out.gif" alt="Front Page: Anonymous" style="width: 200px;"/>
-<img src="https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Profile+Main+Page.gif" alt="User Profile" style="width: 200px;"/>
+<img src="https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Individual+Reckoning.gif" alt="Individual Reckonings" style="max-width: 24%;"/>
+<img src="https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Individual+Reckoning+\(Closed\).gif" alt="Individual Reckoning (Closed)" style="max-width: 24%;"/>
+<img src="https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Front+Page+Logged+Out.gif" alt="Front Page: Anonymous" style="mmax-width: 24%;"/>
+<img src="https://s3.amazonaws.com/Working_Dan_Files/Reckoner+Mockups/Profile+Main+Page.gif" alt="User Profile" style="max-width: 24%;"/>
 
 There's some salty language in the sample data, but The Reckoner was designed as a civil, long-standing resource meant to provide honest, well-considered resolutions to even frivolous questions.  That's why the submitted questions are proctored, and real identities are required for commenters.
 
