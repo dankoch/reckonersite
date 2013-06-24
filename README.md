@@ -22,6 +22,10 @@ Here's how it looks in practice (using some sample data used to generate the ini
 
 There's some salty language in the sample data, but The Reckoner was designed as a civil, long-standing resource meant to provide honest, well-considered resolutions to even the most frivolous of questions.  That's why the submitted questions were proctored, and real identities required for commenters.  It was also built for maximum scalability, so the technical architecture is more involved than what would typically be associated with a standard CRUD webapp such as this.
 
+The full technical overview is here:
+
+* **[The Reckoner: Basic Architectural Overview](https://github.com/dankoch/reckonersite/wiki/Basic-Architectural-Overview)**
+
 ## Aha! So why did you build it?
 
 After six years in the Big Consulting business, I embarked on the Reckoner project as a means to achieve three goals:
@@ -38,7 +42,7 @@ In April of 2012, I joined [Artisan Mobile](http://www.useartisan.com) as a Seni
 
 Now I've open-sourced it.  The code is largely untouched from November of 2011, but much of this is still a great way to explore an applied example of Django, MongoDB, Spring Data, Facebook/Google OAUTH2, and other components in action.  All code, art assets, and everything else here was developed by me (Daniel Koch), and is open-sourced as part of the GPL v3 license.
 
-For the curious and intrepid, feel free to ask me any questions about how this works.  The Wiki for this code repo has a basic overview on how the different components work together and how to get a development environment set up.  All of this runs on AWS (as part of an auto-scaling group), and I'd be more than happy to offer a few pointers on how to get an instance of this spinning.
+For the curious and intrepid, feel free to ask me any questions about how this works.  The [Wiki](https://github.com/dankoch/reckonersite/wiki) for this code repo has a basic overview on how the different components work together and how to get a development environment set up.  All of this runs on AWS (as part of an auto-scaling group), and I'd be more than happy to offer a few pointers on how to get an instance of this spinning.
 
 **Thanks, and cheers!**
 
