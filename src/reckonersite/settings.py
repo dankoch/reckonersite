@@ -164,8 +164,8 @@ TEMPLATE_CACHE_LIFESPAN = 600
 #### Static Content Management ###############################################################
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-AWS_ACCESS_KEY_ID = 'AKIAJK3432BRTV466GPA'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = ''
+AWS_SECRET_ACCESS_KEY = ''
 AWS_STORAGE_BUCKET_NAME = 'reckoner-static'
 AWS_HEADERS = {
     'Cache-Control': 'max-age=86400',
