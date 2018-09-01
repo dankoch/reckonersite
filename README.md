@@ -28,19 +28,19 @@ The full technical overview is here:
 
 ## Aha! So why did you build it?
 
-After six years in the Big Consulting business, I embarked on the Reckoner project as a means to achieve three goals:
+After several years in the Big Consulting business, I embarked on the Reckoner project as a means to achieve three goals:
 
-1. To complete the always-satisfying process of defining and building a **product** from scratch.
-2. As an opportunity to work with some technologies with which I wanted to build a production-grade system (MongoDB, Django 1.4, Amazon CloudFront CDN, etc.)
+1. To complete the always-satisfying process of defining and building a product from scratch.
+2. As an opportunity to work with some technologies with which I wanted to build a production-grade system.
 3. Most importantly: as a low-risk pretense to feel out the software start-up ecosystem in preparation for a more concerted effort over the next 2-3 years.
  
 The Reckoner officially launched on November 30th, 2011.  Within four months, it had more than 250,000 pageviews from more than 65,000 unique visitors, including several hundred daily recurring users.  It ran precisely one year, and then I brought the site down having achieved each of the three goals initially defined for the project.
 
-In April of 2012, I joined [Artisan Mobile](http://www.useartisan.com) as a Senior Architect, which is the next phase of the plan noted in (3) above.
+In April of 2012, I joined [Artisan Mobile](http://www.useartisan.com).  Three years later, we were acquired by TUNE, Inc, where I currently serve as CTO.
 
 ## Cool.  What now?
 
-Now I've open-sourced it.  The code is largely untouched from November of 2011, but much of this is still a great way to explore an applied example of Django, MongoDB, Spring Data, Facebook/Google OAUTH2, and other components in action.  All code, art assets, and everything else here was developed by me (Daniel Koch), and is open-sourced as part of the GPL v3 license.
+Now I've open-sourced it.  The code is largely untouched from November of 2011, but much of this is still a great way to explore an applied example of some useful technologies (at least, as of 2011).  All code, art assets, and everything else here was developed by me (Daniel Koch), and is open-sourced as part of the GPL v3 license.
 
 For the curious and intrepid, feel free to ask me any questions about how this works.  The [Wiki](https://github.com/dankoch/reckonersite/wiki) for this code repo has a basic overview on how the different components work together and how to get a development environment set up.  All of this runs on AWS (as part of an auto-scaling group), and I'd be more than happy to offer a few pointers on how to get an instance of this spinning.
 
